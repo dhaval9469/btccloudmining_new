@@ -149,14 +149,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     }
 
     await Future.delayed(const Duration(seconds: 1));
-    HiveService().saveData(AppConfig.userEmail, "apptedting51@gmail.com");
 
     if (isLoggedIn == true) {
       StartTimeService().resumeMiningFromStorage();
       await HiveService().clearBox('brm_activeBot_box');
       Navigation.pushNamed(Routes.bottom);
     } else {
-      Navigation.pushNamed(Routes.bottom);
+      Navigation.pushNamed(Routes.introPage);
     }
     InterstitialAdManager().showInterstitialAds();
   }

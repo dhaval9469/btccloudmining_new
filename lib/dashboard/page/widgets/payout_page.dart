@@ -9,12 +9,14 @@ import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
+import 'package:btccloudmining/utils/utils.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:btccloudmining/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -35,6 +37,7 @@ class _PayoutPageState extends State<PayoutPage> {
   void initState() {
     balance = (homeCtrl.totalMineBtc.value + homeCtrl.totalReferralBtc.value);
     btcWalletIDCtrl = TextEditingController(text: HiveService().getData<String>(AppConfig.userBtcAddress));
+    homeCtrl.getWithdrawDetails();
     super.initState();
   }
 
@@ -58,7 +61,10 @@ class _PayoutPageState extends State<PayoutPage> {
                       children: [
                         Image.asset(AppAsset.bitcoin, scale: 18),
                         10.widthBox,
-                        Text(balance.toStringAsFixed(12), style: textRoboto(context, fontSize: 22, fontWeight: FontWeight.w600)),
+                        Text(
+                          balance.toStringAsFixed(12),
+                          style: textRoboto(context, fontSize: 22, fontWeight: FontWeight.w600),
+                        ),
                       ],
                     ),
                     20.heightBox,
@@ -107,32 +113,92 @@ class _PayoutPageState extends State<PayoutPage> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        decoration: BoxDecoration(color: AppColor.thirdCard, borderRadius: BorderRadius.circular(8)),
+                        decoration: BoxDecoration(
+                          color: AppColor.thirdCard,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
                           child: Text(
                             'Proceed',
-                            style: textRoboto(context, color: AppColor.text, fontWeight: FontWeight.bold, fontSize: 17),
+                            style: textRoboto(
+                              context,
+                              color: AppColor.text,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    15.heightBox,
                     Text(
-                      'Please read carefully before proceeding.',
-                      style: subTextRoboto(
-                        context,
-                        fontSize: 13,
-                      ).copyWith(decoration: TextDecoration.underline, decorationColor: AppColor.secondaryCard.withAlpha(100)),
-                    ),
-                    10.heightBox,
-                    Text(
-                      'Transaction fees are necessary for blockchain transactions and are not controlled by this platform. Fees may vary based on blockchain network conditions. Please refer to the specific fees; the amount credited will be the withdrawal amount minus the blockchain fees. Transaction fees for the BTC network and BEP-20 network are relatively high. You can verify these fees on the blockchain.',
-                      style: TextStyle(fontSize: 12, color: AppColor.subText),
-                    ),
-                    Text(
-                      'Please ensure you use a secure and reliable BTC wallet, and double-check the wallet address to ensure the safety of your funds.',
-                      style: TextStyle(fontSize: 12, color: AppColor.subText),
+                      "Withdrawal History",
+                      style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                    ).pOnly(top: 25, bottom: 2),
+                    Divider(color: Colors.grey.withAlpha(100), thickness: 0.5, height: 0),
+                    Obx(
+                      () => homeCtrl.withdrawDetailsList.isEmpty
+                          ? Center(
+                              child: Text(
+                                "You don’t have any payout history yet.",
+                                style: subTextMontserrat(context, fontSize: 12),
+                              ).pOnly(top: 25),
+                            )
+                          : ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              itemCount: homeCtrl.withdrawDetailsList.length,
+                              itemBuilder: (context, index) {
+                                final data = homeCtrl.withdrawDetailsList[index];
+                                double usdValue =
+                                    double.parse(data.dr ?? "") *
+                                    (AppConfig.appDataSet?.btcPriceInUSD ?? 0.0);
+                                final formatted = NumberFormat.currency(
+                                  symbol: '\$',
+                                  decimalDigits: 4,
+                                ).format(usdValue);
+                                return CustomCard(
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(data.dr.toString(), style: textRoboto(context, fontSize: 12)),
+                                          Text(
+                                            miningDateFormat(data.date ?? ""),
+                                            style: textRoboto(context, fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            formatted,
+                                            style: textMontserrat(context, fontWeight: FontWeight.w600),
+                                          ),
+                                          Text(
+                                            data.status ?? '',
+                                            style: textRoboto(
+                                              context,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.red,
+                                            ),
+                                            // color: Theme.of(context).colorScheme.onSurface),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) {
+                                return SizedBox(height: 10);
+                              },
+                            ),
                     ),
                   ],
                 ).px(15),
@@ -177,7 +243,11 @@ class _PayoutPageState extends State<PayoutPage> {
                   ),
                   7.heightBox,
                   Text('Expected: $massage', textAlign: TextAlign.center, style: subTextRoboto(context)),
-                  Text('Received: ${balance.toStringAsFixed(12)}', textAlign: TextAlign.center, style: subTextRoboto(context)),
+                  Text(
+                    'Received: ${balance.toStringAsFixed(12)}',
+                    textAlign: TextAlign.center,
+                    style: subTextRoboto(context),
+                  ),
                   15.heightBox,
                   AppButton(
                     padding: EdgeInsets.symmetric(vertical: 6),

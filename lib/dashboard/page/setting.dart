@@ -58,7 +58,9 @@ class _SettingPageState extends State<SettingPage> {
           children: [
             stagger(
               Row(
-                children: [Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
+                children: [
+                  Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
+                ],
               ).p(15),
             ),
             Expanded(
@@ -75,7 +77,10 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       stagger(
                         Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: option(
@@ -98,7 +103,10 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       stagger(
                         Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -130,7 +138,7 @@ class _SettingPageState extends State<SettingPage> {
                                 option(
                                   onTap: () {
                                     InterstitialAdManager().showInterstitialByCount();
-                                    Navigation.pushNamed(Routes.languagePage, arg: {'page': 'setting'});
+                                    Navigation.pushNamed(Routes.languagePage);
                                   },
                                   text: 'sl'.tr,
                                   image: AppAsset.language,
@@ -151,7 +159,10 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       stagger(
                         Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -194,7 +205,12 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  option({final String? image, final GestureTapCallback? onTap, final IconData? iconData, final String? text}) {
+  option({
+    final String? image,
+    final GestureTapCallback? onTap,
+    final IconData? iconData,
+    final String? text,
+  }) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -401,7 +417,9 @@ class _SettingPageState extends State<SettingPage> {
                       onTap: () async {
                         EasyLoading.show();
 
-                        await ApiRepo.accountDelete(email: HiveService().getData<String>(AppConfig.userEmail));
+                        await ApiRepo.accountDelete(
+                          email: HiveService().getData<String>(AppConfig.userEmail),
+                        );
                         await AuthService().signOut();
                         HiveService().saveData(AppConfig.isLogin, false);
                         HiveService().clearAllBoxes();
@@ -437,7 +455,10 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> shareInvite() async {
-    final message = 'sifText'.trParams({'referralCode': AppConfig.referralCode, "siAppLink": AppConfig.appLink});
+    final message = 'sifText'.trParams({
+      'referralCode': AppConfig.referralCode,
+      "siAppLink": AppConfig.appLink,
+    });
     await SharePlus.instance.share(ShareParams(text: message));
   }
 }

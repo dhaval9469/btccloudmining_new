@@ -2,6 +2,7 @@ import 'package:btccloudmining/dashboard/page/auth/signin_reward_page.dart';
 import 'package:btccloudmining/dashboard/page/auth/singin_page.dart';
 import 'package:btccloudmining/dashboard/page/bottom.dart';
 import 'package:btccloudmining/dashboard/page/home.dart';
+import 'package:btccloudmining/dashboard/page/intro/c_lan.dart';
 import 'package:btccloudmining/dashboard/page/intro/country_page.dart';
 import 'package:btccloudmining/dashboard/page/intro/intro_page.dart';
 import 'package:btccloudmining/dashboard/page/top_miner.dart';
@@ -43,6 +44,7 @@ mixin Routes {
   static const String payoutHistory = "/payoutHistory";
   static const String languagePage = "/languagePage";
   static const String referFriendsPage = "/referFriendsPage";
+  static const String cLanPage = "/cLanPage";
 
   static List<GetPage<dynamic>> routes = [
     GetPage(name: splash, page: () => const SplashPage(), transition: defaultTransition),
@@ -65,5 +67,6 @@ mixin Routes {
     GetPage(name: payoutHistory, page: () => const PayoutHistory(), transition: defaultTransition),
     GetPage(name: languagePage, page: () => const LanguagePage(), transition: defaultTransition),
     GetPage(name: referFriendsPage, page: () => const ReferFriendsPage(), transition: defaultTransition),
+    GetPage(name: cLanPage, page: () => const CLanPage(), transition: defaultTransition),
   ];
 }

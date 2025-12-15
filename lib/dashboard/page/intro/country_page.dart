@@ -55,7 +55,7 @@ class _CountryPageState extends State<CountryPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigation.pushNamed(Routes.languagePage, arg: {'page': 'country'});
+              Navigation.pushNamed(Routes.cLanPage);
             },
             icon: Icon(FontAwesomeIcons.arrowRightLong, color: AppColor.white),
           ),

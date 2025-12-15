@@ -23,7 +23,6 @@ class LanguagePage extends StatefulWidget {
 
 class _LanguagePageState extends State<LanguagePage> {
   final HomeCtrl homeCtrl = Get.find();
-  final args = Get.arguments;
 
   @override
   void initState() {
@@ -41,42 +40,6 @@ class _LanguagePageState extends State<LanguagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.newBg,
-      /*      appBar: buildCustomAppBar(
-        context,
-        leadingIcon: args['page'] == 'country' ? false : true,
-        title: 'sl'.tr,
-        actions: [
-          Obx(() {
-            return homeCtrl.isChangingLanguage.value
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: CircularProgressIndicator(strokeWidth: 1, color: AppColor.white),
-                    ),
-                  )
-                : IconButton(
-                    onPressed: () async {
-                      InterstitialAdManager().showInterstitialByCount();
-                      homeCtrl.isChangingLanguage.value = true;
-                      await Future.delayed(Duration(seconds: 2));
-
-                      LanguageService.changeLanguage(homeCtrl.languageCode.value);
-
-                      if (args['page'] == 'country') {
-                        Navigation.pushNamed(Routes.signInPage);
-                        homeCtrl.isChangingLanguage.value = false;
-                      } else {
-                        Navigation.pop();
-                        homeCtrl.isChangingLanguage.value = false;
-                      }
-                    },
-                    icon: Icon(FontAwesomeIcons.check, color: AppColor.white),
-                  );
-          }),
-        ],
-      ),*/
       body: SafeArea(
         child: Column(
           children: [
@@ -93,8 +56,8 @@ class _LanguagePageState extends State<LanguagePage> {
                       ? Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: SizedBox(
-                            height: 25,
-                            width: 25,
+                            height: 20,
+                            width: 20,
                             child: CircularProgressIndicator(strokeWidth: 1, color: AppColor.white),
                           ),
                         )
@@ -106,13 +69,8 @@ class _LanguagePageState extends State<LanguagePage> {
 
                             LanguageService.changeLanguage(homeCtrl.languageCode.value);
 
-                            if (args['page'] == 'country') {
-                              Navigation.pushNamed(Routes.signInPage);
-                              homeCtrl.isChangingLanguage.value = false;
-                            } else {
                               Navigation.pop();
                               homeCtrl.isChangingLanguage.value = false;
-                            }
                           },
                           child: FaIcon(FontAwesomeIcons.check, color: AppColor.text, size: 20),
                         );

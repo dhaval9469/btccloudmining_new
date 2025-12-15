@@ -193,7 +193,7 @@ class _SignInPageState extends State<SignInPage> {
                                 reference: '',
                                 firstTime: '',
                               );
-          
+
                               homeCtrl.activeHashRate.value = AppConfig.appDataSet?.startHashRate ?? 9.7;
                               homeCtrl.totalMineBtc.value = double.parse(
                                 userProfileModel.totalBtcDirect.toString(),
@@ -205,7 +205,7 @@ class _SignInPageState extends State<SignInPage> {
                                 userProfileModel.totalBtcRefrence.toString(),
                               );
                               homeCtrl.userActiveBotList.addAll(userProfileModel.subscription ?? []);
-          
+
                               AppConfig.mingTimer = userProfileModel.mingTimer ?? 1800;
                               AppConfig.factorFast = userProfileModel.factorFast ?? 0.000000000001;
                               AppConfig.factorRegular = userProfileModel.factorRegular ?? 0.0000000000005;
@@ -237,7 +237,7 @@ class _SignInPageState extends State<SignInPage> {
                                   reference: referralCodeCtrl.text.trim(),
                                   firstTime: '',
                                 );
-          
+
                                 homeCtrl.activeHashRate.value = AppConfig.appDataSet?.startHashRate ?? 9.7;
                                 homeCtrl.totalMineBtc.value = double.parse(
                                   userProfileModel.totalBtcDirect.toString(),
@@ -249,11 +249,10 @@ class _SignInPageState extends State<SignInPage> {
                                   userProfileModel.totalBtcRefrence.toString(),
                                 );
                                 homeCtrl.userActiveBotList.addAll(userProfileModel.subscription ?? []);
-          
+
                                 AppConfig.mingTimer = userProfileModel.mingTimer ?? 1800;
                                 AppConfig.factorFast = userProfileModel.factorFast ?? 0.000000000001;
-                                AppConfig.factorRegular =
-                                    userProfileModel.factorRegular ?? 0.0000000000005;
+                                AppConfig.factorRegular = userProfileModel.factorRegular ?? 0.0000000000005;
                                 AppConfig.factorMedium = userProfileModel.factorMedium ?? 0.0000000000002;
                                 AppConfig.factorSlow = userProfileModel.factorSlow ?? 0.00000000000005;
                                 AppConfig.factorUltraSlow =
