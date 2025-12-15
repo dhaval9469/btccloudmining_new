@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:btccloudmining/ad_modual/app_open.dart';
 import 'package:btccloudmining/ad_modual/interstitial.dart';
 import 'package:btccloudmining/ad_modual/rewarded.dart';
@@ -7,7 +8,7 @@ import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/page/home.dart';
 import 'package:btccloudmining/dashboard/page/setting.dart';
 import 'package:btccloudmining/dashboard/page/store.dart';
-import 'package:btccloudmining/dashboard/page/wallet.dart';
+import 'package:btccloudmining/dashboard/page/top_miner.dart';
 import 'package:btccloudmining/dashboard/repository/daily_reward.dart';
 import 'package:btccloudmining/dashboard/repository/daily_reward_two.dart';
 import 'package:btccloudmining/dashboard/repository/start_time_rp.dart';
@@ -25,7 +26,6 @@ import 'package:btccloudmining/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class BottomBarPage extends StatefulWidget {
@@ -36,7 +36,12 @@ class BottomBarPage extends StatefulWidget {
 }
 
 class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserver {
-  final pages = [const HomePage(), const StorePage(), const WalletPage(), const SettingPage()];
+  final pages = [
+    const HomePage(key: ValueKey('home')),
+    const StorePage(key: ValueKey('store')),
+    TopMiner(key: ValueKey('top')),
+    const SettingPage(key: ValueKey('setting')),
+  ];
   final HomeCtrl homeCtrl = Get.find();
   final subscriptionService = SubscriptionService();
   late StreamSubscription<FGBGType> subscription;
@@ -95,95 +100,82 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
 
           builder: (BuildContext context, int bValue, _) {
             return Theme(
-              data: Theme.of(
-                context,
-              ).copyWith(splashColor: Colors.transparent, highlightColor: Colors.transparent),
+              data: Theme.of(context).copyWith(splashColor: Colors.transparent, highlightColor: Colors.transparent),
               child: BottomNavigationBar(
-                backgroundColor: AppColor.newCard,
+                backgroundColor: Color(0xff353F54),
                 type: BottomNavigationBarType.fixed,
-                selectedItemColor: AppColor.primary,
-                unselectedItemColor: AppColor.subText.withAlpha(150),
-                selectedLabelStyle: textMontserrat(context, fontSize: 0),
-                unselectedLabelStyle: subTextMontserrat(context, fontSize: 0),
+                selectedItemColor: AppColor.text,
+                unselectedItemColor: AppColor.subText,
+                selectedLabelStyle: textMontserrat(context, fontSize: 14, fontWeight: FontWeight.bold),
+                unselectedLabelStyle: subTextRoboto(context, fontSize: 10),
                 currentIndex: bValue,
-                showUnselectedLabels: false,
-                showSelectedLabels: false,
                 onTap: (value) async {
                   AppConfig.bottomBarValue.value = value;
-                  InterstitialAdManager().showInterstitialByCount();
+                  // InterstitialAdManager().showInterstitialByCount();
                 },
                 items: [
                   BottomNavigationBarItem(
-                    icon: Container(
-                      height: 35,
-                      width: 38,
-                      decoration: BoxDecoration(
-                        color: AppConfig.bottomBarValue.value == 0
-                            ? AppColor.accent.withAlpha(30)
-                            : AppColor.newBg,
-                        border: Border.all(
-                          color: AppConfig.bottomBarValue.value == 0 ? AppColor.accent : AppColor.newBg,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(AppAsset.home, scale: 3),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      height: 35,
-                      width: 38,
-                      decoration: BoxDecoration(
-                        color: AppConfig.bottomBarValue.value == 1
-                            ? AppColor.accent.withAlpha(30)
-                            : AppColor.newBg,
-                        border: Border.all(
-                          color: AppConfig.bottomBarValue.value == 1 ? AppColor.accent : AppColor.newBg,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(AppAsset.lighting, scale: 3),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      height: 35,
-                      width: 38,
-                      decoration: BoxDecoration(
-                        color: AppConfig.bottomBarValue.value == 2
-                            ? AppColor.accent.withAlpha(30)
-                            : AppColor.newBg,
-                        border: Border.all(
-                          color: AppConfig.bottomBarValue.value == 2 ? AppColor.accent : AppColor.newBg,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Image.asset(AppAsset.wallet, scale: 3).pOnly(left: 1.5),
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      height: 35,
-                      width: 38,
-                      decoration: BoxDecoration(
-                        color: AppConfig.bottomBarValue.value == 3
-                            ? AppColor.accent.withAlpha(30)
-                            : AppColor.newBg,
-                        border: Border.all(
-                          color: AppConfig.bottomBarValue.value == 3 ? AppColor.accent : AppColor.newBg,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                    icon: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
                       child: Image.asset(
-                        AppAsset.setting,
-                        key: ValueKey<bool>(AppConfig.bottomBarValue.value == 3),
-                        scale: 3,
+                        AppConfig.bottomBarValue.value == 0 ? AppAsset.homes : AppAsset.home,
+                        key: ValueKey<bool>(AppConfig.bottomBarValue.value == 0),
+                        color: AppConfig.bottomBarValue.value == 0 ? AppColor.text : AppColor.subText,
+                        scale: 20,
                       ),
                     ),
-                    label: '',
+                    label: 'bh'.tr,
+                  ),
+
+                  BottomNavigationBarItem(
+                    icon: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: Image.asset(
+                        AppConfig.bottomBarValue.value == 1 ? AppAsset.referrals : AppAsset.referral,
+                        key: ValueKey<bool>(AppConfig.bottomBarValue.value == 1),
+                        color: AppConfig.bottomBarValue.value == 1 ? AppColor.text : AppColor.subText,
+                        scale: 20,
+                      ),
+                    ),
+                    label: 'bu'.tr,
+                  ),
+
+                  BottomNavigationBarItem(
+                    icon: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: Image.asset(
+                        AppConfig.bottomBarValue.value == 2 ? AppAsset.leaderboards : AppAsset.leaderboard,
+                        key: ValueKey<bool>(AppConfig.bottomBarValue.value == 2),
+                        color: AppConfig.bottomBarValue.value == 2 ? AppColor.text : AppColor.subText,
+                        scale: 20,
+                      ),
+                    ),
+                    label: 'bl'.tr,
+                  ),
+
+                  BottomNavigationBarItem(
+                    icon: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: Image.asset(
+                        AppConfig.bottomBarValue.value == 3 ? AppAsset.gears : AppAsset.gear,
+                        key: ValueKey<bool>(AppConfig.bottomBarValue.value == 3),
+                        color: AppConfig.bottomBarValue.value == 3 ? AppColor.text : AppColor.subText,
+                        scale: 20,
+                      ),
+                    ),
+                    label: 'bs'.tr,
                   ),
                 ],
               ),
@@ -256,7 +248,6 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
         }
         homeCtrl.activeHashRate.value += totalPower;
       }
-
     } catch (e) {
       debugPrint('🔴 Error loading miners: $e');
     }

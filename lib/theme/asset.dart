@@ -12,16 +12,19 @@ class AppAsset {
 
 
   static const home = '$image/home.png';
-  static const lighting = '$image/lighting.png';
-  static const wallet = '$image/wallet.png';
-  static const setting = '$image/setting.png';
+  static const homes = '$image/homes.png';
+  static const referral = '$image/referral.png';
+  static const referrals = '$image/referrals.png';
+  static const leaderboard = '$image/leaderboard.png';
+  static const leaderboards = '$image/leaderboards.png';
+  static const gear = '$image/gear.png';
+  static const gears = '$image/gears.png';
   static const setup = '$image/setup.png';
   static const record = '$image/record.png';
   static const activeMiner = '$image/active_miner.png';
   static const asic = '$image/asic.png';
   static const trash = '$image/trash.png';
   static const profile = '$image/profile.png';
-  static const leaderboards = '$image/leaderboards.png';
   static const star = '$image/star.png';
   static const link = '$image/link.png';
   static const customer = '$image/customer.png';
@@ -42,9 +45,14 @@ class AppAsset {
   static const login = '$image/login.png';
   static const referFriend = '$image/refer_friend.png';
   static const coin = '$image/coin.png';
+  static const bitcoin = '$image/bitcoin.png';
   static const appLogo = '$image/app_logo.png';
   static const historyImg = '$image/history_img.png';
   static const adReward = '$image/ad_reward.png';
+  static const thunderbolt = '$image/thunderbolt.png';
+  static const hammer = '$image/hammer.png';
+  static const trophy = '$image/trophy.png';
+  static const wallet = '$image/wallet.png';
 
 
   static const rcm = '$icon/rcm.png';

@@ -16,14 +16,15 @@ class _ShowBannerState extends State<ShowBanner> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (AppConfig.appDataSet?.googleBannerAdStatus == true) {
+    if (AppConfig.appDataSet?.googleBannerAdStatus == false) {
       loadAd();
     }
   }
 
   Future<void> loadAd() async {
     final ad = BannerAd(
-      adUnitId: AppConfig.appDataSet?.googleBannerId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/9214589741',
+      // adUnitId: AppConfig.appDataSet?.googleBannerId ?? '',
       request: const AdRequest(),
       size: AdSize(width: MediaQuery.of(context).size.width.toInt(), height: 60),
       listener: BannerAdListener(

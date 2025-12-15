@@ -5,6 +5,7 @@ import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/responsiv.dart';
+import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,96 +32,99 @@ class _ViewActiveAsicsState extends State<ViewActiveAsics> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.newBg,
-      appBar: buildCustomAppBar(context, title: 'aas'.tr),
-      body: Obx(
-        () => homeCtrl.userActiveBotList.isEmpty
-            ? Center(child: NoData(text: 'aaEmpty'.tr, isCenter: true))
-            : GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.85,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
-                itemCount: homeCtrl.userActiveBotList.length,
-                itemBuilder: (context, index) {
-                  final data = homeCtrl.userActiveBotList[index];
-                  return CustomCard(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${data.botType}', style: textRoboto(context)),
-                        5.heightBox,
-                        Center(
-                          child: SizedBox(
-                            height: context.responsive.heightPercent(8.5),
-                            child: Image.network(
-                              "${AppConfig.imageBaseurl}${data.type}",
-                              height: context.responsive.heightPercent(8.5),
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return SizedBox(
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppColor.button,
+      body: SafeArea(
+        child: Column(
+          children: [
+            customHeader(context, 'aas'.tr),
+            Expanded(
+              child: cardLayout(
+                child: Obx(
+                  () => homeCtrl.userActiveBotList.isEmpty
+                      ? Center(child: NoData(text: 'aaEmpty'.tr, isCenter: true))
+                      : GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.85,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                          itemCount: homeCtrl.userActiveBotList.length,
+                          itemBuilder: (context, index) {
+                            final data = homeCtrl.userActiveBotList[index];
+                            return CustomCard(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${data.botType}', style: textRoboto(context)),
+                                  5.heightBox,
+                                  Center(
+                                    child: SizedBox(
+                                      height: context.responsive.heightPercent(8.5),
+                                      child: Image.network(
+                                        "${AppConfig.imageBaseurl}${data.type}",
+                                        height: context.responsive.heightPercent(8.5),
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return SizedBox(
+                                            child: Center(
+                                              child: CircularProgressIndicator(strokeWidth: 2, color: AppColor.button),
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.asset(AppAsset.antminerS19XP);
+                                        },
+                                      ),
                                     ),
                                   ),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(AppAsset.antminerS19XP);
-                              },
-                            ),
-                          ),
-                        ),
-                        5.heightBox,
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Hashrate',
-                                  style: subTextRoboto(
-                                    context,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
+                                  5.heightBox,
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Hashrate',
+                                            style: subTextRoboto(context, fontWeight: FontWeight.w600, fontSize: 12),
+                                          ),
+                                          Text(data.power ?? '', style: subTextRoboto(context, fontSize: 13)),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Purchase', style: subTextRoboto(context, fontSize: 12)),
+                                          Text(
+                                            convertPurchaseDate(data.addTime.toString()),
+                                            style: subTextRoboto(context, fontSize: 13),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('Validity', style: subTextRoboto(context, fontSize: 12)),
+                                          Text(
+                                            convertPurchaseDate(data.expireTime.toString()),
+                                            style: subTextRoboto(context, fontSize: 13),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Text(data.power ?? '', style: subTextRoboto(context, fontSize: 13)),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Purchase', style: subTextRoboto(context, fontSize: 12)),
-                                Text(
-                                  convertPurchaseDate(data.addTime.toString()),
-                                  style: subTextRoboto(context, fontSize: 13),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Validity', style: subTextRoboto(context, fontSize: 12)),
-                                Text(
-                                  convertPurchaseDate(data.expireTime.toString()),
-                                  style: subTextRoboto(context, fontSize: 13),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ).p(7),
+                            );
+                          },
                         ),
-                      ],
-                    ).p(7),
-                  );
-                },
+                ).pOnly(top: 20, left: 15, right: 15, bottom: 15),
               ),
-      ).p(15),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }

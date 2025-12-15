@@ -7,11 +7,11 @@ class AppConfig {
 
   static ValueNotifier<int> bottomBarValue = ValueNotifier<int>(0);
 
-  static String token = "";
-  static String baseUrl = "";
-  static String imageBaseurl = "";
-  static String iv = "";
-  static String keyIv = "";
+  static String baseUrl = "https://phpstack-1523405-5918321.cloudwaysapps.com/bitcoin_iphone/";
+  static String token = "btc786";
+  static String iv = "MTIzNDU2NTU1NTM1ODk5OQ==";
+  static String keyIv = "MTIzNDU2Nzg5MDEyMzQ1NjU1NTU4OTU4NzE0OTg5OTk=";
+  static String imageBaseurl = "https://mbax.in/asic/";
 
   static String appLink = "";
   static String ppLink = "";

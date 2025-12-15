@@ -17,7 +17,7 @@ class _LargeBannerState extends State<LargeBanner> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (AppConfig.appDataSet?.googleLargeBannerAdStatus == true) {
+    if (AppConfig.appDataSet?.googleLargeBannerAdStatus == false) {
       loadAd();
     }
   }
@@ -25,7 +25,8 @@ class _LargeBannerState extends State<LargeBanner> {
   Future<void> loadAd() async {
 
     final ad = BannerAd(
-      adUnitId: AppConfig.appDataSet?.googleBannerId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/9214589741',
+      // adUnitId: AppConfig.appDataSet?.googleBannerId ?? '',
       request: const AdRequest(),
       size: AdSize.largeBanner,
       listener: BannerAdListener(
@@ -78,6 +79,6 @@ class _LargeBannerState extends State<LargeBanner> {
           ),
         ),
       ),
-    ).py(7);
+    ).py(5);
   }
 }

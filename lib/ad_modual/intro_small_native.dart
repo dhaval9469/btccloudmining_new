@@ -18,7 +18,7 @@ class _SmallNativeState extends State<IntoSmallNative> with SingleTickerProvider
   void initState() {
     super.initState();
 
-    if (AppConfig.appDataSet?.googleNativeAdStatus == true) {
+    if (AppConfig.appDataSet?.googleNativeAdStatus == false) {
       loadAd();
     }
   }
@@ -26,7 +26,8 @@ class _SmallNativeState extends State<IntoSmallNative> with SingleTickerProvider
   Future<void> loadAd() async {
 
     _nativeAd = NativeAd(
-      adUnitId: AppConfig.appDataSet?.googleNativeId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+      // adUnitId: AppConfig.appDataSet?.googleNativeId ?? '',
       factoryId: 'small_native',
       customOptions: {
         'backgroundColor': '#202123',

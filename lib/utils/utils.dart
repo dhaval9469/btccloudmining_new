@@ -152,17 +152,6 @@ String miningDateFormat(String inputDate) {
   }
 }
 
-bool isProfileComplete() {
-  final name = HiveService().getData<String>(AppConfig.userName);
-  final email = HiveService().getData<String>(AppConfig.userEmail);
-  final mobile = HiveService().getData<String>(AppConfig.userMobile);
-  final btc = HiveService().getData<String>(AppConfig.userBtcAddress);
-
-  return (name?.isNotEmpty ?? false) &&
-      (email?.isNotEmpty ?? false) &&
-      (mobile?.isNotEmpty ?? false) &&
-      (btc?.isNotEmpty ?? false);
-}
 
 String? formatUtcMillisToLocal(String? utcMillis) {
   if (utcMillis == null || utcMillis.isEmpty) return null;

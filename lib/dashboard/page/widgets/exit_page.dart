@@ -45,16 +45,16 @@ class ExitPage extends StatelessWidget {
             10.heightBox,
             Text(
               "Effortless Bitcoin Mining, anytime, anywhere.",
-              style: textMontserrat(context, fontSize: 13),
+              style: subTextMontserrat(context, fontSize: 13),
             ),
             30.heightBox,
             AppButton(
               onTap: () {
                 Navigation.pop();
               },
-              color: AppColor.primary,
+              color: Color(0xFF4B4CED),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 7),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Text(
                   'WAIT',
                   style: textMontserrat(

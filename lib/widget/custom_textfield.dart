@@ -87,7 +87,7 @@ class CommonTextField extends StatelessWidget {
       autocorrect: true,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        contentPadding: contentPadding ?? const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,

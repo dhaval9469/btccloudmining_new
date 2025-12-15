@@ -6,7 +6,11 @@ class AppTranslations extends Translations {
     // TODO english Translation
     'en_US': {
       // home
-      "hmp": "MINING PANEL",
+      "bh":"Home",
+      "bu":"Upgrade",
+      "bl":"Leaderboard",
+      "bs":"Setting",
+      "hmp": "CLOUD MINING PANEL",
       "hmph": "Mining Process ?",
       "hmpsub":
           "To keep your miner running, activate it daily. Once active, it automatically mines Bitcoin on our cloud servers, and you’ll get real-time updates. Mining power gradually decreases over time, but you can reduce this by completing ad-based tasks. You can also boost your mining power by watching ads or instantly increase it by purchasing a mining plan.",
@@ -64,17 +68,18 @@ class AppTranslations extends Translations {
       "sah": "Settinge",
       "sresub": "Earn free BTC by referring friends — you’ll get @btcValue BTC each time!",
       "smr": "Mining Record",
-      "svaa": "View Active ASICs",
+      "svaa": "Current Plan",
       "stm": "Top Miner",
-      "sp": "Profile",
+      "sp": "Edit Profile",
       "sru": "Rate Us",
-      "sre": "Refer & Earn",
+      "sre": "Refer Friends",
       "ss": "Share",
       "sl": "Language",
       "spp": "Privacy Policy",
       "scs": "Customer Support",
       "slo": "Log Out",
       "sda": "Delete Account",
+      "sbtc": "Withdraw BTC",
       "sShareText":
           "⚡ Mine BTC effortlessly with high-speed mining! 📈 Track your earnings and boost performance. 🔓 Unlock premium tools and earn faster. 👇 Download the Bitcoin Mining (ASIC Miner) app and start mining now: @shareAppLink",
       "sfh": "Feedback",

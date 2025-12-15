@@ -4,6 +4,7 @@ import 'package:btccloudmining/dashboard/page/bottom.dart';
 import 'package:btccloudmining/dashboard/page/home.dart';
 import 'package:btccloudmining/dashboard/page/intro/country_page.dart';
 import 'package:btccloudmining/dashboard/page/intro/intro_page.dart';
+import 'package:btccloudmining/dashboard/page/top_miner.dart';
 import 'package:btccloudmining/dashboard/page/widgets/customer_support.dart';
 import 'package:btccloudmining/dashboard/page/widgets/exit_page.dart';
 import 'package:btccloudmining/dashboard/page/widgets/faq_page.dart';
@@ -13,8 +14,8 @@ import 'package:btccloudmining/dashboard/page/widgets/payout_history.dart';
 import 'package:btccloudmining/dashboard/page/widgets/payout_page.dart';
 import 'package:btccloudmining/dashboard/page/widgets/privacy_policy.dart';
 import 'package:btccloudmining/dashboard/page/widgets/profile_page.dart';
+import 'package:btccloudmining/dashboard/page/widgets/refer_friends.dart';
 import 'package:btccloudmining/dashboard/page/widgets/store_info.dart';
-import 'package:btccloudmining/dashboard/page/widgets/top_miner.dart';
 import 'package:btccloudmining/dashboard/page/widgets/view_active_asics.dart';
 import 'package:btccloudmining/dashboard/splash.dart';
 import 'package:get/get.dart';
@@ -41,6 +42,7 @@ mixin Routes {
   static const String exitPage = "/exitPage";
   static const String payoutHistory = "/payoutHistory";
   static const String languagePage = "/languagePage";
+  static const String referFriendsPage = "/referFriendsPage";
 
   static List<GetPage<dynamic>> routes = [
     GetPage(name: splash, page: () => const SplashPage(), transition: defaultTransition),
@@ -62,5 +64,6 @@ mixin Routes {
     GetPage(name: exitPage, page: () => const ExitPage(), transition: defaultTransition),
     GetPage(name: payoutHistory, page: () => const PayoutHistory(), transition: defaultTransition),
     GetPage(name: languagePage, page: () => const LanguagePage(), transition: defaultTransition),
+    GetPage(name: referFriendsPage, page: () => const ReferFriendsPage(), transition: defaultTransition),
   ];
 }

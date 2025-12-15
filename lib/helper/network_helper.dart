@@ -52,6 +52,7 @@ class NetworkAPICall {
   Future<dynamic> post(String url, dynamic body, {Map<String, String>? header}) async {
     final client = http.Client();
     final String fullURL = AppConfig.baseUrl + url;
+
     try {
       final response = await client
           .post(Uri.parse(fullURL), body: body, headers: header)

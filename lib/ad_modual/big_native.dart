@@ -26,14 +26,15 @@ class _BigNativeState extends State<BigNative> with SingleTickerProviderStateMix
     );
     _fadeAnimation = CurvedAnimation(parent: _fadeController, curve: Curves.easeIn);
 
-    if (AppConfig.appDataSet?.googleNativeAdStatus == true) {
+    if (AppConfig.appDataSet?.googleNativeAdStatus == false) {
       loadAd();
     }
   }
 
   Future<void> loadAd() async {
     _nativeAd = NativeAd(
-      adUnitId: AppConfig.appDataSet?.googleNativeId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+      // adUnitId: AppConfig.appDataSet?.googleNativeId ?? '',
       factoryId: 'big_native',
       customOptions: {
         'backgroundColor': '#202123',

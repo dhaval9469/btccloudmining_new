@@ -10,8 +10,9 @@ import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
-import 'package:btccloudmining/utils/responsiv.dart';
+import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -33,6 +34,12 @@ class _SettingPageState extends State<SettingPage> {
   String? userProfile = '';
   String? userEmail = '';
 
+  int _staggerIndex = 0;
+
+  Widget stagger(Widget child) {
+    return StaggerItem(index: _staggerIndex++, child: child);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -42,151 +49,152 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    _staggerIndex = 0;
     return Scaffold(
       backgroundColor: AppColor.newBg,
-      appBar: buildCustomAppBar(context, title: 'sah'.tr, isNonBack: true),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              15.heightBox,
-
-              CustomCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 22,
-                          width: 22,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: AssetImage(AppAsset.link), fit: BoxFit.fill),
-                          ),
-                        ),
-                        10.widthBox,
-                        Text('sre'.tr, style: textRoboto(context)),
-                      ],
-                    ),
-                    5.heightBox,
-                    Text(
-                      'sresub'.trParams({"btcValue": AppConfig.referEarn.toStringAsFixed(12)}),
-                      style: subTextRoboto(context, fontSize: 12).copyWith(height: 1.3),
-                    ),
-                    10.heightBox,
-                    AppButton(
-                      color: AppColor.card,
-                      onTap: () => shareInvite(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            AppConfig.referralCode,
-                            style: textMontserrat(context, fontSize: 15),
-                          ).py(5),
-                          5.widthBox,
-                          FaIcon(FontAwesomeIcons.share, color: AppColor.white, size: 15),
-                        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            stagger(
+              Row(
+                children: [Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
+              ).p(15),
+            ),
+            Expanded(
+              child: cardLayout(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      stagger(
+                        Text(
+                          "Profile",
+                          style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                        ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
-                    ),
+                      stagger(
+                        Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.all(13),
+                            child: option(
+                              onTap: () {
+                                InterstitialAdManager().showInterstitialByCount();
+                                Navigation.pushNamed(Routes.profilePage);
+                              },
+                              text: 'sp'.tr,
+                              image: AppAsset.profile,
+                            ),
+                          ),
+                        ).px(15),
+                      ),
 
+                      stagger(
+                        Text(
+                          "General",
+                          style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                        ).pOnly(top: 15, left: 17, bottom: 5),
+                      ),
+                      stagger(
+                        Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.all(13),
+                            child: Column(
+                              spacing: 13,
+                              children: [
+                                option(
+                                  onTap: () {
+                                    InterstitialAdManager().showInterstitialByCount();
+                                    Navigation.pushNamed(Routes.viewActiveAsics);
+                                  },
+                                  text: 'svaa'.tr,
+                                  image: AppAsset.asic,
+                                ),
+                                option(
+                                  onTap: () {
+                                    InterstitialAdManager().showInterstitialByCount();
+                                    Navigation.pushNamed(Routes.payoutPage);
+                                  },
+                                  text: 'sbtc'.tr,
+                                  image: AppAsset.wallet,
+                                ),
+                                option(
+                                  onTap: () {
+                                    Navigation.pushNamed(Routes.referFriendsPage);
+                                  },
+                                  text: 'sre'.tr,
+                                  image: AppAsset.link,
+                                ),
+                                option(
+                                  onTap: () {
+                                    InterstitialAdManager().showInterstitialByCount();
+                                    Navigation.pushNamed(Routes.languagePage, arg: {'page': 'setting'});
+                                  },
+                                  text: 'sl'.tr,
+                                  image: AppAsset.language,
+                                ),
+                                option(onTap: () => rateUs(), text: 'sru'.tr, image: AppAsset.star),
+                                option(onTap: () => shareApp(), text: 'ss'.tr, image: AppAsset.share),
+                              ],
+                            ),
+                          ),
+                        ).px(15),
+                      ),
 
-                  ],
-                ).p(10),
-              ),
+                      stagger(
+                        Text(
+                          "Account & Support",
+                          style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                        ).pOnly(top: 15, left: 17, bottom: 5),
+                      ),
+                      stagger(
+                        Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.all(13),
+                            child: Column(
+                              spacing: 13,
+                              children: [
+                                option(
+                                  onTap: () {
+                                    InterstitialAdManager().showInterstitialByCount();
+                                    Navigation.pushNamed(Routes.privacyPolicy);
+                                  },
+                                  text: 'spp'.tr,
+                                  image: AppAsset.pp,
+                                ),
 
-              20.heightBox,
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.miningRecord);
-                },
-                text: 'smr'.tr,
-                image: AppAsset.record,
+                                option(
+                                  onTap: () {
+                                    InterstitialAdManager().showInterstitialByCount();
+                                    Navigation.pushNamed(Routes.customerSupport);
+                                  },
+                                  text: 'scs'.tr,
+                                  image: AppAsset.customer,
+                                ),
+                                option(onTap: () => logOut(), text: 'slo'.tr, image: AppAsset.logout),
+                                option(onTap: () => deleteAccount(), text: 'sda'.tr, image: AppAsset.trash),
+                              ],
+                            ),
+                          ),
+                        ).px(15),
+                      ),
+                      20.heightBox,
+                    ],
+                  ),
+                ),
               ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.viewActiveAsics);
-                },
-                text: 'svaa'.tr,
-                image: AppAsset.asic,
-              ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.topMiner);
-                },
-                text: 'stm'.tr,
-                image: AppAsset.activeMiner,
-              ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.profilePage);
-                },
-                text: 'sp'.tr,
-                image: AppAsset.profile,
-              ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-
-              option(onTap: () => rateUs(), text: 'sru'.tr, image: AppAsset.star),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-
-              option(onTap: () => shareApp(), text: 'ss'.tr, image: AppAsset.share),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.languagePage, arg: {'page': 'setting'});
-                },
-                text: 'sl'.tr,
-                image: AppAsset.language,
-              ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.privacyPolicy);
-                },
-                text: 'spp'.tr,
-                image: AppAsset.pp,
-              ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-
-              option(
-                onTap: () {
-                  InterstitialAdManager().showInterstitialByCount();
-                  Navigation.pushNamed(Routes.customerSupport);
-                },
-                text: 'scs'.tr,
-                image: AppAsset.customer,
-              ),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-              option(onTap: () => logOut(), text: 'slo'.tr, image: AppAsset.logout),
-              Divider(color: Colors.white24, height: 20, thickness: 0.5),
-              option(onTap: () => deleteAccount(), text: 'sda'.tr, image: AppAsset.trash),
-              20.heightBox,
-            ],
-          ).px(15),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: SafeArea(child: ShowBanner()),
     );
   }
 
-  option({
-    final String? image,
-    final GestureTapCallback? onTap,
-    final IconData? iconData,
-    final String? text,
-  }) {
+  option({final String? image, final GestureTapCallback? onTap, final IconData? iconData, final String? text}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -196,13 +204,20 @@ class _SettingPageState extends State<SettingPage> {
             height: 22,
             width: 22,
             decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(image ?? ''), fit: BoxFit.fill),
+              image: DecorationImage(
+                image: AssetImage(image ?? ''),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  AppColor.text.withAlpha(200), // your color
+                  BlendMode.srcIn, // best for icons
+                ),
+              ),
             ),
           ),
           10.widthBox,
-          Text(text ?? '', style: textRoboto(context, fontSize: 15, color: AppColor.white)),
+          Text(text ?? '', style: textRoboto(context, fontSize: 15, color: AppColor.text.withAlpha(200))),
           Spacer(),
-          Image.asset(AppAsset.raw, scale: 30, color: Colors.white54),
+          Icon(CupertinoIcons.right_chevron, color: AppColor.text.withAlpha(200), size: 18),
         ],
       ),
     );
@@ -223,13 +238,7 @@ class _SettingPageState extends State<SettingPage> {
       isScrollControlled: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
       builder: (context) {
-        return Container(
-          height: context.responsive.heightPercent(40),
-          decoration: BoxDecoration(
-            color: AppColor.newCard,
-            border: Border(top: BorderSide(color: AppColor.card)),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
+        return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -237,10 +246,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FaIcon(FontAwesomeIcons.circleXmark, color: Colors.transparent, size: 20),
-                  Text(
-                    'sfh'.tr,
-                    style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
+                  Text('sfh'.tr, style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 18)),
                   GestureDetector(
                     onTap: () => Navigation.pop(),
                     child: FaIcon(FontAwesomeIcons.circleXmark, color: AppColor.subText, size: 20),
@@ -248,7 +254,7 @@ class _SettingPageState extends State<SettingPage> {
                 ],
               ),
               12.heightBox,
-              Text('sfText'.tr, textAlign: TextAlign.center, style: textRoboto(context)),
+              Text('sfText'.tr, textAlign: TextAlign.center, style: subTextRoboto(context)),
               15.heightBox,
               RatingBar.builder(
                 initialRating: homeCtrl.setRating.value,
@@ -283,7 +289,8 @@ class _SettingPageState extends State<SettingPage> {
               20.heightBox,
               AppButton(
                 padding: EdgeInsets.symmetric(vertical: 6),
-                color: AppColor.primary,
+                color: AppColor.thirdCard,
+                fontSize: 17,
                 onTap: () async {
                   Navigation.pop();
                   if (homeCtrl.setRating.value >= 3) {
@@ -295,6 +302,7 @@ class _SettingPageState extends State<SettingPage> {
                 },
                 text: 'sfsb'.tr,
               ),
+              15.heightBox,
             ],
           ).p(12),
         );
@@ -311,28 +319,22 @@ class _SettingPageState extends State<SettingPage> {
       isScrollControlled: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
       builder: (context) {
-        return Container(
-          height: context.responsive.heightPercent(32),
-          decoration: BoxDecoration(
-            color: AppColor.newCard,
-            border: Border(top: BorderSide(color: AppColor.card)),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
+        return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(AppAsset.logout, scale: 10),
+              Image.asset(AppAsset.logout, scale: 10, color: Colors.red),
               15.heightBox,
-              Text('slt'.tr, textAlign: TextAlign.center, style: textRoboto(context, fontSize: 16)),
+              Text('slt'.tr, textAlign: TextAlign.center, style: subTextMontserrat(context, fontSize: 15)),
               20.heightBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: AppButton(
-                      color: AppColor.primary,
+                      color: AppColor.thirdCard,
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      border: Border.all(color: AppColor.primary),
+                      border: Border.all(color: AppColor.thirdCard),
                       onTap: () async {
                         EasyLoading.show();
                         await AuthService().signOut();
@@ -350,8 +352,8 @@ class _SettingPageState extends State<SettingPage> {
                   Expanded(
                     child: AppButton(
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      color: AppColor.primary.withAlpha(80),
-                      border: Border.all(color: AppColor.primary),
+                      color: AppColor.thirdCard.withAlpha(80),
+                      border: Border.all(color: AppColor.thirdCard),
                       textColor: AppColor.text,
                       onTap: () {
                         Navigation.pop();
@@ -361,6 +363,7 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ],
               ),
+              15.heightBox,
             ],
           ).p(12),
         );
@@ -377,36 +380,28 @@ class _SettingPageState extends State<SettingPage> {
       isScrollControlled: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
       builder: (context) {
-        return Container(
-          height: context.responsive.heightPercent(38),
-          decoration: BoxDecoration(
-            color: AppColor.newCard,
-            border: Border(top: BorderSide(color: AppColor.card)),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
+        return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(AppAsset.trash, scale: 10),
-              15.heightBox,
-              Text('sdh'.tr, textAlign: TextAlign.center, style: textRoboto(context, fontSize: 16)),
+              Image.asset(AppAsset.trash, scale: 10, color: Colors.red),
               10.heightBox,
-              Text('sdsub'.tr, textAlign: TextAlign.center, style: subTextRoboto(context, fontSize: 13)),
+              Text('sdh'.tr, textAlign: TextAlign.center, style: subTextMontserrat(context, fontSize: 15)),
+              10.heightBox,
+              Text('sdsub'.tr, textAlign: TextAlign.center, style: subTextMontserrat(context, fontSize: 13)),
               20.heightBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: AppButton(
-                      color: AppColor.primary,
+                      color: AppColor.thirdCard,
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      border: Border.all(color: AppColor.primary),
+                      border: Border.all(color: AppColor.thirdCard),
                       onTap: () async {
                         EasyLoading.show();
 
-                        await ApiRepo.accountDelete(
-                          email: HiveService().getData<String>(AppConfig.userEmail),
-                        );
+                        await ApiRepo.accountDelete(email: HiveService().getData<String>(AppConfig.userEmail));
                         await AuthService().signOut();
                         HiveService().saveData(AppConfig.isLogin, false);
                         HiveService().clearAllBoxes();
@@ -422,8 +417,8 @@ class _SettingPageState extends State<SettingPage> {
                   Expanded(
                     child: AppButton(
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      color: AppColor.primary.withAlpha(80),
-                      border: Border.all(color: AppColor.primary),
+                      color: AppColor.thirdCard.withAlpha(80),
+                      border: Border.all(color: AppColor.thirdCard),
                       textColor: AppColor.text,
                       onTap: () {
                         Navigation.pop();
@@ -433,6 +428,7 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ],
               ),
+              15.heightBox,
             ],
           ).p(12),
         );
@@ -441,10 +437,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> shareInvite() async {
-    final message = 'sifText'.trParams({
-      'referralCode': AppConfig.referralCode,
-      "siAppLink": AppConfig.appLink,
-    });
+    final message = 'sifText'.trParams({'referralCode': AppConfig.referralCode, "siAppLink": AppConfig.appLink});
     await SharePlus.instance.share(ShareParams(text: message));
   }
 }

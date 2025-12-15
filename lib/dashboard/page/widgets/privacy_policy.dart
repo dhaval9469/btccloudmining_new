@@ -1,6 +1,6 @@
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
-import 'package:btccloudmining/widget/blinking_dot.dart';
+import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -37,13 +37,23 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildCustomAppBar(context, title: 'spp'.tr),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: webViewController),
-          if (isLoading)
-            Center(child: CircularProgressIndicator(color: AppColor.primary, strokeWidth: 3)),
-        ],
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
+          children: [
+            customHeader(context, 'spp'.tr),
+            Expanded(
+              child: cardLayout(
+                child: Stack(
+                  children: [
+                    WebViewWidget(controller: webViewController),
+                    if (isLoading) Center(child: CircularProgressIndicator(color: AppColor.primary, strokeWidth: 3)),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

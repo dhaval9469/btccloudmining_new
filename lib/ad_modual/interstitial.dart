@@ -30,7 +30,8 @@ class InterstitialAdManager {
 
   void loadAdMobAd() {
     InterstitialAd.load(
-      adUnitId: AppConfig.appDataSet?.googleInterstitialId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      // adUnitId: AppConfig.appDataSet?.googleInterstitialId ?? '',
       request: _request,
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) {

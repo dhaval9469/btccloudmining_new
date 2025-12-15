@@ -16,7 +16,8 @@ class AppOpenAdManager {
   /// Load an AppOpenAd (regular load)
   Future<void> loadAd() async {
     await AppOpenAd.load(
-      adUnitId: AppConfig.appDataSet?.googleAppOpenId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/9257395921',
+      // adUnitId: AppConfig.appDataSet?.googleAppOpenId ?? '',
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {

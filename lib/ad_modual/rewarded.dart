@@ -23,7 +23,8 @@ class RewardedAdManager {
 
     _isAdLoading = true;
     RewardedInterstitialAd.load(
-      adUnitId: AppConfig.appDataSet?.googleRewardedIntrestialId ?? '',
+      adUnitId: 'ca-app-pub-3940256099942544/5354046379',
+      // adUnitId: AppConfig.appDataSet?.googleRewardedIntrestialId ?? '',
       request: const AdRequest(),
       rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
         onAdLoaded: (ad) {

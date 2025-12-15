@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "471160165512",
+    "project_id": "bitcoinasicminerapp",
+    "storage_bucket": "bitcoinasicminerapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471160165512:android:3bc5a2af66cab3526ebb3d",
+        "android_client_info": {
+          "package_name": "com.bitcoin.asic.miner.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471160165512-e1sp3bged2uo6sune9dafdmd9c9641q7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bitcoin.asic.miner.app",
+            "certificate_hash": "be2582386595d0528d314c34b8a41b593b62b8d8"
+          }
+        },
+        {
+          "client_id": "471160165512-fjjm80m2fkdk6bk5mite79oflqjt7rk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bitcoin.asic.miner.app",
+            "certificate_hash": "fa82208f380396fb5d0dd707ab5902a3f93789d7"
+          }
+        },
+        {
+          "client_id": "471160165512-uj37kcubba1nb8rlgnklqdja541vclli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bitcoin.asic.miner.app",
+            "certificate_hash": "78a58c15d856769a96e339909f9bf81d767aad1f"
+          }
+        },
+        {
+          "client_id": "471160165512-5cqfo4uak3ruca14h6u4ep9cg3ucltd5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeiVi4jLNnsCB8wxb4H8P8J4bOukHP-J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471160165512-5cqfo4uak3ruca14h6u4ep9cg3ucltd5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.btccloudmining
+package com.bitcoin.asic.miner.app
 
 import io.flutter.embedding.android.FlutterActivity
 

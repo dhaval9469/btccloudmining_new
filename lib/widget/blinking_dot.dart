@@ -22,8 +22,7 @@ class BlinkingGreenDotState extends State<BlinkingGreenDot> with SingleTickerPro
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: Duration(milliseconds: 1000), vsync: this)
-      ..repeat(reverse: true);
+    _controller = AnimationController(duration: Duration(milliseconds: 1000), vsync: this)..repeat(reverse: true);
 
     _animation = Tween<double>(begin: 0.2, end: 1.0).animate(_controller);
   }
@@ -41,10 +40,7 @@ class BlinkingGreenDotState extends State<BlinkingGreenDot> with SingleTickerPro
       child: Container(
         width: 7,
         height: 7,
-        decoration: BoxDecoration(
-          color: Color(0xFF16B785),
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: Color(0xFF16B785), shape: BoxShape.circle),
       ),
     );
   }
@@ -70,6 +66,7 @@ class _CustomCardState extends State<CustomCard> {
         color: widget.color ?? AppColor.newCard,
         borderRadius: widget.borderRadius ?? BorderRadius.circular(8),
         gradient: widget.gradient,
+        // border: Border.all(color: Color(0xff37B6E9)),
       ),
       child: widget.child,
     );
@@ -242,11 +239,7 @@ class NoData extends StatelessWidget {
               children: [
                 Image.asset(AppAsset.history, scale: 8, color: AppColor.subText),
                 10.heightBox,
-                Text(
-                  text ?? "",
-                  textAlign: TextAlign.center,
-                  style: subTextRoboto(context, fontSize: 13),
-                ),
+                Text(text ?? "", textAlign: TextAlign.center, style: subTextRoboto(context, fontSize: 13)),
               ],
             ),
           ).px(15);

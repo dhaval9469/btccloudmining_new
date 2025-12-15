@@ -130,7 +130,7 @@ class HomeCtrl extends GetxController {
       minMiners: appDataSetModel.appDataSet?.minMiners ?? 25000,
       maxMiners: appDataSetModel.appDataSet?.maxMiners ?? 45000,
     );
-    IntOrRwdAdManger().initAds();
+    // IntOrRwdAdManger().initAds();
   }
 
   void startRandomActiveMinerCount({int minMiners = 13000, int maxMiners = 45000}) {

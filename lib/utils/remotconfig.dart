@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:btccloudmining/dashboard/model/end_point_model.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,13 +16,11 @@ class FirebaseRemoteConfigService {
 
   final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.instance;
 
-
   Future<void> init() async {
     try {
       await firebaseRemoteConfig.ensureInitialized();
       await firebaseRemoteConfig.setConfigSettings(
-        RemoteConfigSettings(
-            fetchTimeout: const Duration(seconds: 10), minimumFetchInterval: Duration.zero),
+        RemoteConfigSettings(fetchTimeout: const Duration(seconds: 10), minimumFetchInterval: Duration.zero),
       );
       await firebaseRemoteConfig.fetchAndActivate();
       getInfoData();
@@ -62,18 +61,15 @@ class FirebaseRemoteConfigService {
   }
 
   Future<void> getInfoData() async {
-    AppConfig.baseUrl = firebaseRemoteConfig.getString('base_url');
-    AppConfig.iv = firebaseRemoteConfig.getString('iv_encrypt');
-    AppConfig.keyIv = firebaseRemoteConfig.getString('key_encrypt');
-    AppConfig.token = firebaseRemoteConfig.getString('api_key');
-    AppConfig.imageBaseurl = firebaseRemoteConfig.getString('image_baseurl');
-    log("check URL ${AppConfig.baseUrl}");
-    log("check URL ${AppConfig.imageBaseurl}");
+    // AppConfig.baseUrl = "https://phpstack-1523405-5918321.cloudwaysapps.com/bitcoin_iphone/";
+    // AppConfig.iv = "MTIzNDU2NTU1NTM1ODk5OQ==";
+    // AppConfig.keyIv = "MTIzNDU2Nzg5MDEyMzQ1NjU1NTU4OTU4NzE0OTg5OTk=";
+    // AppConfig.token = "btc786";
+    // AppConfig.imageBaseurl = "https://mbax.in/asic/";
+
 
     AppConfig.spIdData = await getSpIdData();
     AppConfig.endpoint = await getEndPointData();
-
-
     AppConfig.appLink = AppConfig.endpoint?.appLink ?? '';
     AppConfig.ppLink = AppConfig.endpoint?.ppLink ?? '';
   }
