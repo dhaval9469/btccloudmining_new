@@ -170,8 +170,8 @@ class _SignInPageState extends State<SignInPage> {
                         Expanded(
                           child: AppButton(
                             padding: EdgeInsets.symmetric(vertical: 5),
-                            color: AppColor.primary.withAlpha(80),
-                            border: Border.all(color: AppColor.primary),
+                            color: AppColor.thirdCard.withAlpha(80),
+                            border: Border.all(color: AppColor.thirdCard),
                             onTap: () async {
                               homeCtrl.userActiveBotList.clear();
                               final UserProfileModel userProfileModel = await ApiRepo.userLogin(
@@ -205,9 +205,9 @@ class _SignInPageState extends State<SignInPage> {
                         Expanded(
                           child: AppButton(
                             padding: EdgeInsets.symmetric(vertical: 5),
-                            color: AppColor.primary,
+                            color: AppColor.thirdCard,
                             textColor: AppColor.text,
-                            border: Border.all(color: AppColor.primary),
+                            border: Border.all(color: AppColor.thirdCard),
                             onTap: () async {
                               if (referralCodeCtrl.text.isNotEmpty) {
                                 homeCtrl.userActiveBotList.clear();

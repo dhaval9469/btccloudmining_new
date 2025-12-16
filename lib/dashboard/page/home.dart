@@ -1,6 +1,6 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
-import 'package:btccloudmining/ad_modual/banner.dart';
-import 'package:btccloudmining/ad_modual/int_rwd_admanger.dart';
+import 'package:btccloudmining/ad_modual/banner/banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/repository/daily_reward.dart';

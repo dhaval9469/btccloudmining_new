@@ -1,6 +1,6 @@
-import 'package:btccloudmining/ad_modual/banner.dart';
-import 'package:btccloudmining/ad_modual/int_rwd_admanger.dart';
-import 'package:btccloudmining/ad_modual/interstitial.dart';
+import 'package:btccloudmining/ad_modual/banner/banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/repository/storead_rewardservice.dart';

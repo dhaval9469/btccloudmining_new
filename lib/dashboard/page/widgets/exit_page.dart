@@ -1,4 +1,4 @@
-import 'package:btccloudmining/ad_modual/big_native.dart';
+import 'package:btccloudmining/ad_modual/native/big_native.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';

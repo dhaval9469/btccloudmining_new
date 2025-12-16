@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:btccloudmining/ad_modual/int_rwd_admanger.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/model/appdataset_model.dart';
 import 'package:btccloudmining/dashboard/model/sub_details_model.dart';

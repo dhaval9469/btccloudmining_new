@@ -1,5 +1,5 @@
-import 'package:btccloudmining/ad_modual/int_rwd_admanger.dart';
-import 'package:btccloudmining/ad_modual/small_native.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
@@ -37,7 +37,10 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
                 text: 'srsubone'.tr,
                 style: subTextMontserrat(context, fontSize: 13),
                 children: [
-                  TextSpan(text: '${AppConfig.appDataSet?.startHashRate} Gh/s', style: subTextMontserrat(context, fontSize: 13)),
+                  TextSpan(
+                    text: '${AppConfig.appDataSet?.startHashRate} Gh/s',
+                    style: subTextMontserrat(context, fontSize: 13),
+                  ),
                   TextSpan(text: 'srsubtwo'.tr, style: subTextMontserrat(context, fontSize: 13)),
                 ],
               ),
@@ -63,7 +66,7 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
     );
   }
 
-    showWatchAdDialog(BuildContext context) {
+  showWatchAdDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -91,8 +94,8 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
                       Expanded(
                         child: AppButton(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          color: AppColor.primary.withAlpha(80),
-                          border: Border.all(color: AppColor.primary),
+                          color: AppColor.thirdCard.withAlpha(80),
+                          border: Border.all(color: AppColor.thirdCard),
                           onTap: () {
                             Navigation.pushNamed(Routes.bottom);
                           },
@@ -102,9 +105,9 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
                       10.widthBox,
                       Expanded(
                         child: AppButton(
-                          color: AppColor.primary,
+                          color: AppColor.thirdCard,
                           padding: EdgeInsets.symmetric(vertical: 5),
-                          border: Border.all(color: AppColor.primary),
+                          border: Border.all(color: AppColor.thirdCard),
                           onTap: () {
                             IntOrRwdAdManger().showIntORRwdAdOnPlanAd(
                               onReward: () {

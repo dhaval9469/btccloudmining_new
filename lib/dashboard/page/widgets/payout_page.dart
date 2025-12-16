@@ -1,4 +1,4 @@
-import 'package:btccloudmining/ad_modual/interstitial.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/addwd_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';

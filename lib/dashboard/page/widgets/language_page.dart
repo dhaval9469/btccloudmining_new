@@ -1,5 +1,5 @@
-import 'package:btccloudmining/ad_modual/interstitial.dart';
-import 'package:btccloudmining/ad_modual/small_native.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/service/language_service.dart';
 import 'package:btccloudmining/theme/colors.dart';

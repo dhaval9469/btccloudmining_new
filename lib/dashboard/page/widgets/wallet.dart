@@ -1,5 +1,5 @@
-import 'package:btccloudmining/ad_modual/banner.dart';
-import 'package:btccloudmining/ad_modual/interstitial.dart';
+import 'package:btccloudmining/ad_modual/banner/banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/addwd_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
@@ -11,8 +11,6 @@ import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/utils/responsiv.dart';
-import 'package:btccloudmining/utils/utils.dart';
-import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

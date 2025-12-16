@@ -61,11 +61,12 @@ class FirebaseRemoteConfigService {
   }
 
   Future<void> getInfoData() async {
-    // AppConfig.baseUrl = "https://phpstack-1523405-5918321.cloudwaysapps.com/bitcoin_iphone/";
-    // AppConfig.iv = "MTIzNDU2NTU1NTM1ODk5OQ==";
-    // AppConfig.keyIv = "MTIzNDU2Nzg5MDEyMzQ1NjU1NTU4OTU4NzE0OTg5OTk=";
-    // AppConfig.token = "btc786";
-    // AppConfig.imageBaseurl = "https://mbax.in/asic/";
+
+    AppConfig.baseUrl = firebaseRemoteConfig.getString('base_url');
+    AppConfig.iv = firebaseRemoteConfig.getString('iv_encrypt');
+    AppConfig.keyIv = firebaseRemoteConfig.getString('key_encrypt');
+    AppConfig.token = firebaseRemoteConfig.getString('api_key');
+    AppConfig.imageBaseurl = firebaseRemoteConfig.getString('image_baseurl');
 
 
     AppConfig.spIdData = await getSpIdData();

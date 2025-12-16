@@ -1,5 +1,5 @@
-import 'package:btccloudmining/ad_modual/banner.dart';
-import 'package:btccloudmining/ad_modual/interstitial.dart';
+import 'package:btccloudmining/ad_modual/banner/banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/auth_service.dart';

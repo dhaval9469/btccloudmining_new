@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.bitcoin.asic.miner.app"
+    namespace = "com.bitcoin.asicnew.miner.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.bitcoin.asic.miner.app"
+        applicationId = "com.bitcoin.asicnew.miner.app"
         minSdk = 26
         targetSdk = 35
         versionCode = flutter.versionCode

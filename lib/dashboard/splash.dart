@@ -1,4 +1,4 @@
-import 'package:btccloudmining/ad_modual/interstitial.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/user_model.dart';
 import 'package:btccloudmining/dashboard/repository/start_time_rp.dart';
@@ -122,7 +122,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   }
 
   startingHandle() async {
-    HiveService().saveData(AppConfig.userEmail, 'apptedting51@gmail.com');
     final bool? isLoggedIn = HiveService().getData<bool>(AppConfig.isLogin);
 
     if (isLoggedIn == true) {
@@ -155,7 +154,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       await HiveService().clearBox('brm_activeBot_box');
       Navigation.pushNamed(Routes.bottom);
     } else {
-      Navigation.pushNamed(Routes.bottom);
+      Navigation.pushNamed(Routes.introPage);
     }
     InterstitialAdManager().showInterstitialAds();
   }

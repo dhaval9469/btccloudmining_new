@@ -1,4 +1,4 @@
-import 'package:btccloudmining/ad_modual/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/mining_record.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';

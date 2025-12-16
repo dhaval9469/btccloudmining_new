@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:btccloudmining/ad_modual/app_open.dart';
-import 'package:btccloudmining/ad_modual/interstitial.dart';
-import 'package:btccloudmining/ad_modual/rewarded.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/rewarded.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/page/home.dart';

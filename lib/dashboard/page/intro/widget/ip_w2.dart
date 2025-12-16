@@ -1,5 +1,5 @@
-import 'package:btccloudmining/ad_modual/intro_small_native.dart';
-import 'package:btccloudmining/ad_modual/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/intro_small_native.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/textstyles.dart';

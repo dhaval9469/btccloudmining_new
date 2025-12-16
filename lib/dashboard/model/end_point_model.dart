@@ -16,26 +16,24 @@ class EndPointModel {
   String? ppLink;
   double? startingReward;
 
-
-  EndPointModel(
-      {this.api,
-        this.login,
-        this.addBtc,
-        this.addBtcNew,
-        this.viewBtc,
-        this.addWithdraw,
-        this.viewWithdraw,
-        this.deleteBtc,
-        this.subscriptionBtc,
-        this.subscriptionAdd,
-        this.profile,
-        this.ads,
-        this.appLink,
-        this.appName,
-        this.ppLink,
-        this.startingReward,
-
-      });
+  EndPointModel({
+    this.api,
+    this.login,
+    this.addBtc,
+    this.addBtcNew,
+    this.viewBtc,
+    this.addWithdraw,
+    this.viewWithdraw,
+    this.deleteBtc,
+    this.subscriptionBtc,
+    this.subscriptionAdd,
+    this.profile,
+    this.ads,
+    this.appLink,
+    this.appName,
+    this.ppLink,
+    this.startingReward,
+  });
 
   EndPointModel.fromJson(Map<String, dynamic> json) {
     api = json['api'];
@@ -58,22 +56,22 @@ class EndPointModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['api'] =api;
-    data['login'] =login;
-    data['add_btc'] =addBtc;
-    data['add_btc_new'] =addBtcNew;
-    data['view_btc'] =viewBtc;
-    data['add_withdraw'] =addWithdraw;
-    data['view_withdraw'] =viewWithdraw;
-    data['delete_btc'] =deleteBtc;
-    data['subscription_btc'] =subscriptionBtc;
-    data['subscription_add'] =subscriptionAdd;
-    data['profile'] =profile;
-    data['ads'] =ads;
-    data['appLink'] =appLink;
-    data['appName'] =appName;
-    data['ppLink'] =ppLink;
-    data['startingreward'] =startingReward;
+    data['api'] = api;
+    data['login'] = login;
+    data['add_btc'] = addBtc;
+    data['add_btc_new'] = addBtcNew;
+    data['view_btc'] = viewBtc;
+    data['add_withdraw'] = addWithdraw;
+    data['view_withdraw'] = viewWithdraw;
+    data['delete_btc'] = deleteBtc;
+    data['subscription_btc'] = subscriptionBtc;
+    data['subscription_add'] = subscriptionAdd;
+    data['profile'] = profile;
+    data['ads'] = ads;
+    data['appLink'] = appLink;
+    data['appName'] = appName;
+    data['ppLink'] = ppLink;
+    data['startingreward'] = startingReward;
     return data;
   }
 }
