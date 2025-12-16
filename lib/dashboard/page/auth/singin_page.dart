@@ -8,7 +8,6 @@ import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
-import 'package:btccloudmining/utils/responsiv.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:btccloudmining/widget/custom_textfield.dart';
 import 'package:flutter/gestures.dart';
@@ -35,79 +34,66 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.newBg,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            100.heightBox,
-            Image.asset(AppAsset.login, scale: 2),
-            30.heightBox,
-
-            Text('lh'.tr, style: textRoboto(context)),
-            7.heightBox,
-            Text('lsub'.tr, textAlign: TextAlign.center, style: subTextRoboto(context, fontSize: 13)),
-            20.heightBox,
-            AppButton(
-              color: AppColor.primary,
-              onTap: () => handleSingInTap(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 7),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(FontAwesomeIcons.google, size: 20, color: Colors.white),
-                    15.widthBox,
-                    Text(
-                      'lcwg'.tr,
-                      style: textMontserrat(
-                        context,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: context.responsive.heightPercent(33)),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
+      body: Column(
+        children: [
+          80.heightBox,
+          Image.asset(AppAsset.login, scale: 2),
+          30.heightBox,
+          Text('lh'.tr, style: textRoboto(context)),
+          7.heightBox,
+          Text('lsub'.tr, textAlign: TextAlign.center, style: subTextRoboto(context, fontSize: 13)),
+          20.heightBox,
+          AppButton(
+            color: AppColor.thirdCard,
+            onTap: () => handleSingInTap(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextSpan(
-                    text: 'ltou'.tr,
-                    style: textRoboto(context, color: AppColor.primary),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigation.pushNamed(Routes.privacyPolicy);
-                      },
-                  ),
-                  TextSpan(
-                    text: ' | ',
-                    style: subTextRoboto(context, color: AppColor.secondaryCard.withAlpha(150)),
-                  ),
-                  TextSpan(
-                    text: 'spp'.tr,
-                    style: textRoboto(context, color: AppColor.primary),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigation.pushNamed(Routes.privacyPolicy);
-                      },
+                  Icon(FontAwesomeIcons.google, size: 20, color: Colors.white),
+                  15.widthBox,
+                  Text(
+                    'lcwg'.tr,
+                    style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.bold, color: AppColor.white),
                   ),
                 ],
               ),
             ),
-            10.heightBox,
-            Text(
-              'lsubText'.tr,
-              textAlign: TextAlign.center,
-              style: subTextRoboto(context, fontSize: 12).copyWith(height: 1.2),
+          ),
+          Spacer(),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'ltou'.tr,
+                  style: textRoboto(context, color: AppColor.thirdCard),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigation.pushNamed(Routes.privacyPolicy);
+                    },
+                ),
+                TextSpan(
+                  text: ' | ',
+                  style: subTextRoboto(context, color: AppColor.secondaryCard.withAlpha(150)),
+                ),
+                TextSpan(
+                  text: 'spp'.tr,
+                  style: textRoboto(context, color: AppColor.thirdCard),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigation.pushNamed(Routes.privacyPolicy);
+                    },
+                ),
+              ],
             ),
-            60.heightBox,
-          ],
-        ).px(15),
-      ),
+          ),
+          10.heightBox,
+          Text('lsubText'.tr, textAlign: TextAlign.center, style: subTextMontserrat(context, fontSize: 12).copyWith(height: 1.2)),
+          80.heightBox,
+        ],
+      ).px(15),
     );
   }
 
@@ -195,15 +181,9 @@ class _SignInPageState extends State<SignInPage> {
                               );
 
                               homeCtrl.activeHashRate.value = AppConfig.appDataSet?.startHashRate ?? 9.7;
-                              homeCtrl.totalMineBtc.value = double.parse(
-                                userProfileModel.totalBtcDirect.toString(),
-                              );
-                              homeCtrl.miningBtc.value = double.parse(
-                                userProfileModel.totalBtcDirect.toString(),
-                              );
-                              homeCtrl.totalReferralBtc.value = double.parse(
-                                userProfileModel.totalBtcRefrence.toString(),
-                              );
+                              homeCtrl.totalMineBtc.value = double.parse(userProfileModel.totalBtcDirect.toString());
+                              homeCtrl.miningBtc.value = double.parse(userProfileModel.totalBtcDirect.toString());
+                              homeCtrl.totalReferralBtc.value = double.parse(userProfileModel.totalBtcRefrence.toString());
                               homeCtrl.userActiveBotList.addAll(userProfileModel.subscription ?? []);
 
                               AppConfig.mingTimer = userProfileModel.mingTimer ?? 1800;
@@ -211,8 +191,7 @@ class _SignInPageState extends State<SignInPage> {
                               AppConfig.factorRegular = userProfileModel.factorRegular ?? 0.0000000000005;
                               AppConfig.factorMedium = userProfileModel.factorMedium ?? 0.0000000000002;
                               AppConfig.factorSlow = userProfileModel.factorSlow ?? 0.00000000000005;
-                              AppConfig.factorUltraSlow =
-                                  userProfileModel.factorUltraSlow ?? 0.000000000000005;
+                              AppConfig.factorUltraSlow = userProfileModel.factorUltraSlow ?? 0.000000000000005;
                               AppConfig.miningIntervals = userProfileModel.miningIntervals ?? 60;
                               AppConfig.userProfileId = userProfileModel.profileId ?? "";
                               AppConfig.referralCode = userProfileModel.profileRefrenceCode ?? "";
@@ -239,15 +218,9 @@ class _SignInPageState extends State<SignInPage> {
                                 );
 
                                 homeCtrl.activeHashRate.value = AppConfig.appDataSet?.startHashRate ?? 9.7;
-                                homeCtrl.totalMineBtc.value = double.parse(
-                                  userProfileModel.totalBtcDirect.toString(),
-                                );
-                                homeCtrl.miningBtc.value = double.parse(
-                                  userProfileModel.totalBtcDirect.toString(),
-                                );
-                                homeCtrl.totalReferralBtc.value = double.parse(
-                                  userProfileModel.totalBtcRefrence.toString(),
-                                );
+                                homeCtrl.totalMineBtc.value = double.parse(userProfileModel.totalBtcDirect.toString());
+                                homeCtrl.miningBtc.value = double.parse(userProfileModel.totalBtcDirect.toString());
+                                homeCtrl.totalReferralBtc.value = double.parse(userProfileModel.totalBtcRefrence.toString());
                                 homeCtrl.userActiveBotList.addAll(userProfileModel.subscription ?? []);
 
                                 AppConfig.mingTimer = userProfileModel.mingTimer ?? 1800;
@@ -255,8 +228,7 @@ class _SignInPageState extends State<SignInPage> {
                                 AppConfig.factorRegular = userProfileModel.factorRegular ?? 0.0000000000005;
                                 AppConfig.factorMedium = userProfileModel.factorMedium ?? 0.0000000000002;
                                 AppConfig.factorSlow = userProfileModel.factorSlow ?? 0.00000000000005;
-                                AppConfig.factorUltraSlow =
-                                    userProfileModel.factorUltraSlow ?? 0.000000000000005;
+                                AppConfig.factorUltraSlow = userProfileModel.factorUltraSlow ?? 0.000000000000005;
                                 AppConfig.miningIntervals = userProfileModel.miningIntervals ?? 60;
                                 AppConfig.userProfileId = userProfileModel.profileId ?? "";
                                 AppConfig.referralCode = userProfileModel.profileRefrenceCode ?? "";

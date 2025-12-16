@@ -34,12 +34,6 @@ class _SettingPageState extends State<SettingPage> {
   String? userProfile = '';
   String? userEmail = '';
 
-  int _staggerIndex = 0;
-
-  Widget stagger(Widget child) {
-    return StaggerItem(index: _staggerIndex++, child: child);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,18 +43,15 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    _staggerIndex = 0;
     return Scaffold(
       backgroundColor: AppColor.newBg,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            stagger(
-              Row(
-                children: [
-                  Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
-                ],
+            SlideFadeTransition(
+              child: Row(
+                children: [Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
               ).p(15),
             ),
             Expanded(
@@ -69,18 +60,15 @@ class _SettingPageState extends State<SettingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      stagger(
-                        Text(
+                      SlideFadeTransition(
+                        child: Text(
                           "Profile",
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
-                      stagger(
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFF222834),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      SlideFadeTransition(
+                        child: Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: option(
@@ -95,18 +83,15 @@ class _SettingPageState extends State<SettingPage> {
                         ).px(15),
                       ),
 
-                      stagger(
-                        Text(
+                      SlideFadeTransition(
+                        child: Text(
                           "General",
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
-                      stagger(
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFF222834),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      SlideFadeTransition(
+                        child: Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -151,18 +136,15 @@ class _SettingPageState extends State<SettingPage> {
                         ).px(15),
                       ),
 
-                      stagger(
-                        Text(
+                      SlideFadeTransition(
+                        child: Text(
                           "Account & Support",
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
-                      stagger(
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFF222834),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      SlideFadeTransition(
+                        child: Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -205,12 +187,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  option({
-    final String? image,
-    final GestureTapCallback? onTap,
-    final IconData? iconData,
-    final String? text,
-  }) {
+  option({final String? image, final GestureTapCallback? onTap, final IconData? iconData, final String? text}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -417,9 +394,7 @@ class _SettingPageState extends State<SettingPage> {
                       onTap: () async {
                         EasyLoading.show();
 
-                        await ApiRepo.accountDelete(
-                          email: HiveService().getData<String>(AppConfig.userEmail),
-                        );
+                        await ApiRepo.accountDelete(email: HiveService().getData<String>(AppConfig.userEmail));
                         await AuthService().signOut();
                         HiveService().saveData(AppConfig.isLogin, false);
                         HiveService().clearAllBoxes();
@@ -455,10 +430,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> shareInvite() async {
-    final message = 'sifText'.trParams({
-      'referralCode': AppConfig.referralCode,
-      "siAppLink": AppConfig.appLink,
-    });
+    final message = 'sifText'.trParams({'referralCode': AppConfig.referralCode, "siAppLink": AppConfig.appLink});
     await SharePlus.instance.share(ShareParams(text: message));
   }
 }

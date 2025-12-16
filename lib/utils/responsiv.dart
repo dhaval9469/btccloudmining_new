@@ -9,11 +9,11 @@ class Responsive {
   final double _blockHeight;
 
   Responsive(this.context)
-      : screenSize = MediaQuery.of(context).size,
-        _width = MediaQuery.of(context).size.width,
-        _height = MediaQuery.of(context).size.height,
-        _blockWidth = MediaQuery.of(context).size.width / 100,
-        _blockHeight = MediaQuery.of(context).size.height / 100;
+    : screenSize = MediaQuery.of(context).size,
+      _width = MediaQuery.of(context).size.width,
+      _height = MediaQuery.of(context).size.height,
+      _blockWidth = MediaQuery.of(context).size.width / 100,
+      _blockHeight = MediaQuery.of(context).size.height / 100;
 
   /// Screen width in pixels
   double get screenWidth => _width;

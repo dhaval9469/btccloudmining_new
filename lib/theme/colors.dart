@@ -23,7 +23,7 @@ class AppColor {
   static const thirdCard = Color(0xFF0061A0);
 
 
-  static const accent = Color(0xFFF7931A);
+  static const accent = Color(0xffFF9800);
   static const button = Color(0xFF1A73E8);
   static const text = Color(0xFFFFFFFF);
   static const subText = Color(0xFFB3B3B3);
@@ -32,5 +32,7 @@ class AppColor {
   static const card = Colors.white10;
   static const iconColor = Color(0xFFd3d3d3);
   static const boarderColor = Color(0xff37B6E9);
+  static const unSelectPlan = Colors.white30;
+  static const secondButton = Color(0xFF4B4CED);
 
 }

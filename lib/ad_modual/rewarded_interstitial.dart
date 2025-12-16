@@ -2,14 +2,14 @@ import 'package:btccloudmining/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class RewardedAdManager {
-  static final RewardedAdManager _instance = RewardedAdManager._internal();
+class RewardInterstitialAdManager {
+  static final RewardInterstitialAdManager _instance = RewardInterstitialAdManager._internal();
 
-  factory RewardedAdManager() => _instance;
+  factory RewardInterstitialAdManager() => _instance;
 
-  RewardedAdManager._internal();
+  RewardInterstitialAdManager._internal();
 
-  RewardedAd? _rewardedAd;
+  RewardedInterstitialAd? _rewardedAd;
   bool _isAdLoading = false;
   bool _isShowingAd = false;
 
@@ -21,20 +21,18 @@ class RewardedAdManager {
     if (_isAdLoading || _rewardedAd != null) return;
 
     _isAdLoading = true;
-    RewardedAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5224354917',
-      // adUnitId: '${AppConfig.appDataSet?.googleRewardedId}',
+    RewardedInterstitialAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/5354046379',
+      // adUnitId: '${AppConfig.appDataSet?.googleRewardedIntrestialId}',
       request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
+      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           _rewardedAd = ad;
           _isAdLoading = false;
           _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
-            onAdShowedFullScreenContent: (ad) {
-              _isShowingAd = true;
-            },
             onAdDismissedFullScreenContent: (ad) {
               _isShowingAd = false;
+
               ad.dispose();
               _rewardedAd = null;
             },
@@ -43,6 +41,9 @@ class RewardedAdManager {
               ad.dispose();
               _rewardedAd = null;
               _isAdLoading = false;
+            },
+            onAdShowedFullScreenContent: (ad) {
+              _isShowingAd = true;
             },
           );
         },
@@ -60,7 +61,6 @@ class RewardedAdManager {
       loadAd();
       return;
     }
-
     _isShowingAd = true;
 
     _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
@@ -86,7 +86,7 @@ class RewardedAdManager {
     );
 
     _rewardedAd!.show(
-      onUserEarnedReward: (ad, reward) {
+      onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
         onUserEarnedReward();
       },
     );

@@ -19,10 +19,10 @@ class IpWidget1 extends StatelessWidget {
       body: Column(
         children: [
           30.heightBox,
-          Image.asset(AppAsset.introOne, scale: 1.8),
+          Image.asset(AppAsset.introOne,height: 350,fit: BoxFit.cover),
           Spacer(),
           Text(
-            'Start Earning with BTC Remote Mining',
+            'Earn Bitcoin the Smart Way ',
             textAlign: TextAlign.center,
             style: textRoboto(
               context,
@@ -33,7 +33,7 @@ class IpWidget1 extends StatelessWidget {
           ),
           15.heightBox,
           Text(
-            'Mine Bitcoin easily from anywhere — no hardware needed. Grow your earnings daily, safely and automatically.',
+            'Start remote BTC mining with zero setup.No hardware. No hassle. Just daily earnings on autopilot.',
             textAlign: TextAlign.center,
             style: textMontserrat(context, color: AppColor.white,fontSize: 13),
           ),

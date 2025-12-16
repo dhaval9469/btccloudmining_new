@@ -16,7 +16,7 @@ class _ShowBannerState extends State<ShowBanner> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (AppConfig.appDataSet?.googleBannerAdStatus == false) {
+    if (AppConfig.appDataSet?.googleBannerAdStatus == true) {
       loadAd();
     }
   }

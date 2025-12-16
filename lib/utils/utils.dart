@@ -4,7 +4,7 @@ import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
-import 'package:btccloudmining/utils/hive_service.dart';
+import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/foundation.dart';
@@ -13,8 +13,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'app_navigation/navigation.dart';
 
 double getMiningPowerValue(double miningPowerGHs) {
   if (miningPowerGHs < 1000) {
@@ -40,10 +38,7 @@ showInfoDialog(BuildContext context, {String? title, String? massage, double? si
             backgroundColor: AppColor.secondCard,
             insetPadding: EdgeInsets.symmetric(horizontal: 20),
             child: Container(
-              decoration: BoxDecoration(
-                color: AppColor.secondCard,
-                borderRadius: BorderRadius.circular(8),
-              ),
+              decoration: BoxDecoration(color: AppColor.secondCard, borderRadius: BorderRadius.circular(8)),
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Column(
@@ -152,7 +147,6 @@ String miningDateFormat(String inputDate) {
   }
 }
 
-
 String? formatUtcMillisToLocal(String? utcMillis) {
   if (utcMillis == null || utcMillis.isEmpty) return null;
 
@@ -188,8 +182,8 @@ showWatchAdDialog(
                 const SizedBox(height: 10),
                 Text(
                   "watchAdTitle".trParams({
-                    "text": text,   // dynamic value
-                    "adTime": adTime,      // dynamic value
+                    "text": text, // dynamic value
+                    "adTime": adTime, // dynamic value
                   }),
                   textAlign: TextAlign.center,
                   style: textRoboto(context, fontSize: 15),
@@ -200,8 +194,8 @@ showWatchAdDialog(
                     Expanded(
                       child: AppButton(
                         padding: const EdgeInsets.symmetric(vertical: 5),
-                        color: AppColor.primary.withAlpha(80),
-                        border: Border.all(color: AppColor.primary),
+                        color: AppColor.thirdCard.withAlpha(80),
+                        border: Border.all(color: AppColor.thirdCard),
                         onTap: () {
                           Navigation.pop();
                           notNow?.call();
@@ -212,9 +206,9 @@ showWatchAdDialog(
                     10.widthBox,
                     Expanded(
                       child: AppButton(
-                        color: AppColor.primary,
+                        color: AppColor.thirdCard,
                         padding: EdgeInsets.symmetric(vertical: 5),
-                        border: Border.all(color: AppColor.primary),
+                        border: Border.all(color: AppColor.thirdCard),
                         onTap: () {
                           Navigation.pop();
                           onWatchAd();
@@ -233,14 +227,13 @@ showWatchAdDialog(
   );
 }
 
-
 showLockBtcDialog(
-    BuildContext context, {
-      required String title,
-      required String text,
-      required VoidCallback onWatchAd,
-      VoidCallback? notNow,
-    }) {
+  BuildContext context, {
+  required String title,
+  required String text,
+  required VoidCallback onWatchAd,
+  VoidCallback? notNow,
+}) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -276,11 +269,7 @@ showLockBtcDialog(
                 15.heightBox,
                 Image.asset(AppAsset.watchAd, scale: 6),
                 20.heightBox,
-                Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: textRoboto(context, fontSize: 15),
-                ),
+                Text(text, textAlign: TextAlign.center, style: textRoboto(context, fontSize: 15)),
                 20.heightBox,
                 Row(
                   children: [
@@ -331,7 +320,6 @@ final faqList = [
   FAQModel(qus: 'q6'.tr, ans: 'a6'.tr),
   FAQModel(qus: 'q7'.tr, ans: 'a7'.tr),
   FAQModel(qus: 'q8'.tr, ans: 'a8'.tr),
-
 ];
 
 String decryptAESCryptoJS(Map body) {
@@ -358,4 +346,28 @@ class FAQModel {
   String? ans;
 
   FAQModel({this.qus, this.ans});
+}
+
+class planD {
+  String? planName;
+  String? speed;
+  String? image;
+  String? earning;
+  int? adTime;
+  bool? planads;
+  List<PlanDS>? plans;
+
+  planD({this.planName, this.speed, this.image, this.earning, this.adTime, this.planads, this.plans});
+}
+
+class PlanDS {
+  String? planId;
+  int? renetalDays;
+  String? amount;
+  int? discount;
+  int? durationSeconds;
+  String? description;
+  String? validity;
+
+  PlanDS({this.planId, this.renetalDays, this.amount, this.discount, this.validity, this.durationSeconds, this.description});
 }

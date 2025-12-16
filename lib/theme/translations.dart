@@ -6,10 +6,11 @@ class AppTranslations extends Translations {
     // TODO english Translation
     'en_US': {
       // home
-      "bh":"Home",
-      "bu":"Upgrade",
-      "bl":"Leaderboard",
-      "bs":"Setting",
+      "bh": "Home",
+      "bu": "Upgrade",
+      "bl": "Leaderboard",
+      "bs": "Setting",
+      "hh": "Hello, @name",
       "hmp": "CLOUD MINING PANEL",
       "hmph": "Mining Process ?",
       "hmpsub":
@@ -23,19 +24,17 @@ class AppTranslations extends Translations {
       "hlb": "Lock Mined BTC",
       "hlbsub": "Watch this ad to lock your mined BTC safely.",
       "hlbssmag": "✅ Locked Successfully!",
-      "hdasub":
-          "⚡ @dailyReward GH/s Standard Boost Renews automatically every 24 hours — plus claim your daily reward! 🎁",
+      "hdasub": "⚡ @dailyReward GH/s Standard Boost Renews automatically every 24 hours — plus claim your daily reward! 🎁",
       "hadboost": "Ad & Boost",
       "hqr": "Quick Reward",
       "hdqh": "Quick Ads Reward",
-      "hdqsub":
-          "⚡ @quickReward GH/s Quick Reward Auto-renews every 4 hours 🔄 — collect your quick reward each time! 🎁",
+      "hdqsub": "⚡ @quickReward GH/s Quick Reward Auto-renews every 4 hours 🔄 — collect your quick reward each time! 🎁",
 
       // store
       "sm": "Marketplace",
       "sva": "View All",
       "swAdBoost": "Watch Ad & Boost",
-      "spn": "Purchase Now",
+      "spn": "Upgrade Now",
       "spsub":
           "With ASIC cloud mining, you gain the advantage of low energy costs, fully managed equipment in the cloud, and steady returns—without the burden of technical complexities.",
 
@@ -114,8 +113,7 @@ class AppTranslations extends Translations {
       "siap": "Activate Plan",
       "sisub":
           "Your subscription renews automatically according to your plan, unless you cancel. You can manage it anytime in Google Play.",
-      "sissm":
-          "🎉 Congratulations! Your @name (@hashrate) has been Successfully Subscribed for @day days.",
+      "sissm": "🎉 Congratulations! Your @name (@hashrate) has been Successfully Subscribed for @day days.",
 
       // sing page
       "lh": "Hey There! Welcome Back 👋",
@@ -167,11 +165,9 @@ class AppTranslations extends Translations {
       "a0":
           "An ASIC Cloud refers to cloud-based cryptocurrency mining that leverages Application-Specific Integrated Circuit (ASIC) miners. Rather than purchasing and maintaining costly hardware, users can rent mining power from professional data centers equipped with high-performance ASIC machines optimized for Bitcoin mining.",
       "q9": "How do I start Bitcoin mining?",
-      "a9":
-          "To start Bitcoin mining, simply click the Start Mining button and the process will begin automatically.",
+      "a9": "To start Bitcoin mining, simply click the Start Mining button and the process will begin automatically.",
       "q10": "Can I try Bitcoin mining for free?",
-      "a10":
-          "Yes! New users can try BTC mining for free. Just register, watch ads, and start mining instantly.",
+      "a10": "Yes! New users can try BTC mining for free. Just register, watch ads, and start mining instantly.",
     },
 
     // TODO Malay Translation
@@ -223,8 +219,7 @@ class AppTranslations extends Translations {
       "wnsubtwo":
           "Sila pastikan anda menggunakan dompet BTC yang selamat dan boleh dipercayai, dan semak semula alamat dompet untuk memastikan keselamatan dana anda.",
       "wfash": "Selesaikan Persediaan Akaun",
-      "wfassub":
-          "Selesaikan persediaan akaun anda dengan menambah butiran yang diperlukan untuk membolehkan pengeluaran.",
+      "wfassub": "Selesaikan persediaan akaun anda dengan menambah butiran yang diperlukan untuk membolehkan pengeluaran.",
       "wfsb": "Selesaikan Persediaan",
       "wwh": "Permintaan pengeluaran anda telah diproses. Dana akan tiba tidak lama lagi.",
       "wwb": "Baik",
@@ -235,8 +230,7 @@ class AppTranslations extends Translations {
 
       // setting
       "sah": "Tetapan",
-      "sresub":
-          "Dapatkan BTC percuma dengan merujuk rakan-rakan — anda akan mendapat @btcValue BTC setiap kali!",
+      "sresub": "Dapatkan BTC percuma dengan merujuk rakan-rakan — anda akan mendapat @btcValue BTC setiap kali!",
       "smr": "Rekod Perlombongan",
       "svaa": "Lihat ASIC Aktif",
       "stm": "Pelombong Teratas",
@@ -298,12 +292,10 @@ class AppTranslations extends Translations {
       "lskip": "Langkau",
       "lsubmit": "Hantar",
       "src": "Tahniah",
-      "srsubone":
-          "Sebagai sebahagian daripada komitmen kami, kami telah menambah ganjaran percuma untuk anda bermula ",
+      "srsubone": "Sebagai sebahagian daripada komitmen kami, kami telah menambah ganjaran percuma untuk anda bermula ",
       "srsubtwo": " peningkatan perlombongan awan ke akaun anda!",
       "srls": "Mari Mulakan",
-      "srdh":
-          "Tonton iklan ini untuk menuntut bonus alu-aluan BTC @value percuma anda dalam dompet anda.",
+      "srdh": "Tonton iklan ini untuk menuntut bonus alu-aluan BTC @value percuma anda dalam dompet anda.",
       "srdnt": "Tidak Terima Kasih",
 
       // utils
@@ -337,8 +329,7 @@ class AppTranslations extends Translations {
       "a0":
           "Awan ASIC merujuk kepada perlombongan mata wang kripto berasaskan awan yang memanfaatkan pelombong Litar Bersepadu Khusus Aplikasi (ASIC). Daripada membeli dan menyelenggara perkakasan yang mahal, pengguna boleh menyewa kuasa melombong dari pusat data profesional yang dilengkapi dengan mesin ASIC berprestasi tinggi yang dioptimumkan untuk melombong Bitcoin.",
       "q9": "Bagaimana saya mula melombong Bitcoin?",
-      "a9":
-          "Untuk memulakan perlombongan Bitcoin, cuma klik butang Mula Melombong dan proses akan bermula secara automatik.",
+      "a9": "Untuk memulakan perlombongan Bitcoin, cuma klik butang Mula Melombong dan proses akan bermula secara automatik.",
       "q10": "Bolehkah saya cuba melombong Bitcoin secara percuma?",
       "a10":
           "Ya! Pengguna baharu boleh cuba melombong BTC secara percuma. Hanya daftar, tonton iklan, dan mulakan perlombongan dengan serta-merta.",
@@ -352,8 +343,7 @@ class AppTranslations extends Translations {
       "hmpsub":
           "Para patuloy na gumana ang iyong miner, i-activate ito araw-araw. Kapag aktibo, awtomatiko itong magmimina ng Bitcoin sa aming cloud servers, at makakakuha ka ng real-time na update. Unti-unting bumababa ang lakas ng pagmimina sa paglipas ng panahon, ngunit maaari mo itong bawasan sa pamamagitan ng pagkumpleto ng mga ad-based na gawain. Maaari mo ring palakasin ang iyong mining power sa pamamagitan ng panonood ng mga ad o agad itong dagdagan sa pagbili ng mining plan.",
       "ham": "Mga Aktibong Miners",
-      "hsmn":
-          "Hihinto ang iyong cloud mining kapag natapos ang timer. Manwal na i-restart para magpatuloy sa pagmimina.",
+      "hsmn": "Hihinto ang iyong cloud mining kapag natapos ang timer. Manwal na i-restart para magpatuloy sa pagmimina.",
       "hsm": "Simulan ang Pagmimina",
       "hab": "Aktibong Booster",
       "hdr": "Pang-araw-araw na Ganti",
@@ -396,8 +386,7 @@ class AppTranslations extends Translations {
       "wfassub":
           "Tapusin ang pag-setup ng iyong account sa pamamagitan ng pagdaragdag ng mga kinakailangang detalye para paganahin ang mga withdrawal.",
       "wfsb": "Tapusin ang Pag-setup",
-      "wwh":
-          "Na-proseso na ang iyong withdrawal request. Darating na ang pondo sa lalong madaling panahon.",
+      "wwh": "Na-proseso na ang iyong withdrawal request. Darating na ang pondo sa lalong madaling panahon.",
       "wwb": "Sige",
       "wweh": "⚠ Hindi tugma ang halaga ng BTC!",
       "weem": "Inaasahan: @massage",
@@ -406,8 +395,7 @@ class AppTranslations extends Translations {
 
       // setting
       "sah": "Setting",
-      "sresub":
-          "Kumita ng libreng BTC sa pamamagitan ng pag-refer sa mga kaibigan — makakakuha ka ng @btcValue BTC bawat beses!",
+      "sresub": "Kumita ng libreng BTC sa pamamagitan ng pag-refer sa mga kaibigan — makakakuha ka ng @btcValue BTC bawat beses!",
       "smr": "Rekord ng Pagmimina",
       "svaa": "Tingnan ang Aktibong ASICs",
       "stm": "Nangungunang Miner",
@@ -454,8 +442,7 @@ class AppTranslations extends Translations {
       "siap": "I-activate ang Plano",
       "sisub":
           "Awtomatikong magre-renew ang iyong subscription ayon sa iyong plano, maliban na lang kung kakanselahin mo. Maaari mo itong pamahalaan anumang oras sa Google Play.",
-      "sissm":
-          "🎉 Congratulations! Matagumpay na Naka-subscribe ang @name (@hashrate) mo sa loob ng @day araw.",
+      "sissm": "🎉 Congratulations! Matagumpay na Naka-subscribe ang @name (@hashrate) mo sa loob ng @day araw.",
 
       // sing page
       "lh": "Kumusta! Welcome Back 👋",
@@ -470,17 +457,14 @@ class AppTranslations extends Translations {
       "lskip": "Laktawan",
       "lsubmit": "Isumite",
       "src": "Binabati Kita",
-      "srsubone":
-          "Bilang bahagi ng aming pangako, nagdagdag kami ng libreng reward para makapagsimula ka ",
+      "srsubone": "Bilang bahagi ng aming pangako, nagdagdag kami ng libreng reward para makapagsimula ka ",
       "srsubtwo": " cloud mining boost sa iyong account!",
       "srls": "Magsimula Na",
-      "srdh":
-          "Manood ng ad na ito para i-claim ang iyong libreng @value BTC welcome bonus sa iyong wallet.",
+      "srdh": "Manood ng ad na ito para i-claim ang iyong libreng @value BTC welcome bonus sa iyong wallet.",
       "srdnt": "Hindi Salamat",
 
       // utils
-      "watchAdTitle":
-          "Manood ng ad na ito para i-unlock ang @text mining power sa loob ng @adTime minuto.",
+      "watchAdTitle": "Manood ng ad na ito para i-unlock ang @text mining power sa loob ng @adTime minuto.",
       "watchAdN": "Huwag muna ngayon",
       "watchAdY": "Manood Ngayon",
 
@@ -566,8 +550,7 @@ class AppTranslations extends Translations {
       "wnsubtwo":
           "Veuillez vous assurer d'utiliser un portefeuille BTC sécurisé et fiable, et de vérifier deux fois l'adresse du portefeuille pour assurer la sécurité de vos fonds.",
       "wfash": "Terminer la configuration du compte",
-      "wfassub":
-          "Terminez la configuration de votre compte en ajoutant les détails requis pour activer les retraits.",
+      "wfassub": "Terminez la configuration de votre compte en ajoutant les détails requis pour activer les retraits.",
       "wfsb": "Terminer la configuration",
       "wwh": "Votre demande de retrait a été traitée. Les fonds arriveront sous peu.",
       "wwb": "D'accord",
@@ -578,8 +561,7 @@ class AppTranslations extends Translations {
 
       // setting
       "sah": "Paramètres",
-      "sresub":
-          "Gagnez des BTC gratuits en parrainant des amis — vous obtiendrez @btcValue BTC à chaque fois !",
+      "sresub": "Gagnez des BTC gratuits en parrainant des amis — vous obtiendrez @btcValue BTC à chaque fois !",
       "smr": "Historique de minage",
       "svaa": "Voir les ASIC actifs",
       "stm": "Meilleur Mineur",
@@ -641,17 +623,14 @@ class AppTranslations extends Translations {
       "lskip": "Passer",
       "lsubmit": "Soumettre",
       "src": "Félicitations",
-      "srsubone":
-          "Dans le cadre de notre engagement, nous avons ajouté une récompense gratuite pour vous aider à démarrer",
+      "srsubone": "Dans le cadre de notre engagement, nous avons ajouté une récompense gratuite pour vous aider à démarrer",
       "srsubtwo": "un boost de minage cloud sur votre compte !",
       "srls": "Commençons",
-      "srdh":
-          "Regardez cette publicité pour réclamer votre bonus de bienvenue BTC gratuit @value dans votre portefeuille.",
+      "srdh": "Regardez cette publicité pour réclamer votre bonus de bienvenue BTC gratuit @value dans votre portefeuille.",
       "srdnt": "Non merci",
 
       // utils
-      "watchAdTitle":
-          "Regardez cette publicité pour débloquer la puissance de minage @text pendant @adTime minutes.",
+      "watchAdTitle": "Regardez cette publicité pour débloquer la puissance de minage @text pendant @adTime minutes.",
       "watchAdN": "Pas maintenant",
       "watchAdY": "Regarder maintenant",
 
@@ -696,8 +675,7 @@ class AppTranslations extends Translations {
       "hmpsub":
           "Para mantener tu minero funcionando, actívalo a diario. Una vez activo, automáticamente minará Bitcoin en nuestros servidores en la nube, y recibirás actualizaciones en tiempo real. La potencia de minería disminuye gradualmente con el tiempo, pero puedes reducir esto completando tareas basadas en anuncios. También puedes aumentar tu potencia de minería viendo anuncios o incrementarla instantáneamente comprando un plan de minería.",
       "ham": "Mineros Activos",
-      "hsmn":
-          "Tu minería en la nube se pausará cuando el temporizador termine. Reinicia manualmente para seguir minando.",
+      "hsmn": "Tu minería en la nube se pausará cuando el temporizador termine. Reinicia manualmente para seguir minando.",
       "hsm": "Iniciar minería",
       "hab": "Potenciador Activo",
       "hdr": "Recompensa Diaria",
@@ -737,8 +715,7 @@ class AppTranslations extends Translations {
       "wnsubtwo":
           "Por favor, asegúrate de usar una billetera BTC segura y confiable, y verifica dos veces la dirección de la billetera para garantizar la seguridad de tus fondos.",
       "wfash": "Terminar la Configuración de la Cuenta",
-      "wfassub":
-          "Termina la configuración de tu cuenta agregando los detalles requeridos para habilitar los retiros.",
+      "wfassub": "Termina la configuración de tu cuenta agregando los detalles requeridos para habilitar los retiros.",
       "wfsb": "Terminar Configuración",
       "wwh": "Tu solicitud de retiro ha sido procesada. Los fondos llegarán en breve.",
       "wwb": "Aceptar",
@@ -811,17 +788,14 @@ class AppTranslations extends Translations {
       "lskip": "Saltar",
       "lsubmit": "Enviar",
       "src": "¡Felicitaciones",
-      "srsubone":
-          "Como parte de nuestro compromiso, hemos añadido una recompensa gratuita para que empieces",
+      "srsubone": "Como parte de nuestro compromiso, hemos añadido una recompensa gratuita para que empieces",
       "srsubtwo": "un impulso de minería en la nube a tu cuenta!",
       "srls": "¡Comencemos",
-      "srdh":
-          "Mira este anuncio para reclamar tu bono de bienvenida BTC @value gratuito en tu billetera.",
+      "srdh": "Mira este anuncio para reclamar tu bono de bienvenida BTC @value gratuito en tu billetera.",
       "srdnt": "No, gracias",
 
       // utils
-      "watchAdTitle":
-          "Mira este anuncio para desbloquear @text de potencia de minería por @adTime minutos.",
+      "watchAdTitle": "Mira este anuncio para desbloquear @text de potencia de minería por @adTime minutos.",
       "watchAdN": "Ahora no",
       "watchAdY": "Ver ahora",
 
@@ -907,8 +881,7 @@ class AppTranslations extends Translations {
       "wnsubtwo":
           "Tafadhali hakikisha unatumia wallet ya BTC salama na ya kuaminika, na angalia mara mbili anwani ya wallet ili kuhakikisha usalama wa pesa zako.",
       "wfash": "Kamilisha Usanidi wa Akaunti",
-      "wfassub":
-          "Kamilisha usanidi wa akaunti yako kwa kuongeza maelezo yanayohitajika ili kuwezesha utoaji.",
+      "wfassub": "Kamilisha usanidi wa akaunti yako kwa kuongeza maelezo yanayohitajika ili kuwezesha utoaji.",
       "wfsb": "Kamilisha Usanidi",
       "wwh": "Ombi lako la kutoa limeshughulikiwa. Pesa zitafika hivi karibuni.",
       "wwb": "Sawa",
@@ -966,8 +939,7 @@ class AppTranslations extends Translations {
       "siap": "Amilisha Mpango",
       "sisub":
           "Usajili wako unasasishwa kiatomati kulingana na mpango wako, isipokuwa ughairi. Unaweza kuidhibiti wakati wowote katika Google Play.",
-      "sissm":
-          "🎉 Barka da zaɓe! An yi rijistar @name (@hashrate) ɗinka cikin nasara na tsawon kwanaki @day.",
+      "sissm": "🎉 Barka da zaɓe! An yi rijistar @name (@hashrate) ɗinka cikin nasara na tsawon kwanaki @day.",
 
       // sing page
       "lh": "Hujambo! Karibu tena 👋",
@@ -985,8 +957,7 @@ class AppTranslations extends Translations {
       "srsubone": "Kama sehemu ya ahadi yetu, tumeongeza zawadi ya bure ili kukuanzisha ",
       "srsubtwo": " nyongeza ya uchimbaji wa wingu kwenye akaunti yako!",
       "srls": "Tuanze",
-      "srdh":
-          "Tazama tangazo hili ili kudai bonasi yako ya bure ya kukaribisha ya BTC @value katika wallet yako.",
+      "srdh": "Tazama tangazo hili ili kudai bonasi yako ya bure ya kukaribisha ya BTC @value katika wallet yako.",
       "srdnt": "Hapana, Asante",
 
       // utils
@@ -1020,8 +991,7 @@ class AppTranslations extends Translations {
       "a0":
           "ASIC Cloud inarejelea uchimbaji madini ya cryptocurrency unaotegemea wingu unaotumia wachimbaji wa Application-Specific Integrated Circuit (ASIC). Badala ya kununua na kudumisha vifaa vya gharama kubwa, watumiaji wanaweza kukodisha nguvu ya uchimbaji kutoka kwa vituo vya data vya kitaalamu vilivyo na mashine za ASIC za utendaji wa juu zilizoboreshwa kwa ajili ya uchimbaji wa Bitcoin.",
       "q9": "Ninawezaje kuanza uchimbaji wa Bitcoin?",
-      "a9":
-          "Ili kuanza uchimbaji wa Bitcoin, bonyeza tu kitufe cha \"Anza Uchimbaji\" na mchakato utaanza moja kwa moja.",
+      "a9": "Ili kuanza uchimbaji wa Bitcoin, bonyeza tu kitufe cha \"Anza Uchimbaji\" na mchakato utaanza moja kwa moja.",
       "q10": "Je, ninaweza kujaribu uchimbaji wa Bitcoin bila malipo?",
       "a10":
           "Ndiyo! Watumiaji wapya wanaweza kujaribu uchimbaji wa BTC bila malipo. Jisajili tu, tazama matangazo, na uanze uchimbaji mara moja.",
@@ -1186,8 +1156,7 @@ class AppTranslations extends Translations {
       "a0":
           "ASIC Cloud yana nufin ma'adanar cryptocurrency na girgije wanda ke amfani da masu hakar ma'adinai na Application-Specific Integrated Circuit (ASIC). Maimakon siyan da kiyaye kayan aiki masu tsada, masu amfani za su iya hayar ikon hakar ma'adinai daga cibiyoyin bayanai na ƙwararru waɗanda ke da na'urorin ASIC masu girma waɗanda aka inganta don hakar ma'adinai na Bitcoin.",
       "q9": "Yaya zan fara hakar ma'adinai na Bitcoin?",
-      "a9":
-          "Don fara hakar ma'adinai na Bitcoin, kawai danna maɓallin \"Start Mining\" kuma tsarin zai fara ta atomatik.",
+      "a9": "Don fara hakar ma'adinai na Bitcoin, kawai danna maɓallin \"Start Mining\" kuma tsarin zai fara ta atomatik.",
       "q10": "Zan iya gwada hakar ma'adinai na Bitcoin kyauta?",
       "a10":
           "Haka ne! Sabbin masu amfani za su iya gwada hakar BTC kyauta. Kawai yi rijista, kalli tallace-tallace, kuma fara hakar ma'adinai nan take.",
@@ -1201,8 +1170,7 @@ class AppTranslations extends Translations {
       "hmpsub":
           "Para manter seu minerador funcionando, ative-o diariamente. Uma vez ativo, ele minera Bitcoin automaticamente em nossos servidores na nuvem, e você receberá atualizações em tempo real. O poder de mineração diminui gradualmente com o tempo, mas você pode reduzir isso completando tarefas baseadas em anúncios. Você também pode aumentar seu poder de mineração assistindo a anúncios ou aumentá-lo instantaneamente comprando um plano de mineração.",
       "ham": "Mineradores Ativos",
-      "hsmn":
-          "Sua mineração na nuvem será pausada quando o cronômetro terminar. Reinicie manualmente para continuar minerando.",
+      "hsmn": "Sua mineração na nuvem será pausada quando o cronômetro terminar. Reinicie manualmente para continuar minerando.",
       "hsm": "Iniciar Mineração",
       "hab": "Potencializador Ativo",
       "hdr": "Recompensa Diária",
@@ -1242,8 +1210,7 @@ class AppTranslations extends Translations {
       "wnsubtwo":
           "Por favor, certifique-se de usar uma carteira BTC segura e confiável, e verifique duas vezes o endereço da carteira para garantir a segurança dos seus fundos.",
       "wfash": "Concluir Configuração da Conta",
-      "wfassub":
-          "Conclua a configuração da sua conta adicionando os detalhes necessários para habilitar os saques.",
+      "wfassub": "Conclua a configuração da sua conta adicionando os detalhes necessários para habilitar os saques.",
       "wfsb": "Concluir Configuração",
       "wwh": "Sua solicitação de saque foi processada. Os fundos chegarão em breve.",
       "wwb": "OK",
@@ -1315,17 +1282,14 @@ class AppTranslations extends Translations {
       "lskip": "Pular",
       "lsubmit": "Enviar",
       "src": "Parabéns",
-      "srsubone":
-          "Como parte de nosso compromisso, adicionamos uma recompensa gratuita para você começar",
+      "srsubone": "Como parte de nosso compromisso, adicionamos uma recompensa gratuita para você começar",
       "srsubtwo": "uma potência de mineração na nuvem para sua conta!",
       "srls": "Vamos Começar",
-      "srdh":
-          "Assista a este anúncio para resgatar seu bônus de boas-vindas BTC @value gratuito em sua carteira.",
+      "srdh": "Assista a este anúncio para resgatar seu bônus de boas-vindas BTC @value gratuito em sua carteira.",
       "srdnt": "Não, obrigado",
 
       // utils
-      "watchAdTitle":
-          "Assista a este anúncio para desbloquear @text de poder de mineração por @adTime minutos.",
+      "watchAdTitle": "Assista a este anúncio para desbloquear @text de poder de mineração por @adTime minutos.",
       "watchAdN": "Agora não",
       "watchAdY": "Assistir Agora",
 

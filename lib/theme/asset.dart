@@ -13,8 +13,8 @@ class AppAsset {
 
   static const home = '$image/home.png';
   static const homes = '$image/homes.png';
-  static const referral = '$image/referral.png';
-  static const referrals = '$image/referrals.png';
+  static const upgrade = '$image/upgrade.png';
+  static const upgrades = '$image/upgrades.png';
   static const leaderboard = '$image/leaderboard.png';
   static const leaderboards = '$image/leaderboards.png';
   static const gear = '$image/gear.png';

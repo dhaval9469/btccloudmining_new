@@ -17,7 +17,7 @@ class _LargeBannerState extends State<LargeBanner> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (AppConfig.appDataSet?.googleLargeBannerAdStatus == false) {
+    if (AppConfig.appDataSet?.googleLargeBannerAdStatus == true) {
       loadAd();
     }
   }

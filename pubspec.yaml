@@ -52,6 +52,7 @@ dependencies:
   gma_mediation_meta: ^1.4.0
   flutter_fgbg: ^0.7.1
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -10,6 +10,7 @@ import 'package:btccloudmining/dashboard/model/withdraw_details_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
+import 'package:btccloudmining/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -42,9 +43,12 @@ class HomeCtrl extends GetxController {
   RxList<WDData> withdrawDetailsList = <WDData>[].obs;
 
   RxList<ListPlan> subscriptionPlanList = <ListPlan>[].obs;
-  Rx<ListPlan> storeItemData = ListPlan().obs;
+  // Rx<ListPlan> storeItemData = ListPlan().obs;
   Rx<ListPlan> randomPlan = ListPlan().obs;
   Rx<Plans?> selectPlanDetails = Plans().obs;
+
+
+  Rx<planD> sItemData = planD().obs;
 
   void getActiveSubscription() async {
     try {
@@ -130,7 +134,7 @@ class HomeCtrl extends GetxController {
       minMiners: appDataSetModel.appDataSet?.minMiners ?? 25000,
       maxMiners: appDataSetModel.appDataSet?.maxMiners ?? 45000,
     );
-    // IntOrRwdAdManger().initAds();
+    IntOrRwdAdManger().initAds();
   }
 
   void startRandomActiveMinerCount({int minMiners = 13000, int maxMiners = 45000}) {

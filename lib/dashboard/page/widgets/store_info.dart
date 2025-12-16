@@ -4,21 +4,18 @@ import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/repository/storeinfo_rewardservice.dart';
-import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/subscription_service.dart';
-import 'package:btccloudmining/helper/exception_handler.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
-import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/utils/responsiv.dart';
-import 'package:btccloudmining/utils/utils.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -37,10 +34,10 @@ class _StoreInfoState extends State<StoreInfo> {
   @override
   void initState() {
     super.initState();
-    setData();
+    // setData();
   }
 
-  setData() async {
+  /*  setData() async {
     try {
       EasyLoading.show();
       await Future.delayed(Duration(seconds: 1));
@@ -61,7 +58,7 @@ class _StoreInfoState extends State<StoreInfo> {
       EasyLoading.dismiss();
       AppException.showException(e, st);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -70,114 +67,96 @@ class _StoreInfoState extends State<StoreInfo> {
       body: SafeArea(
         child: Column(
           children: [
-            customHeader(context, '${homeCtrl.storeItemData.value.name}'),
+            customHeader(context, '${homeCtrl.sItemData.value.planName}'),
             Expanded(
               child: cardLayout(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      25.heightBox,
-                      Container(
-                        height: context.responsive.heightPercent(18),
-                        width: context.responsive.widthPercent(40),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage("${AppConfig.imageBaseurl}${homeCtrl.storeItemData.value.image}"),
-                          ),
-                        ),
-                      ),
+                      10.heightBox,
+                      Image.asset("${homeCtrl.sItemData.value.image}", scale: 4),
+                      10.heightBox,
+
+                      detailRow(text: "Speed Allocation: ", subText: homeCtrl.sItemData.value.speed),
+                      detailRow(text: "Earning Speed: ", subText: homeCtrl.sItemData.value.earning),
+
                       5.heightBox,
                       NativeBanner(),
-                      10.heightBox,
+                      15.heightBox,
                       ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: homeCtrl.storeItemData.value.plans?.length ?? 0,
+                        itemCount: homeCtrl.sItemData.value.plans?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final plan = homeCtrl.storeItemData.value.plans?[index];
+                          final plan = homeCtrl.sItemData.value.plans?[index];
                           return Obx(
                             () => GestureDetector(
                               onTap: () {
                                 homeCtrl.selectedPlanIndex.value = index;
-                                homeCtrl.selectPlanDetails.value = plan;
+                                // homeCtrl.selectPlanDetails.value = plan;
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: homeCtrl.selectedPlanIndex.value == index
-                                        ? [Color(0xff12B985), Color(0xff2267E8)]
-                                        : [AppColor.card, AppColor.card],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
                                   borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: homeCtrl.selectedPlanIndex.value == index ? AppColor.thirdCard : AppColor.unSelectPlan,
+                                    width: homeCtrl.selectedPlanIndex.value == index ? 2 : 1,
+                                  ),
                                 ),
                                 child: Column(
                                   children: [
                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Image.asset(AppAsset.rentalDay, scale: 30, color: AppColor.white),
-                                        5.widthBox,
-                                        Text('sitp'.tr, style: textRoboto(context)),
-                                        Spacer(),
                                         Text(
-                                          "${plan?.renetalDays} day",
+                                          "${plan?.validity}",
+                                          style: textRoboto(
+                                            context,
+                                            color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "${plan?.amount}",
                                           style: textMontserrat(
                                             context,
                                             fontWeight: homeCtrl.selectedPlanIndex.value == index
                                                 ? FontWeight.bold
                                                 : FontWeight.w500,
                                             fontSize: homeCtrl.selectedPlanIndex.value == index ? 15 : 14,
-                                            color: AppColor.text,
+                                            color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
                                           ),
                                         ),
                                       ],
-                                    ).px(10).py(5),
-                                    CustomCard(
-                                      color: AppColor.newBg,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${plan?.description}',
-                                            style: subTextRoboto(context, fontSize: 12, color: Colors.white54),
-                                          ),
-                                          7.heightBox,
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              plan?.discount != 0
-                                                  ? Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0xff9C27B0),
-                                                        borderRadius: BorderRadius.circular(5),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            'Limited-Time Offer – Save ',
-                                                            style: textRoboto(context, fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            '${plan?.discount}%',
-                                                            style: textMontserrat(
-                                                              context,
-                                                              fontWeight: FontWeight.w600,
-                                                              fontSize: 13,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ).pSymmetric(v: 2, h: 10),
-                                                    )
-                                                  : SizedBox.shrink(),
-                                            ],
-                                          ),
-                                        ],
-                                      ).p(7),
-                                    ).px(5),
-                                    5.heightBox,
+                                    ),
+
+                                    plan?.discount != 0
+                                        ? Container(
+                                            decoration: BoxDecoration(
+                                              color: Color(0xffF44336),
+                                              /*      gradient: const LinearGradient(
+                                                colors: [
+                                                  Color(0xffFF9800), // Orange
+                                                  Color(0xffF44336), // Red
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),*/
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Text('Limited-Time Offer – Save ', style: textRoboto(context, fontSize: 12)),
+                                                Text(
+                                                  '${plan?.discount}%',
+                                                  style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 13),
+                                                ),
+                                              ],
+                                            ).pSymmetric(v: 2, h: 10),
+                                          ).pOnly(top: 10)
+                                        : SizedBox.shrink(),
                                   ],
-                                ),
+                                ).px(15).py(10),
                               ).px(15),
                             ),
                           );
@@ -186,37 +165,21 @@ class _StoreInfoState extends State<StoreInfo> {
                           return 10.heightBox;
                         },
                       ),
+
                       15.heightBox,
-                      CustomCard(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Obx(() {
-                          final plans = homeCtrl.selectPlanDetails.value;
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('siod'.tr, style: textRoboto(context, fontWeight: FontWeight.bold)).px(10),
-                              Divider(color: AppColor.card),
-                              orderDetail(text: 'Hashrate', subText: homeCtrl.storeItemData.value.hashrate),
-                              3.heightBox,
-                              orderDetail(text: 'Power', subText: homeCtrl.storeItemData.value.power),
-
-                              3.heightBox,
-                              orderDetail(text: 'Efficiency', subText: homeCtrl.storeItemData.value.efficiency),
-
-                              3.heightBox,
-                              orderDetail(text: 'Algorithm', subText: homeCtrl.storeItemData.value.algorithm ?? 'SHA-256'),
-
-                              3.heightBox,
-                              Divider(color: AppColor.card),
-                              plans?.discount != 0
-                                  ? orderDetail(text: 'Discount', subText: '${plans?.discount}%')
-                                  : SizedBox.shrink(),
-                              orderDetail(text: 'Price', subText: '${plans?.amount}'),
-                            ],
-                          ).py(10);
-                        }),
+                      Container(
+                        decoration: BoxDecoration(color: AppColor.thirdCard, borderRadius: BorderRadius.circular(8)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'siap'.tr,
+                              style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 16),
+                            ).pSymmetric(v: 6),
+                          ],
+                        ),
                       ).px(15),
-                      15.heightBox,
+                      5.heightBox,
                       Text(
                         'sisub'.tr,
                         textAlign: TextAlign.center,
@@ -231,7 +194,7 @@ class _StoreInfoState extends State<StoreInfo> {
           ],
         ),
       ),
-      bottomNavigationBar: SafeArea(
+      /*  bottomNavigationBar: SafeArea(
         child: SizedBox(
           height: context.responsive.heightPercent(4.7),
           child: AppButton(
@@ -280,31 +243,20 @@ class _StoreInfoState extends State<StoreInfo> {
             },
           ).px(15),
         ).pOnly(bottom: 10),
-      ),
-      // bottomNavigationBar: SafeArea(child: SmallNative()),
+      ),*/
     );
   }
 
-  detailRow({final String? text, final String? subText, final String? image, final double? scale}) {
+  detailRow({String? text, String? subText}) {
     return Row(
       children: [
-        Container(
-          height: 15,
-          width: 15,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(image ?? ""),
-              fit: BoxFit.fill,
-              colorFilter: ColorFilter.mode(AppColor.iconColor, BlendMode.srcIn),
-            ),
-          ),
-        ),
+        FaIcon(FontAwesomeIcons.circleCheck, color: AppColor.subText, size: 12),
         7.widthBox,
         Text(text ?? "", style: subTextRoboto(context)),
         Spacer(),
-        Text(subText ?? "", style: textRoboto(context, fontWeight: FontWeight.w600)),
+        Text(subText ?? "", style: textRoboto(context, fontWeight: FontWeight.w600, fontSize: 15)),
       ],
-    ).px(10);
+    ).px(20);
   }
 
   orderDetail({final String? text, final String? subText}) {
@@ -368,7 +320,7 @@ class _StoreInfoState extends State<StoreInfo> {
             children: [
               Lottie.asset(AppAsset.done, width: 100, height: 100, fit: BoxFit.fill, repeat: true),
               10.heightBox,
-              Text(
+              /*              Text(
                 "sissm".trParams({
                   "name": homeCtrl.storeItemData.value.name.toString(),
                   "hashrate": homeCtrl.storeItemData.value.hashrate.toString(),
@@ -376,7 +328,7 @@ class _StoreInfoState extends State<StoreInfo> {
                 }),
                 textAlign: TextAlign.center,
                 style: textRoboto(context, fontSize: 15),
-              ),
+              ),*/
               20.heightBox,
               AppButton(
                 padding: EdgeInsets.symmetric(vertical: 6),

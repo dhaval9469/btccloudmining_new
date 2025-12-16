@@ -1,7 +1,6 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:btccloudmining/ad_modual/banner.dart';
 import 'package:btccloudmining/ad_modual/int_rwd_admanger.dart';
-import 'package:btccloudmining/ad_modual/large_banner.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/repository/daily_reward.dart';
@@ -51,7 +50,6 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-
             Row(
               children: [
                 ClipRRect(
@@ -64,11 +62,10 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hello, $userName", style: textMontserrat(context, fontSize: 12)),
-                    Text(emailId ?? "", style: subTextMontserrat(context, fontSize: 12)),
+                    Text("hh".trParams({"name": "$userName"}), style: textMontserrat(context, fontSize: 12)),
+                    Text(emailId ?? "", style: textMontserrat(context, fontSize: 12)),
                   ],
                 ),
-                10.widthBox,
               ],
             ).p(15),
 
@@ -94,10 +91,11 @@ class _HomePageState extends State<HomePage> {
                           5.widthBox,
                           Text("BTC", style: textRoboto(context, fontSize: 19, fontWeight: FontWeight.w600)),
                         ],
-                      ).pOnly(top: 20,left: 15,right: 15),
+                      ).pOnly(top: 20, left: 15, right: 15),
 
-                      Lottie.asset("assets/lottie/cma.json",),
-
+                      Obx(() {
+                        return Lottie.asset("assets/lottie/cma.json", repeat: true, animate: homeCtrl.isMining.value);
+                      }),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -143,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color(0xFF4B4CED),
+                              color: AppColor.secondButton,
                               // gradient: LinearGradient(colors: [Color(0xFF00A588), Color(0xFF024DC9)]),
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -158,7 +156,12 @@ class _HomePageState extends State<HomePage> {
                                     sessionTimer.isRunning
                                         ? sessionTimer.formatDuration(sessionTimer.startTimeLeft.value)
                                         : 'hsm'.tr,
-                                    style: textMontserrat(context, color: AppColor.white, fontSize: 17, fontWeight: FontWeight.bold),
+                                    style: textMontserrat(
+                                      context,
+                                      color: AppColor.white,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -374,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                         childrenPadding: EdgeInsets.only(bottom: 15),
                         title: Row(
                           children: [
-                            Image.asset(AppAsset.faqs, scale: 18),
+                            Image.asset(AppAsset.faqs, scale: 20),
                             10.widthBox,
                             Text('FAQs', style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
                           ],

@@ -29,26 +29,23 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset(AppAsset.done, width: 200, height: 200, fit: BoxFit.fill, repeat: false),
-            Text('src'.tr, style: textMontserrat(context, fontSize: 24, fontWeight: FontWeight.w600)),
+            Text('src'.tr, style: textMontserrat(context, fontSize: 24, fontWeight: FontWeight.bold)),
             15.heightBox,
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
                 text: 'srsubone'.tr,
-                style: subTextRoboto(context, fontSize: 13),
+                style: subTextMontserrat(context, fontSize: 13),
                 children: [
-                  TextSpan(
-                    text: '${AppConfig.appDataSet?.startHashRate} Gh/s',
-                    style: subTextRoboto(context, fontSize: 13),
-                  ),
-                  TextSpan(text: 'srsubtwo'.tr, style: subTextRoboto(context, fontSize: 13)),
+                  TextSpan(text: '${AppConfig.appDataSet?.startHashRate} Gh/s', style: subTextMontserrat(context, fontSize: 13)),
+                  TextSpan(text: 'srsubtwo'.tr, style: subTextMontserrat(context, fontSize: 13)),
                 ],
               ),
             ),
             25.heightBox,
             AppButton(
               padding: EdgeInsets.symmetric(vertical: 6),
-              color: AppColor.primary,
+              color: AppColor.thirdCard,
               onTap: () {
                 if (AppConfig.appDataSet?.startRewardAdsFirsTime == true) {
                   showWatchAdDialog(context);
@@ -58,7 +55,7 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
               },
               text: "srls".tr,
             ),
-            20.heightBox,
+            40.heightBox,
           ],
         ).px(15),
       ),
@@ -66,7 +63,7 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
     );
   }
 
-  showWatchAdDialog(BuildContext context) {
+    showWatchAdDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -84,9 +81,7 @@ class _SignInRewardPageState extends State<SignInRewardPage> {
                   Image.asset(AppAsset.watchAd, scale: 10),
                   const SizedBox(height: 10),
                   Text(
-                    'srdh'.trParams({
-                      "value": AppConfig.endpoint?.startingReward?.toStringAsFixed(12) ?? "",
-                    }),
+                    'srdh'.trParams({"value": AppConfig.endpoint?.startingReward?.toStringAsFixed(12) ?? ""}),
                     textAlign: TextAlign.center,
                     style: textRoboto(context, fontSize: 15),
                   ),
