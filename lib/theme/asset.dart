@@ -53,6 +53,7 @@ class AppAsset {
   static const hammer = '$image/hammer.png';
   static const trophy = '$image/trophy.png';
   static const wallet = '$image/wallet.png';
+  static const restore = '$image/restore.png';
 
 
   static const rcm = '$icon/rcm.png';

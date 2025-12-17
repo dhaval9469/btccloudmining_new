@@ -1,5 +1,6 @@
-import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
@@ -7,6 +8,7 @@ import 'package:btccloudmining/dashboard/repository/storeinfo_rewardservice.dart
 import 'package:btccloudmining/dashboard/service/subscription_service.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
+import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
@@ -62,10 +64,10 @@ class _StoreInfoState extends State<StoreInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        body: Column(
           children: [
             customHeader(context, '${homeCtrl.sItemData.value.planName}'),
             Expanded(
@@ -74,90 +76,101 @@ class _StoreInfoState extends State<StoreInfo> {
                   child: Column(
                     children: [
                       10.heightBox,
-                      Image.asset("${homeCtrl.sItemData.value.image}", scale: 4),
+                      SlideFadeTransition(index: 1, child: Image.asset("${homeCtrl.sItemData.value.image}", scale: 4)),
                       10.heightBox,
-
-                      detailRow(text: "Speed Allocation: ", subText: homeCtrl.sItemData.value.speed),
-                      detailRow(text: "Earning Speed: ", subText: homeCtrl.sItemData.value.earning),
-
-                      5.heightBox,
-                      NativeBanner(),
-                      15.heightBox,
+                      SlideFadeTransition(
+                        index: 2,
+                        child: detailRow(text: "Speed Allocation: ", subText: homeCtrl.sItemData.value.speed),
+                      ),
+                      SlideFadeTransition(
+                        index: 2,
+                        child: detailRow(text: "Earning Speed: ", subText: homeCtrl.sItemData.value.earning),
+                      ),
+      
+                      10.heightBox,
+                      AppConfig.appDataSet?.showTwoAd == true?
+                      SlideFadeTransition(index: 3, child: NativeBanner()):SizedBox(),
+                      10.heightBox,
                       ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: homeCtrl.sItemData.value.plans?.length ?? 0,
                         itemBuilder: (context, index) {
                           final plan = homeCtrl.sItemData.value.plans?[index];
-                          return Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                homeCtrl.selectedPlanIndex.value = index;
-                                // homeCtrl.selectPlanDetails.value = plan;
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: homeCtrl.selectedPlanIndex.value == index ? AppColor.thirdCard : AppColor.unSelectPlan,
-                                    width: homeCtrl.selectedPlanIndex.value == index ? 2 : 1,
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${plan?.validity}",
-                                          style: textRoboto(
-                                            context,
-                                            color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          "${plan?.amount}",
-                                          style: textMontserrat(
-                                            context,
-                                            fontWeight: homeCtrl.selectedPlanIndex.value == index
-                                                ? FontWeight.bold
-                                                : FontWeight.w500,
-                                            fontSize: homeCtrl.selectedPlanIndex.value == index ? 15 : 14,
-                                            color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
-                                          ),
-                                        ),
-                                      ],
+                          return SlideFadeTransition(
+                            index: index + 4,
+                            child: Obx(
+                              () => GestureDetector(
+                                onTap: () {
+                                  homeCtrl.selectedPlanIndex.value = index;
+                                  // homeCtrl.selectPlanDetails.value = plan;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: homeCtrl.selectedPlanIndex.value == index
+                                          ? AppColor.thirdCard
+                                          : AppColor.unSelectPlan,
+                                      width: homeCtrl.selectedPlanIndex.value == index ? 2 : 1,
                                     ),
-
-                                    plan?.discount != 0
-                                        ? Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0xffF44336),
-                                              /*      gradient: const LinearGradient(
-                                                colors: [
-                                                  Color(0xffFF9800), // Orange
-                                                  Color(0xffF44336), // Red
-                                                ],
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                              ),*/
-                                              borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "${plan?.validity}",
+                                            style: textRoboto(
+                                              context,
+                                              color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            child: Row(
-                                              children: [
-                                                Text('Limited-Time Offer – Save ', style: textRoboto(context, fontSize: 12)),
-                                                Text(
-                                                  '${plan?.discount}%',
-                                                  style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 13),
-                                                ),
-                                              ],
-                                            ).pSymmetric(v: 2, h: 10),
-                                          ).pOnly(top: 10)
-                                        : SizedBox.shrink(),
-                                  ],
-                                ).px(15).py(10),
-                              ).px(15),
+                                          ),
+                                          Text(
+                                            "${plan?.amount}",
+                                            style: textMontserrat(
+                                              context,
+                                              fontWeight: homeCtrl.selectedPlanIndex.value == index
+                                                  ? FontWeight.bold
+                                                  : FontWeight.w500,
+                                              fontSize: homeCtrl.selectedPlanIndex.value == index ? 15 : 14,
+                                              color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+      
+                                      plan?.discount != 0
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(0xffF44336),
+                                                /*      gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color(0xffFF9800), // Orange
+                                                    Color(0xffF44336), // Red
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),*/
+                                                borderRadius: BorderRadius.circular(6),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text('Limited-Time Offer – Save ', style: textRoboto(context, fontSize: 12)),
+                                                  Text(
+                                                    '${plan?.discount}%',
+                                                    style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 13),
+                                                  ),
+                                                ],
+                                              ).pSymmetric(v: 2, h: 10),
+                                            ).pOnly(top: 10)
+                                          : SizedBox.shrink(),
+                                    ],
+                                  ).px(15).py(10),
+                                ).px(15),
+                              ),
                             ),
                           );
                         },
@@ -165,26 +178,32 @@ class _StoreInfoState extends State<StoreInfo> {
                           return 10.heightBox;
                         },
                       ),
-
+      
                       15.heightBox,
-                      Container(
-                        decoration: BoxDecoration(color: AppColor.thirdCard, borderRadius: BorderRadius.circular(8)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'siap'.tr,
-                              style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 16),
-                            ).pSymmetric(v: 6),
-                          ],
-                        ),
-                      ).px(15),
+                      SlideFadeTransition(
+                        index: 6,
+                        child: Container(
+                          decoration: BoxDecoration(color: AppColor.thirdCard, borderRadius: BorderRadius.circular(8)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'siap'.tr,
+                                style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 16),
+                              ).pSymmetric(v: 6),
+                            ],
+                          ),
+                        ).px(15),
+                      ),
                       5.heightBox,
-                      Text(
-                        'sisub'.tr,
-                        textAlign: TextAlign.center,
-                        style: subTextRoboto(context, fontWeight: FontWeight.w400, fontSize: 12),
-                      ).px(15),
+                      SlideFadeTransition(
+                        index: 7,
+                        child: Text(
+                          'sisub'.tr,
+                          textAlign: TextAlign.center,
+                          style: subTextRoboto(context, fontWeight: FontWeight.w400, fontSize: 12),
+                        ).px(15),
+                      ),
                       20.heightBox,
                     ],
                   ),
@@ -193,57 +212,58 @@ class _StoreInfoState extends State<StoreInfo> {
             ),
           ],
         ),
+        bottomNavigationBar: SmallNative(),
+        /*  bottomNavigationBar: SafeArea(
+          child: SizedBox(
+            height: context.responsive.heightPercent(4.7),
+            child: AppButton(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              color: AppColor.button,
+              text: 'siap'.tr,
+              onTap: () async {
+                EasyLoading.show();
+      
+                final plan = homeCtrl.selectPlanDetails.value;
+                final PurchaseResult result = await subscriptionService.buy(plan?.planId ?? "");
+      
+                if (!result.success) {
+                  EasyLoading.dismiss();
+                  EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
+                  return;
+                }
+      
+                final addTimeFormatted =
+                    formatUtcMillisToLocal(result.transactionDate) ?? DateTime.now().toUtc().millisecondsSinceEpoch.toString();
+      
+                try {
+                  await ApiRepo.getSubDetails(
+                    email: HiveService().getData<String>(AppConfig.userEmail),
+                    botType: homeCtrl.storeItemData.value.name,
+                    plan: plan?.planId,
+                    power: homeCtrl.storeItemData.value.hashrate,
+                    durationSeconds: plan?.durationSeconds.toString(),
+                    durationType: plan?.renetalDays.toString(),
+                    type: homeCtrl.storeItemData.value.image,
+                    powerType: '',
+                    addTime: addTimeFormatted,
+                    token: result.token,
+                    productID: plan?.planId,
+                    purchaseStatus: result.status,
+                    purchaseId: '',
+                    originalJson: '',
+                  );
+      
+                  homeCtrl.activeHashRate.value += parseMiningPowerToGh(homeCtrl.storeItemData.value.hashrate.toString());
+                  EasyLoading.dismiss();
+                  withdrawDialog(data: homeCtrl.selectPlanDetails.value);
+                } catch (e) {
+                  EasyLoading.dismiss();
+                }
+              },
+            ).px(15),
+          ).pOnly(bottom: 10),
+        ),*/
       ),
-      /*  bottomNavigationBar: SafeArea(
-        child: SizedBox(
-          height: context.responsive.heightPercent(4.7),
-          child: AppButton(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            color: AppColor.button,
-            text: 'siap'.tr,
-            onTap: () async {
-              EasyLoading.show();
-
-              final plan = homeCtrl.selectPlanDetails.value;
-              final PurchaseResult result = await subscriptionService.buy(plan?.planId ?? "");
-
-              if (!result.success) {
-                EasyLoading.dismiss();
-                EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
-                return;
-              }
-
-              final addTimeFormatted =
-                  formatUtcMillisToLocal(result.transactionDate) ?? DateTime.now().toUtc().millisecondsSinceEpoch.toString();
-
-              try {
-                await ApiRepo.getSubDetails(
-                  email: HiveService().getData<String>(AppConfig.userEmail),
-                  botType: homeCtrl.storeItemData.value.name,
-                  plan: plan?.planId,
-                  power: homeCtrl.storeItemData.value.hashrate,
-                  durationSeconds: plan?.durationSeconds.toString(),
-                  durationType: plan?.renetalDays.toString(),
-                  type: homeCtrl.storeItemData.value.image,
-                  powerType: '',
-                  addTime: addTimeFormatted,
-                  token: result.token,
-                  productID: plan?.planId,
-                  purchaseStatus: result.status,
-                  purchaseId: '',
-                  originalJson: '',
-                );
-
-                homeCtrl.activeHashRate.value += parseMiningPowerToGh(homeCtrl.storeItemData.value.hashrate.toString());
-                EasyLoading.dismiss();
-                withdrawDialog(data: homeCtrl.selectPlanDetails.value);
-              } catch (e) {
-                EasyLoading.dismiss();
-              }
-            },
-          ).px(15),
-        ).pOnly(bottom: 10),
-      ),*/
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/addwd_model.dart';
@@ -43,10 +45,10 @@ class _PayoutPageState extends State<PayoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             customHeader(context, 'sbtc'.tr),
@@ -56,149 +58,150 @@ class _PayoutPageState extends State<PayoutPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     25.heightBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(AppAsset.bitcoin, scale: 18),
-                        10.widthBox,
-                        Text(
-                          balance.toStringAsFixed(12),
-                          style: textRoboto(context, fontSize: 22, fontWeight: FontWeight.w600),
-                        ),
-                      ],
+                    SlideFadeTransition(
+                      index: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(AppAsset.bitcoin, scale: 18),
+                          10.widthBox,
+                          Text(
+                            balance.toStringAsFixed(12),
+                            style: textRoboto(context, fontSize: 22, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
                     20.heightBox,
-                    CommonTextField(
-                      hintText: "Enter Recipient Address",
-                      controller: btcWalletIDCtrl,
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.multiline,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return "Please enter a valid address";
-                        }
-                        return null;
-                      },
+                    SlideFadeTransition(
+                      index: 2,
+                      child: CommonTextField(
+                        hintText: "Enter Recipient Address",
+                        controller: btcWalletIDCtrl,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.multiline,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Please enter a valid address";
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                     10.heightBox,
-                    pvaCard(text: balance.toStringAsFixed(12)),
+                    SlideFadeTransition(index: 3, child: pvaCard(text: balance.toStringAsFixed(12))),
                     2.heightBox,
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Text('withdrawal Limit: 0.1 BTC', style: subTextRoboto(context, fontSize: 11)),
+                    SlideFadeTransition(
+                      index: 3,
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Text('withdrawal Limit: 0.1 BTC', style: subTextRoboto(context, fontSize: 11)),
+                      ),
                     ),
                     15.heightBox,
-                    GestureDetector(
-                      onTap: () async {
-                        double withdrawalLimit = AppConfig.appDataSet?.withdrawalLimit ?? 0.0;
+                    SlideFadeTransition(
+                      index: 4,
+                      child: GestureDetector(
+                        onTap: () async {
+                          double withdrawalLimit = AppConfig.appDataSet?.withdrawalLimit ?? 0.0;
 
-                        if (balance >= withdrawalLimit) {
-                          AddWDModel addWDModel = await ApiRepo.addWithdrawDetails(
-                            email: HiveService().getData<String>(AppConfig.userEmail),
-                            btc: balance.toStringAsFixed(12),
-                          );
-                          if (addWDModel.statusCode == '200') {
-                            homeCtrl.totalMineBtc.value = 0.000000000000;
-                            homeCtrl.totalReferralBtc.value = 0.000000000000;
-                            homeCtrl.miningBtc.value = 0.000000000000;
-                            HiveService().deleteData(AppConfig.btcBalance);
+                          if (balance >= withdrawalLimit) {
+                            AddWDModel addWDModel = await ApiRepo.addWithdrawDetails(
+                              email: HiveService().getData<String>(AppConfig.userEmail),
+                              btc: balance.toStringAsFixed(12),
+                            );
+                            if (addWDModel.statusCode == '200') {
+                              homeCtrl.totalMineBtc.value = 0.000000000000;
+                              homeCtrl.totalReferralBtc.value = 0.000000000000;
+                              homeCtrl.miningBtc.value = 0.000000000000;
+                              HiveService().deleteData(AppConfig.btcBalance);
+                            } else {
+                              withdrawErrorDialog(massage: addWDModel.blanace?.toStringAsFixed(12));
+                            }
                           } else {
-                            withdrawErrorDialog(massage: addWDModel.blanace?.toStringAsFixed(12));
+                            EasyLoading.showToast(
+                              'You must have at least ${AppConfig.appDataSet?.withdrawalLimit} BTC to withdraw.',
+                            );
                           }
-                        } else {
-                          EasyLoading.showToast(
-                            'You must have at least ${AppConfig.appDataSet?.withdrawalLimit} BTC to withdraw.',
-                          );
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: AppColor.thirdCard,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Text(
-                            'Proceed',
-                            style: textRoboto(
-                              context,
-                              color: AppColor.text,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(color: AppColor.thirdCard, borderRadius: BorderRadius.circular(8)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: Text(
+                              'Proceed',
+                              style: textRoboto(context, color: AppColor.text, fontWeight: FontWeight.bold, fontSize: 17),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    Text(
-                      "Withdrawal History",
-                      style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
-                    ).pOnly(top: 25, bottom: 2),
-                    Divider(color: Colors.grey.withAlpha(100), thickness: 0.5, height: 0),
-                    Obx(
-                      () => homeCtrl.withdrawDetailsList.isEmpty
-                          ? Center(
-                              child: Text(
-                                "You don’t have any payout history yet.",
-                                style: subTextMontserrat(context, fontSize: 12),
-                              ).pOnly(top: 25),
-                            )
-                          : ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              itemCount: homeCtrl.withdrawDetailsList.length,
-                              itemBuilder: (context, index) {
-                                final data = homeCtrl.withdrawDetailsList[index];
-                                double usdValue =
-                                    double.parse(data.dr ?? "") *
-                                    (AppConfig.appDataSet?.btcPriceInUSD ?? 0.0);
-                                final formatted = NumberFormat.currency(
-                                  symbol: '\$',
-                                  decimalDigits: 4,
-                                ).format(usdValue);
-                                return CustomCard(
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(data.dr.toString(), style: textRoboto(context, fontSize: 12)),
-                                          Text(
-                                            miningDateFormat(data.date ?? ""),
-                                            style: textRoboto(context, fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            formatted,
-                                            style: textMontserrat(context, fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            data.status ?? '',
-                                            style: textRoboto(
-                                              context,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.red,
+                    AppConfig.appDataSet?.showTwoAd == true?
+                    SlideFadeTransition(index: 4, child: NativeBanner()):SizedBox(),
+                    SlideFadeTransition(
+                      index: 5,
+                      child: Text(
+                        "Withdrawal History",
+                        style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                      ).pOnly(top: 25, bottom: 2),
+                    ),
+                    SlideFadeTransition(index: 5, child: Divider(color: Colors.grey.withAlpha(100), thickness: 0.5, height: 0)),
+                    SlideFadeTransition(
+                      index: 6,
+                      child: Obx(
+                        () => homeCtrl.withdrawDetailsList.isEmpty
+                            ? Center(
+                                child: Text(
+                                  "You don’t have any payout history yet.",
+                                  style: subTextMontserrat(context, fontSize: 12),
+                                ).pOnly(top: 25),
+                              )
+                            : ListView.separated(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                itemCount: homeCtrl.withdrawDetailsList.length,
+                                itemBuilder: (context, index) {
+                                  final data = homeCtrl.withdrawDetailsList[index];
+                                  double usdValue = double.parse(data.dr ?? "") * (AppConfig.appDataSet?.btcPriceInUSD ?? 0.0);
+                                  final formatted = NumberFormat.currency(symbol: '\$', decimalDigits: 4).format(usdValue);
+                                  return CustomCard(
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(data.dr.toString(), style: textRoboto(context, fontSize: 12)),
+                                            Text(miningDateFormat(data.date ?? ""), style: textRoboto(context, fontSize: 12)),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(formatted, style: textMontserrat(context, fontWeight: FontWeight.w600)),
+                                            Text(
+                                              data.status ?? '',
+                                              style: textRoboto(
+                                                context,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.red,
+                                              ),
+                                              // color: Theme.of(context).colorScheme.onSurface),
                                             ),
-                                            // color: Theme.of(context).colorScheme.onSurface),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (BuildContext context, int index) {
-                                return SizedBox(height: 10);
-                              },
-                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (BuildContext context, int index) {
+                                  return SizedBox(height: 10);
+                                },
+                              ),
+                      ),
                     ),
                   ],
                 ).px(15),
@@ -206,6 +209,7 @@ class _PayoutPageState extends State<PayoutPage> {
             ),
           ],
         ),
+        bottomNavigationBar: SmallNative(),
       ),
     );
   }
@@ -243,11 +247,7 @@ class _PayoutPageState extends State<PayoutPage> {
                   ),
                   7.heightBox,
                   Text('Expected: $massage', textAlign: TextAlign.center, style: subTextRoboto(context)),
-                  Text(
-                    'Received: ${balance.toStringAsFixed(12)}',
-                    textAlign: TextAlign.center,
-                    style: subTextRoboto(context),
-                  ),
+                  Text('Received: ${balance.toStringAsFixed(12)}', textAlign: TextAlign.center, style: subTextRoboto(context)),
                   15.heightBox,
                   AppButton(
                     padding: EdgeInsets.symmetric(vertical: 6),

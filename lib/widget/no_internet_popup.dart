@@ -23,7 +23,7 @@ class NoInternetPopup extends StatelessWidget {
       barrierDismissible: false,
       builder: (context) => Dialog(
         insetPadding: EdgeInsets.symmetric(horizontal: 20),
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: AppColor.newCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: NoInternetPopup(onTryAgain: onTryAgain),
       ),
@@ -52,7 +52,7 @@ class NoInternetPopup extends StatelessWidget {
             ),
             5.heightBox,
             Text('Please check your connection to continue.',
-                textAlign: TextAlign.center, style: textRoboto(context)),
+                textAlign: TextAlign.center, style: subTextRoboto(context)),
             10.heightBox,
             Row(
               children: [
@@ -62,7 +62,7 @@ class NoInternetPopup extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 7),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: AppColor.thirdCard,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
@@ -81,7 +81,7 @@ class NoInternetPopup extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 7),
                       decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: AppColor.thirdCard,
                           borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(

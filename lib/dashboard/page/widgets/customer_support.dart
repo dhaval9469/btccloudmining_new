@@ -28,10 +28,10 @@ class _CustomerSupportState extends State<CustomerSupport> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        body: Column(
           children: [
             customHeader(context, 'scs'.tr),
             Expanded(
@@ -43,76 +43,89 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         25.heightBox,
-                        Text('Name', style: subTextRoboto(context)).px(18),
+                        SlideFadeTransition(
+                            index: 1,
+                            child: Text('Name', style: subTextRoboto(context)).px(18)),
                         3.heightBox,
-                        CommonTextField(
-                          hintText: "ex. John Smith",
-                          controller: nameCtrl,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Name is required.";
-                            }
-                            return null;
-                          },
-                        ).px(15),
-                        10.heightBox,
-                        Text('Email', style: subTextRoboto(context)).px(18),
-                        3.heightBox,
-                        CommonTextField(
-                          hintText: "ex. example123@.com",
-                          controller: emailCtrl,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Email is required.";
-                            }
-                            return null;
-                          },
-                        ).px(15),
-                        10.heightBox,
-                        Text('Your Massage', style: subTextRoboto(context)).px(18),
-                        3.heightBox,
-                        CommonTextField(
-                          hintText: "Type your message here...",
-                          controller: massageCtrl,
-                          maxLines: 4,
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "message is required.";
-                            }
-                            return null;
-                          },
-                        ).px(15),
-                        30.heightBox,
-                        AppButton(
-                          padding: EdgeInsets.symmetric(vertical: 7),
-                          color: AppColor.thirdCard,
-                          onTap: () async {
-                            try {
-                              if (csFormKey.currentState!.validate()) {
-                                FocusScope.of(context).unfocus();
-
-                                final email = Email(
-                                  body: 'name: ${nameCtrl.text},\nemail: ${emailCtrl.text},\nmessage: ${massageCtrl.text}',
-                                  subject:
-                                      'App: ${AppConfig.appName}, Version: ${AppConfig.appVersion}, email: ${emailCtrl.text}',
-                                  recipients: [AppConfig.appDataSet?.contactEmail ?? ''],
-                                  isHTML: false,
-                                );
-
-                                await FlutterEmailSender.send(email);
+                        SlideFadeTransition(
+                          index: 1,
+                          child: CommonTextField(
+                            hintText: "ex. John Smith",
+                            controller: nameCtrl,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.name,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Name is required.";
                               }
-                            } catch (e) {
-                              debugPrint('Email send error: $e');
-                            }
-                          },
-                          text: 'css'.tr,
-                        ).px(15),
+                              return null;
+                            },
+                          ).px(15),
+                        ),
+                        10.heightBox,
+                        SlideFadeTransition(index: 2,child: Text('Email', style: subTextRoboto(context)).px(18)),
+                        3.heightBox,
+                        SlideFadeTransition(
+                          index: 2,
+                          child: CommonTextField(
+                            hintText: "ex. example123@.com",
+                            controller: emailCtrl,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Email is required.";
+                              }
+                              return null;
+                            },
+                          ).px(15),
+                        ),
+                        10.heightBox,
+                        SlideFadeTransition(index: 3,child: Text('Your Massage', style: subTextRoboto(context)).px(18)),
+                        3.heightBox,
+                        SlideFadeTransition(index: 3,
+                          child: CommonTextField(
+                            hintText: "Type your message here...",
+                            controller: massageCtrl,
+                            maxLines: 4,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "message is required.";
+                              }
+                              return null;
+                            },
+                          ).px(15),
+                        ),
+                        30.heightBox,
+                        SlideFadeTransition(
+                          index: 4,
+                          child: AppButton(
+                            padding: EdgeInsets.symmetric(vertical: 7),
+                            color: AppColor.thirdCard,
+                            onTap: () async {
+                              try {
+                                if (csFormKey.currentState!.validate()) {
+                                  FocusScope.of(context).unfocus();
+
+                                  final email = Email(
+                                    body: 'name: ${nameCtrl.text},\nemail: ${emailCtrl.text},\nmessage: ${massageCtrl.text}',
+                                    subject:
+                                        'App: ${AppConfig.appName}, Version: ${AppConfig.appVersion}, email: ${emailCtrl.text}',
+                                    recipients: [AppConfig.appDataSet?.contactEmail ?? ''],
+                                    isHTML: false,
+                                  );
+
+                                  await FlutterEmailSender.send(email);
+                                }
+                              } catch (e) {
+                                debugPrint('Email send error: $e');
+                              }
+                            },
+                            text: 'css'.tr,
+                          ).px(15),
+                        ),
                       ],
                     ),
                   ),
@@ -121,8 +134,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
             ),
           ],
         ),
+        bottomNavigationBar: SmallNative(),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 

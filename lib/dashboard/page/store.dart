@@ -16,6 +16,7 @@ import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -42,127 +43,142 @@ class _StorePageState extends State<StorePage> {
             ).p(15),
 
             Obx(
-              () => homeCtrl.subscriptionPlanList.isEmpty
+              () => !homeCtrl.subscriptionPlanList.isEmpty
                   ? Padding(
                       padding: EdgeInsets.only(top: context.responsive.heightPercent(30)),
                       child: Column(children: [CircularProgressIndicator()]),
                     )
                   : Expanded(
                       child: cardLayout(
-                        child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 15,
-                            childAspectRatio: 0.65,
-                          ),
-                          shrinkWrap: true,
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                          itemCount: subPlanList.length,
-                          // itemCount: homeCtrl.subscriptionPlanList.length,
-                          itemBuilder: (context, index) {
-                            // final data = homeCtrl.subscriptionPlanList[index];
-                            final data = subPlanList[index];
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: AppColor.thirdCard),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "${data.planName}",
-                                    style: textMontserrat(context, fontSize: 14, fontWeight: FontWeight.bold),
-                                  ).pSymmetric(v: 8),
-                                  Divider(height: 0, color: AppColor.thirdCard),
-                                  Center(
+                        child: AnimationLimiter(
+                          child: GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 15,
+                              childAspectRatio: 0.65,
+                            ),
+                            shrinkWrap: true,
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                            itemCount: subPlanList.length,
+                            // itemCount: homeCtrl.subscriptionPlanList.length,
+                            itemBuilder: (context, index) {
+                              // final data = homeCtrl.subscriptionPlanList[index];
+                              final data = subPlanList[index];
+                              return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 300),
+                                child: SlideAnimation(
+                                  verticalOffset: 20,
+                                  child: FadeInAnimation(
                                     child: Container(
-                                      height: 80,
-                                      width: 80,
-                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("${data.image}"))),
-                                    ),
-                                  ),
-                                  itemDetails("Speed", "${data.speed}"),
-                                  2.heightBox,
-                                  itemDetails("Earning", "${data.earning}"),
-                                  15.heightBox,
-                                  data.planads == true
-                                      ? Obx(() {
-                                          final sessionTimer = StoreAdRewardService();
-                                          return GestureDetector(
-                                            onTap: !sessionTimer.isRunning
-                                                ? () {
-                                                    showWatchAdDialog(
-                                                      context,
-                                                      text: data.speed.toString(),
-                                                      time: data.adTime ?? 120,
-                                                      onWatchAd: () {
-                                                        homeCtrl.planAdIndex.value = index;
-                                                        handleBoostTap(sessionTimer, data);
-                                                      },
-                                                    );
-                                                  }
-                                                : () {},
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: AppColor.thirdCard,
-                                                    borderRadius: BorderRadius.circular(8),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text(
-                                                        sessionTimer.isRunning && homeCtrl.planAdIndex.value == index
-                                                            ? sessionTimer.formatDuration(sessionTimer.adRewardTimeLeft.value)
-                                                            : 'swAdBoost'.tr,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: textRoboto(context),
-                                                      ).pSymmetric(v: 5),
-                                                    ],
-                                                  ),
-                                                ),
-                                                13.heightBox,
-                                              ],
-                                            ),
-                                          );
-                                        }).px(10)
-                                      : SizedBox.shrink(),
-                                  Spacer(),
-                                  homeCtrl.isPurchase.value
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            InterstitialAdManager().showInterstitialByCount();
-                                            // homeCtrl.storeItemData.value = data;
-                                            homeCtrl.sItemData.value = data;
-                                            Navigation.pushNamed(Routes.storeInfo);
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColor.secondButton,
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(24),
-                                                bottomRight: Radius.circular(24),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: AppColor.thirdCard),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "${data.planName}",
+                                            style: textMontserrat(context, fontSize: 14, fontWeight: FontWeight.bold),
+                                          ).pSymmetric(v: 8),
+                                          Divider(height: 0, color: AppColor.thirdCard),
+                                          Center(
+                                            child: Container(
+                                              height: 80,
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(image: AssetImage("${data.image}")),
                                               ),
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'spn'.tr,
-                                                  style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 15),
-                                                ).pSymmetric(v: 6),
-                                              ],
-                                            ),
                                           ),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              ),
-                            );
-                          },
+                                          itemDetails("Speed", "${data.speed}"),
+                                          2.heightBox,
+                                          itemDetails("Earning", "${data.earning}"),
+                                          15.heightBox,
+                                          data.planads == true
+                                              ? Obx(() {
+                                                  final sessionTimer = StoreAdRewardService();
+                                                  return GestureDetector(
+                                                    onTap: !sessionTimer.isRunning
+                                                        ? () {
+                                                            showWatchAdDialog(
+                                                              context,
+                                                              text: data.speed.toString(),
+                                                              time: data.adTime ?? 120,
+                                                              onWatchAd: () {
+                                                                homeCtrl.planAdIndex.value = index;
+                                                                handleBoostTap(sessionTimer, data);
+                                                              },
+                                                            );
+                                                          }
+                                                        : () {},
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            color: AppColor.thirdCard,
+                                                            borderRadius: BorderRadius.circular(8),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              Text(
+                                                                sessionTimer.isRunning && homeCtrl.planAdIndex.value == index
+                                                                    ? sessionTimer.formatDuration(
+                                                                        sessionTimer.adRewardTimeLeft.value,
+                                                                      )
+                                                                    : 'swAdBoost'.tr,
+                                                                maxLines: 1,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                style: textRoboto(context),
+                                                              ).pSymmetric(v: 5),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        13.heightBox,
+                                                      ],
+                                                    ),
+                                                  );
+                                                }).px(10)
+                                              : SizedBox.shrink(),
+                                          Spacer(),
+                                          homeCtrl.isPurchase.value
+                                              ? GestureDetector(
+                                                  onTap: () {
+                                                    InterstitialAdManager().showInterstitialByCount();
+                                                    // homeCtrl.storeItemData.value = data;
+                                                    homeCtrl.sItemData.value = data;
+                                                    Navigation.pushNamed(Routes.storeInfo);
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: AppColor.secondButton,
+                                                      borderRadius: BorderRadius.only(
+                                                        bottomLeft: Radius.circular(24),
+                                                        bottomRight: Radius.circular(24),
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          'spn'.tr,
+                                                          style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 15),
+                                                        ).pSymmetric(v: 6),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              : SizedBox.shrink(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

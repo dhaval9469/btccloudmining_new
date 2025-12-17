@@ -46,6 +46,8 @@ class AppDataSet {
   int? dailyRewardTimeTwo;
   bool? startRewardAdsFirsTime;
   double? referEarn;
+  bool? showTwoAd;
+
 
   AppDataSet({
     this.withdrawalLimit,
@@ -77,6 +79,7 @@ class AppDataSet {
     this.dailyRewardTimeTwo,
     this.startRewardAdsFirsTime,
     this.referEarn,
+    this.showTwoAd = true,
   });
 
   AppDataSet.fromJson(Map<String, dynamic> json) {
@@ -109,6 +112,7 @@ class AppDataSet {
     dailyRewardTimeTwo = json['dailyRewardTimeTwo'];
     startRewardAdsFirsTime = json['start_rewardads_firstime'];
     referEarn = json['refer_earn'];
+    showTwoAd = json['show_two_td'];
   }
 
   Map<String, dynamic> toJson() {
@@ -142,6 +146,7 @@ class AppDataSet {
     data['dailyRewardTimeTwo'] = dailyRewardTimeTwo;
     data['start_rewardads_firstime'] = startRewardAdsFirsTime;
     data['refer_earn'] = referEarn;
+    data['show_two_ad'] = showTwoAd;
     return data;
   }
 }

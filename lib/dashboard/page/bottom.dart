@@ -1,27 +1,20 @@
 import 'dart:async';
-
 import 'package:btccloudmining/ad_modual/app_open.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/rewarded.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
-import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/page/home.dart';
 import 'package:btccloudmining/dashboard/page/setting.dart';
 import 'package:btccloudmining/dashboard/page/store.dart';
 import 'package:btccloudmining/dashboard/page/top_miner.dart';
-import 'package:btccloudmining/dashboard/repository/daily_reward.dart';
-import 'package:btccloudmining/dashboard/repository/daily_reward_two.dart';
 import 'package:btccloudmining/dashboard/repository/start_time_rp.dart';
-import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/connection_service.dart';
-import 'package:btccloudmining/dashboard/service/subscription_service.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
-import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -43,12 +36,10 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
     const SettingPage(key: ValueKey('setting')),
   ];
   final HomeCtrl homeCtrl = Get.find();
-  final subscriptionService = SubscriptionService();
   late StreamSubscription<FGBGType> subscription;
 
   @override
   void initState() {
-    loadVersion();
     ConnectionService.instance.listenForStatusChange(context);
     WidgetsBinding.instance.addObserver(this);
     loadActiveMiners();
@@ -194,6 +185,7 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
     await WakelockPlus.disable();
   }
 
+/*
   void loadVersion() async {
     await WakelockPlus.enable();
     homeCtrl.getSubDetails();
@@ -237,6 +229,7 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
     }
     HiveService().saveData(AppConfig.isInstall, true);
   }
+*/
 
   Future<void> loadActiveMiners() async {
     try {

@@ -49,11 +49,9 @@ class _SettingPageState extends State<SettingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SlideFadeTransition(
-              child: Row(
-                children: [Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
-              ).p(15),
-            ),
+            Row(
+              children: [Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
+            ).p(15),
             Expanded(
               child: cardLayout(
                 child: SingleChildScrollView(
@@ -61,12 +59,14 @@ class _SettingPageState extends State<SettingPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SlideFadeTransition(
+                        index: 0,
                         child: Text(
                           "Profile",
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
+                        index: 1,
                         child: Container(
                           decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
                           child: Padding(
@@ -84,12 +84,14 @@ class _SettingPageState extends State<SettingPage> {
                       ),
 
                       SlideFadeTransition(
+                        index: 2,
                         child: Text(
                           "General",
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
+                        index: 3,
                         child: Container(
                           decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
                           child: Padding(
@@ -113,6 +115,32 @@ class _SettingPageState extends State<SettingPage> {
                                   text: 'sbtc'.tr,
                                   image: AppAsset.wallet,
                                 ),
+
+                                if (homeCtrl.isPurchase.value != true) ...[
+                                  option(onTap: () => rateUs(), text: 'Restore Subscription', image: AppAsset.restore),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ).px(15),
+                      ),
+
+                      SlideFadeTransition(
+                        index: 4,
+                        child: Text(
+                          "Other",
+                          style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                        ).pOnly(top: 15, left: 17, bottom: 5),
+                      ),
+                      SlideFadeTransition(
+                        index: 5,
+                        child: Container(
+                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.all(13),
+                            child: Column(
+                              spacing: 13,
+                              children: [
                                 option(
                                   onTap: () {
                                     Navigation.pushNamed(Routes.referFriendsPage);
@@ -137,12 +165,14 @@ class _SettingPageState extends State<SettingPage> {
                       ),
 
                       SlideFadeTransition(
+                        index: 6,
                         child: Text(
                           "Account & Support",
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
+                        index: 7,
                         child: Container(
                           decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
                           child: Padding(

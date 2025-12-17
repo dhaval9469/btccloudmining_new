@@ -10,6 +10,7 @@ import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -38,10 +39,10 @@ class _LanguagePageState extends State<LanguagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        body: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,9 +67,9 @@ class _LanguagePageState extends State<LanguagePage> {
                             InterstitialAdManager().showInterstitialByCount();
                             homeCtrl.isChangingLanguage.value = true;
                             await Future.delayed(Duration(seconds: 2));
-
+        
                             LanguageService.changeLanguage(homeCtrl.languageCode.value);
-
+        
                               Navigation.pop();
                               homeCtrl.isChangingLanguage.value = false;
                           },
@@ -77,82 +78,94 @@ class _LanguagePageState extends State<LanguagePage> {
                 }),
               ],
             ).p(15),
-
+        
             Expanded(
               child: cardLayout(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: languagesList.length,
-                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20, top: 20),
-                  itemBuilder: (context, index) {
-                    final data = languagesList[index];
-                    return Obx(() {
-                      return GestureDetector(
-                        onTap: () {
-                          homeCtrl.languageCode.value = data['code'].toString();
-                          homeCtrl.selectedLanguage.value = index;
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: AppColor.card),
-                            color: homeCtrl.selectedLanguage.value == index ? AppColor.thirdCard : AppColor.newCard,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 35,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  image: DecorationImage(image: NetworkImage('${data['flag']}'), fit: BoxFit.cover),
-                                ),
-                              ),
-                              15.widthBox,
-                              Text(
-                                '${data['language']}',
-                                style: textRoboto(
-                                  context,
-                                  fontSize: 15,
-                                  color: homeCtrl.selectedLanguage.value == index ? AppColor.white : AppColor.text,
-                                  fontWeight: homeCtrl.selectedLanguage.value == index ? FontWeight.w600 : FontWeight.w500,
-                                ),
-                              ),
-                              Spacer(),
-                              Radio<int>(
-                                value: index,
-                                groupValue: homeCtrl.selectedLanguage.value,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    homeCtrl.selectedLanguage.value = value ?? 0;
-                                    homeCtrl.languageCode.value = data['code'].toString();
-                                  });
+                child: AnimationLimiter(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: languagesList.length,
+                    padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20, top: 20),
+                    itemBuilder: (context, index) {
+                      final data = languagesList[index];
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 300),
+                        child: SlideAnimation(
+                          verticalOffset: 20,
+                          child: FadeInAnimation(
+                            child:Obx(() {
+                              return GestureDetector(
+                                onTap: () {
+                                  homeCtrl.languageCode.value = data['code'].toString();
+                                  homeCtrl.selectedLanguage.value = index;
                                 },
-                                fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    return AppColor.white;
-                                  }
-                                  return AppColor.card;
-                                }),
-                                visualDensity: VisualDensity(vertical: -4, horizontal: -4),
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ],
-                          ).pSymmetric(v: 6, h: 10),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: AppColor.card),
+                                    color: homeCtrl.selectedLanguage.value == index ? AppColor.thirdCard : AppColor.newCard,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 20,
+                                        width: 35,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(2),
+                                          image: DecorationImage(image: NetworkImage('${data['flag']}'), fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      15.widthBox,
+                                      Text(
+                                        '${data['language']}',
+                                        style: textRoboto(
+                                          context,
+                                          fontSize: 15,
+                                          color: homeCtrl.selectedLanguage.value == index ? AppColor.white : AppColor.text,
+                                          fontWeight: homeCtrl.selectedLanguage.value == index ? FontWeight.w600 : FontWeight.w500,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Radio<int>(
+                                        value: index,
+                                        groupValue: homeCtrl.selectedLanguage.value,
+                                        onChanged: (int? value) {
+                                          setState(() {
+                                            homeCtrl.selectedLanguage.value = value ?? 0;
+                                            homeCtrl.languageCode.value = data['code'].toString();
+                                          });
+                                        },
+                                        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                          if (states.contains(WidgetState.selected)) {
+                                            return AppColor.white;
+                                          }
+                                          return AppColor.card;
+                                        }),
+                                        visualDensity: VisualDensity(vertical: -4, horizontal: -4),
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                    ],
+                                  ).pSymmetric(v: 6, h: 10),
+                                ),
+                              );
+                            }),
+                          ),
                         ),
                       );
-                    });
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: 12);
-                  },
+
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: 12);
+                    },
+                  ),
                 ),
               ),
             ),
           ],
         ),
+        bottomNavigationBar: SafeArea(child: SmallNative()),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 

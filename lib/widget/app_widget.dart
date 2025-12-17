@@ -19,35 +19,6 @@ Widget cardLayout({required Widget child}) {
   );
 }
 
-class StaggerItem extends StatelessWidget {
-  final Widget child;
-  final int index;
-  final Duration duration;
-
-  const StaggerItem({super.key, required this.child, required this.index, this.duration = const Duration(milliseconds: 600)});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: duration,
-      curve: Curves.easeOutCubic,
-      builder: (context, value, _) {
-        return Opacity(
-          opacity: value,
-          child: Transform.translate(
-            offset: Offset(0, (1 - value) * 16), // 🔥 lift from bottom
-            child: Transform.scale(
-              scale: 0.97 + (value * 0.03), // 🔥 smoother zoom
-              child: child,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 Widget customHeader(BuildContext context, String text, {GestureTapCallback? onBack}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,6 +34,36 @@ Widget customHeader(BuildContext context, String text, {GestureTapCallback? onBa
 }
 
 class SlideFadeTransition extends StatelessWidget {
+  final Widget child;
+  final int index;
+
+  const SlideFadeTransition({super.key, required this.child, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final int delay = index * 100;
+
+    return FutureBuilder(
+      future: Future.delayed(Duration(milliseconds: delay)),
+      builder: (context, snapshot) {
+        return TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0.0, end: snapshot.connectionState == ConnectionState.done ? 1.0 : 0.0),
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutQuart,
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Transform.translate(offset: Offset(0, 20 * (1 - value)), child: child),
+            );
+          },
+          child: child,
+        );
+      },
+    );
+  }
+}
+
+/*class SlideFadeTransition extends StatelessWidget {
   final Widget child;
 
   const SlideFadeTransition({super.key, required this.child});
@@ -82,4 +83,4 @@ class SlideFadeTransition extends StatelessWidget {
       child: child,
     );
   }
-}
+}*/

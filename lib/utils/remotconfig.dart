@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:btccloudmining/dashboard/model/end_point_model.dart';
 import 'package:btccloudmining/theme/config.dart';
@@ -40,7 +39,6 @@ class FirebaseRemoteConfigService {
         return EndPointModel();
       }
       final Map<String, dynamic> jsonMap = jsonDecode(json);
-
       return EndPointModel.fromJson(jsonMap);
     } catch (e) {
       return EndPointModel();
@@ -61,13 +59,11 @@ class FirebaseRemoteConfigService {
   }
 
   Future<void> getInfoData() async {
-
     AppConfig.baseUrl = firebaseRemoteConfig.getString('base_url');
     AppConfig.iv = firebaseRemoteConfig.getString('iv_encrypt');
     AppConfig.keyIv = firebaseRemoteConfig.getString('key_encrypt');
     AppConfig.token = firebaseRemoteConfig.getString('api_key');
     AppConfig.imageBaseurl = firebaseRemoteConfig.getString('image_baseurl');
-
 
     AppConfig.spIdData = await getSpIdData();
     AppConfig.endpoint = await getEndPointData();

@@ -51,6 +51,9 @@ dependencies:
   google_mobile_ads: ^6.0.0
   gma_mediation_meta: ^1.4.0
   flutter_fgbg: ^0.7.1
+  flutter_staggered_animations: ^1.1.1
+  shimmer: ^3.0.0
+  clipboard: ^3.0.8
 
 
 dev_dependencies:

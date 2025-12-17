@@ -39,10 +39,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        body: Column(
           children: [
             customHeader(context, 'sp'.tr),
             Expanded(
@@ -54,94 +54,117 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         30.heightBox,
-                        Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: userProfile?.isNotEmpty ?? false
-                                ? Image.network(HiveService().getData<String>(AppConfig.userImage) ?? "", scale: 2.5)
-                                : FaIcon(FontAwesomeIcons.solidCircleUser, size: 42, color: AppColor.text),
+                        SlideFadeTransition(
+                          index: 1,
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: userProfile?.isNotEmpty ?? false
+                                  ? Image.network(HiveService().getData<String>(AppConfig.userImage) ?? "", scale: 2.5)
+                                  : FaIcon(FontAwesomeIcons.solidCircleUser, size: 42, color: AppColor.text),
+                            ),
                           ),
                         ),
                         7.heightBox,
-                        Center(
-                          child: Text(
-                            HiveService().getData<String>(AppConfig.userEmail) ?? "",
-                            style: textRoboto(context, fontSize: 15),
+                        SlideFadeTransition(
+                          index: 2,
+                          child: Center(
+                            child: Text(
+                              HiveService().getData<String>(AppConfig.userEmail) ?? "",
+                              style: textRoboto(context, fontSize: 15),
+                            ),
                           ),
                         ),
-                        Center(child: Text('ID: ${AppConfig.userProfileId}', style: subTextMontserrat(context, fontSize: 12))),
+                        SlideFadeTransition(
+                          index: 2,
+                          child: Center(
+                            child: Text('ID: ${AppConfig.userProfileId}', style: subTextMontserrat(context, fontSize: 12)),
+                          ),
+                        ),
                         25.heightBox,
-                        Text('Name', style: subTextRoboto(context)).px(18),
+                        SlideFadeTransition(index: 3, child: Text('Name', style: subTextRoboto(context)).px(18)),
                         3.heightBox,
-                        CommonTextField(
-                          hintText: "ex. John Smith",
-                          controller: nameCtrl,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "pnError".tr;
-                            }
-                            return null;
-                          },
-                        ).px(15),
-                        13.heightBox,
-                        Text('Email', style: subTextRoboto(context)).px(18),
-                        3.heightBox,
-                        CommonTextField(
-                          hintText: "ex. example123@gmail.com",
-                          controller: emailCtrl,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "peError".tr;
-                            }
-                            return null;
-                          },
-                        ).px(15),
-                        13.heightBox,
-                        Text('Phone Number', style: subTextRoboto(context)).px(18),
-                        3.heightBox,
-                        CommonTextField(
-                          hintText: "ex. +1 1234567890",
-                          controller: phoneNumberCtrl,
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.phone,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'pmnumberError'.tr;
-                            }
-                            return null;
-                          },
-                        ).px(15),
-                        30.heightBox,
-                        AppButton(
-                          padding: EdgeInsets.symmetric(vertical: 7),
-                          color: AppColor.thirdCard,
-                          onTap: () async {
-                            FocusScope.of(context).unfocus();
-
-                            if (formKey.currentState?.validate() == true) {
-                              UpdateProfileModel updateProfileModel = await ApiRepo.updateProfile(
-                                email: emailCtrl.text.trim(),
-                                name: nameCtrl.text.trim(),
-                                mobile: phoneNumberCtrl.text.trim(),
-                                btcAddress: "",
-                                gender: "",
-                              );
-
-                              if (updateProfileModel.statusCode == '200') {
-                                HiveService().saveData(AppConfig.userEmail, updateProfileModel.email);
-                                HiveService().saveData(AppConfig.userName, updateProfileModel.name);
-                                HiveService().saveData(AppConfig.userMobile, updateProfileModel.mobile);
+                        SlideFadeTransition(
+                          index: 3,
+                          child: CommonTextField(
+                            hintText: "ex. John Smith",
+                            controller: nameCtrl,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.name,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "pnError".tr;
                               }
-
-                              Navigation.pop();
-                            }
-                          },
-                          text: 'pub'.tr,
-                        ).px(15),
+                              return null;
+                            },
+                          ).px(15),
+                        ),
+                        13.heightBox,
+                        SlideFadeTransition(index: 4, child: Text('Email', style: subTextRoboto(context)).px(18)),
+                        3.heightBox,
+                        SlideFadeTransition(
+                          index: 4,
+                          child: CommonTextField(
+                            hintText: "ex. example123@gmail.com",
+                            controller: emailCtrl,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "peError".tr;
+                              }
+                              return null;
+                            },
+                          ).px(15),
+                        ),
+                        13.heightBox,
+                        SlideFadeTransition(index: 5, child: Text('Phone Number', style: subTextRoboto(context)).px(18)),
+                        3.heightBox,
+                        SlideFadeTransition(
+                          index: 5,
+                          child: CommonTextField(
+                            hintText: "ex. +1 1234567890",
+                            controller: phoneNumberCtrl,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'pmnumberError'.tr;
+                              }
+                              return null;
+                            },
+                          ).px(15),
+                        ),
+                        30.heightBox,
+                        SlideFadeTransition(
+                          index: 6,
+                          child: AppButton(
+                            padding: EdgeInsets.symmetric(vertical: 7),
+                            color: AppColor.thirdCard,
+                            onTap: () async {
+                              FocusScope.of(context).unfocus();
+        
+                              if (formKey.currentState?.validate() == true) {
+                                UpdateProfileModel updateProfileModel = await ApiRepo.updateProfile(
+                                  email: emailCtrl.text.trim(),
+                                  name: nameCtrl.text.trim(),
+                                  mobile: phoneNumberCtrl.text.trim(),
+                                  btcAddress: "",
+                                  gender: "",
+                                );
+        
+                                if (updateProfileModel.statusCode == '200') {
+                                  HiveService().saveData(AppConfig.userEmail, updateProfileModel.email);
+                                  HiveService().saveData(AppConfig.userName, updateProfileModel.name);
+                                  HiveService().saveData(AppConfig.userMobile, updateProfileModel.mobile);
+                                }
+        
+                                Navigation.pop();
+                              }
+                            },
+                            text: 'pub'.tr,
+                          ).px(15),
+                        ),
                       ],
                     ),
                   ),
@@ -150,8 +173,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
+        bottomNavigationBar: SmallNative(),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 }
