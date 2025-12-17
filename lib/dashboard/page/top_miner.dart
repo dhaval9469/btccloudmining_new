@@ -29,7 +29,7 @@ class _TopMinerState extends State<TopMiner> {
         child: Column(
           children: [
             Row(
-              children: [Text("LeaderBoard", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
+              children: [Text("bl".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
             ).p(15),
 
             Expanded(

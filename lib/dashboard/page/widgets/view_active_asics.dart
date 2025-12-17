@@ -31,17 +31,17 @@ class _ViewActiveAsicsState extends State<ViewActiveAsics> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColor.newBg,
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
           children: [
-            customHeader(context, 'aas'.tr),
+            customHeader(context, 'scp'.tr),
             Expanded(
               child: cardLayout(
                 child: Obx(
                   () => homeCtrl.userActiveBotList.isEmpty
-                      ? Center(child: NoData(text: 'aaEmpty'.tr, isCenter: true))
+                      ? Center(child: NoData(text: 'wbcp'.tr, isCenter: true))
                       : AnimationLimiter(
                         child: GridView.builder(
                             shrinkWrap: true,
@@ -82,7 +82,7 @@ class _ViewActiveAsicsState extends State<ViewActiveAsics> {
                                                   );
                                                 },
                                                 errorBuilder: (context, error, stackTrace) {
-                                                  return Image.asset(AppAsset.antminerS19XP);
+                                                  return Image.asset(AppAsset.blockEdge);
                                                 },
                                               ),
                                             ),
@@ -137,8 +137,8 @@ class _ViewActiveAsicsState extends State<ViewActiveAsics> {
             ),
           ],
         ),
-        bottomNavigationBar: SmallNative(),
       ),
+      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 

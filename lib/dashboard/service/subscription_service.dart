@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:btccloudmining/helper/exception_handler.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:flutter/foundation.dart';
@@ -127,26 +126,6 @@ class SubscriptionService {
     }
   }
 
-  // --- Restore purchases ---
-  // Future<void> restorePurchases() async {
-  //   await _iap.restorePurchases();
-  // }
-
-  /*  Future<List<PurchaseDetails>> restorePurchases() async {
-    final InAppPurchaseAndroidPlatformAddition androidAddition =
-    _iap.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
-
-    final purchases = await androidAddition.queryPastPurchases();
-
-    // Filter only valid purchases
-    final validPurchases = purchases.pastPurchases.where((purchase) =>
-    purchase.status == PurchaseStatus.purchased ||
-        purchase.status == PurchaseStatus.restored
-    ).toList();
-
-    return validPurchases;
-  }*/
-
   Future<List<PurchaseDetails>> restorePurchases() async {
     try {
       EasyLoading.show();
@@ -157,8 +136,7 @@ class SubscriptionService {
       final validPurchases = purchases.pastPurchases
           .where(
             (purchase) =>
-                purchase.status == PurchaseStatus.purchased ||
-                purchase.status == PurchaseStatus.restored,
+                purchase.status == PurchaseStatus.purchased || purchase.status == PurchaseStatus.restored,
           )
           .toList();
 

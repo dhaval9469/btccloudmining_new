@@ -150,7 +150,6 @@ class ApiRepo {
     try {
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'email': email, "token": AppConfig.token};
-
       final response = await NetworkAPICall().post(AppConfig.endpoint?.subscriptionBtc ?? '', body, header: headers);
       return SubDetailsModel.fromJson(response);
     } catch (e, st) {

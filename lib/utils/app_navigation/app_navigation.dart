@@ -28,7 +28,6 @@ mixin Routes {
   static const String home = "/home";
   static const String bottom = "/bottom";
   static const String profilePage = "/profilePage";
-  static const String miningRecord = "/miningRecord";
   static const String topMiner = "/topMiner";
   static const String viewActiveAsics = "/viewActiveAsics";
   static const String customerSupport = "/customerSupport";
@@ -51,7 +50,6 @@ mixin Routes {
     GetPage(name: home, page: () => const HomePage(), transition: defaultTransition),
     GetPage(name: bottom, page: () => const BottomBarPage(), transition: defaultTransition),
     GetPage(name: profilePage, page: () => const ProfilePage(), transition: defaultTransition),
-    GetPage(name: miningRecord, page: () => const MiningRecord(), transition: defaultTransition),
     GetPage(name: topMiner, page: () => TopMiner(), transition: defaultTransition),
     GetPage(name: viewActiveAsics, page: () => const ViewActiveAsics(), transition: defaultTransition),
     GetPage(name: customerSupport, page: () => const CustomerSupport(), transition: defaultTransition),

@@ -54,6 +54,7 @@ class AppAsset {
   static const trophy = '$image/trophy.png';
   static const wallet = '$image/wallet.png';
   static const restore = '$image/restore.png';
+  static const boost = '$image/boost.png';
 
 
   static const rcm = '$icon/rcm.png';
@@ -62,7 +63,7 @@ class AppAsset {
   static const algorithm = '$icon/algorithm.png';
   static const efficiency = '$icon/efficiency.png';
   static const hashRate = '$icon/hashrate.png';
-  static const antminerS19XP = '$icon/antminer_s19_xp.png';
+  static const blockEdge = '$icon/block_edge.png';
   static const fan = '$icon/fan.png';
   static const fanBody = '$icon/fanbody.png';
   static const one= '$icon/1.png';

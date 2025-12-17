@@ -39,10 +39,10 @@ class _LanguagePageState extends State<LanguagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColor.newBg,
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,9 +67,9 @@ class _LanguagePageState extends State<LanguagePage> {
                             InterstitialAdManager().showInterstitialByCount();
                             homeCtrl.isChangingLanguage.value = true;
                             await Future.delayed(Duration(seconds: 2));
-        
+
                             LanguageService.changeLanguage(homeCtrl.languageCode.value);
-        
+
                               Navigation.pop();
                               homeCtrl.isChangingLanguage.value = false;
                           },
@@ -78,7 +78,7 @@ class _LanguagePageState extends State<LanguagePage> {
                 }),
               ],
             ).p(15),
-        
+
             Expanded(
               child: cardLayout(
                 child: AnimationLimiter(
@@ -164,8 +164,8 @@ class _LanguagePageState extends State<LanguagePage> {
             ),
           ],
         ),
-        bottomNavigationBar: SafeArea(child: SmallNative()),
       ),
+      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 

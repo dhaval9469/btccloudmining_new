@@ -28,10 +28,10 @@ class _CustomerSupportState extends State<CustomerSupport> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColor.newBg,
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
           children: [
             customHeader(context, 'scs'.tr),
             Expanded(
@@ -45,7 +45,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                         25.heightBox,
                         SlideFadeTransition(
                             index: 1,
-                            child: Text('Name', style: subTextRoboto(context)).px(18)),
+                            child: Text('epn'.tr, style: subTextRoboto(context)).px(18)),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 1,
@@ -56,43 +56,43 @@ class _CustomerSupportState extends State<CustomerSupport> {
                             keyboardType: TextInputType.name,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "Name is required.";
+                                return "epne".tr;
                               }
                               return null;
                             },
                           ).px(15),
                         ),
                         10.heightBox,
-                        SlideFadeTransition(index: 2,child: Text('Email', style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(index: 2,child: Text('epe'.tr, style: subTextRoboto(context)).px(18)),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 2,
                           child: CommonTextField(
-                            hintText: "ex. example123@.com",
+                            hintText: "ex. example123@gmail.com",
                             controller: emailCtrl,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "Email is required.";
+                                return "epee".tr;
                               }
                               return null;
                             },
                           ).px(15),
                         ),
                         10.heightBox,
-                        SlideFadeTransition(index: 3,child: Text('Your Massage', style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(index: 3,child: Text('csym'.tr, style: subTextRoboto(context)).px(18)),
                         3.heightBox,
                         SlideFadeTransition(index: 3,
                           child: CommonTextField(
-                            hintText: "Type your message here...",
+                            hintText: "cstymh".tr,
                             controller: massageCtrl,
                             maxLines: 4,
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "message is required.";
+                                return "csmr".tr;
                               }
                               return null;
                             },
@@ -134,8 +134,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
             ),
           ],
         ),
-        bottomNavigationBar: SmallNative(),
       ),
+      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 

@@ -20,12 +20,12 @@ class ReferFriendsPage extends StatefulWidget {
 class _ReferFriendsPageState extends State<ReferFriendsPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColor.newBg,
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
           children: [
-            customHeader(context, 'sre'.tr),
+            customHeader(context, 'srf'.tr),
             Expanded(
               child: cardLayout(
                 child: Column(
@@ -36,7 +36,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Your Referral Code", style: textMontserrat(context)),
+                          Text("rfyrc".tr, style: textMontserrat(context)),
                           GestureDetector(
                             onTap: () async {
                               final message = AppConfig.referralCode;
@@ -51,7 +51,10 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                     SlideFadeTransition(
                       index: 2,
                       child: Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColor.card),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColor.card,
+                        ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 7),
                           child: Row(
@@ -74,7 +77,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () async {
-                                await FlutterClipboard.copy(AppConfig.referralCode);
+                                shareInvite();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -89,8 +92,12 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                                       FaIcon(FontAwesomeIcons.copy, color: AppColor.subText, size: 15),
                                       10.widthBox,
                                       Text(
-                                        "Copy Code",
-                                        style: subTextMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                                        "rfcc".tr,
+                                        style: subTextMontserrat(
+                                          context,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -102,8 +109,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () async {
-                                final message = AppConfig.referralCode;
-                                await SharePlus.instance.share(ShareParams(text: message));
+                                shareInvite();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -117,7 +123,14 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                                     children: [
                                       FaIcon(FontAwesomeIcons.slideshare, color: AppColor.subText, size: 15),
                                       10.widthBox,
-                                      Text("Share", style: subTextMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600)),
+                                      Text(
+                                        "rfsc".tr,
+                                        style: subTextMontserrat(
+                                          context,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -135,24 +148,33 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                           FaIcon(FontAwesomeIcons.gift, color: AppColor.subText, size: 15),
                           10.widthBox,
                           Text(
-                            "Benefits of Referrals",
+                            "rfbr".tr,
                             style: subTextMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                           ),
                         ],
                       ).px(15),
                     ),
                     15.heightBox,
-                    SlideFadeTransition(index: 5, child: benefitRow('Get 0.00000005 BTC for every referral')),
-                    SlideFadeTransition(index: 6, child: benefitRow('Your friends get huge bonuses to start mining')),
-                    SlideFadeTransition(index: 7, child: benefitRow('Unlimited referrals – invite as many as you want!')),
+                    SlideFadeTransition(
+                      index: 5,
+                      child: benefitRow('rfgber'.trParams({"rBTC": AppConfig.referEarn.toStringAsFixed(12)})),
+                    ),
+                    SlideFadeTransition(
+                      index: 6,
+                      child: benefitRow('rfyfghbsm'.tr),
+                    ),
+                    SlideFadeTransition(
+                      index: 7,
+                      child: benefitRow('rfurimyw'.tr),
+                    ),
                   ],
                 ),
               ),
             ),
           ],
         ),
-        bottomNavigationBar: SmallNative(),
       ),
+      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 
@@ -164,5 +186,13 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
         Text(text, style: subTextMontserrat(context, fontSize: 12)),
       ],
     ).px(15);
+  }
+
+  Future<void> shareInvite() async {
+    final message = 'rfct'.trParams({
+      'referralCode': AppConfig.referralCode,
+      "siAppLink": AppConfig.appLink,
+    });
+    await SharePlus.instance.share(ShareParams(text: message));
   }
 }

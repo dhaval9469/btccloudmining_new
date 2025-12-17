@@ -5,7 +5,9 @@ import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/repository/storeinfo_rewardservice.dart';
+import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/subscription_service.dart';
+import 'package:btccloudmining/helper/exception_handler.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
@@ -13,6 +15,7 @@ import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/utils/responsiv.dart';
+import 'package:btccloudmining/utils/utils.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +39,10 @@ class _StoreInfoState extends State<StoreInfo> {
   @override
   void initState() {
     super.initState();
-    // setData();
+    setData();
   }
 
-  /*  setData() async {
+  setData() async {
     try {
       EasyLoading.show();
       await Future.delayed(Duration(seconds: 1));
@@ -48,62 +51,94 @@ class _StoreInfoState extends State<StoreInfo> {
       homeCtrl.selectPlanDetails.value = homeCtrl.storeItemData.value.plans?[0];
 
       for (var element in subscriptionService.products) {
-        final match = homeCtrl.storeItemData.value.plans?.firstWhereOrNull((plan) => plan.planId == element.id);
+        final match = homeCtrl.storeItemData.value.plans?.firstWhereOrNull(
+          (plan) => plan.planId == element.id,
+        );
         if (match != null) {
           match.amount = element.price;
         }
       }
-
-      setState(() {});
+      // setState(() {});
       EasyLoading.dismiss();
     } catch (e, st) {
       EasyLoading.dismiss();
       AppException.showException(e, st);
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColor.newBg,
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
           children: [
-            customHeader(context, '${homeCtrl.sItemData.value.planName}'),
+            customHeader(context, '${homeCtrl.storeItemData.value.planName}'),
             Expanded(
               child: cardLayout(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      10.heightBox,
-                      SlideFadeTransition(index: 1, child: Image.asset("${homeCtrl.sItemData.value.image}", scale: 4)),
-                      10.heightBox,
                       SlideFadeTransition(
-                        index: 2,
-                        child: detailRow(text: "Speed Allocation: ", subText: homeCtrl.sItemData.value.speed),
+                        index: 1,
+                        child: Center(
+                          child: Image.network(
+                            "${AppConfig.imageBaseurl}${homeCtrl.storeItemData.value.image}",
+                            height: context.responsive.heightPercent(15),
+                            width: context.responsive.widthPercent(40),
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return SizedBox(
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColor.button,
+                                  ),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(AppAsset.blockEdge);
+                            },
+                          ),
+                        ).py(20),
                       ),
                       SlideFadeTransition(
                         index: 2,
-                        child: detailRow(text: "Earning Speed: ", subText: homeCtrl.sItemData.value.earning),
+                        child: detailRow(text: "sisa".tr, subText: homeCtrl.storeItemData.value.hashrate),
                       ),
-      
-                      10.heightBox,
-                      AppConfig.appDataSet?.showTwoAd == true?
-                      SlideFadeTransition(index: 3, child: NativeBanner()):SizedBox(),
-                      10.heightBox,
+                      SlideFadeTransition(
+                        index: 2,
+                        child: detailRow(text: "sip".tr, subText: homeCtrl.storeItemData.value.power),
+                      ),
+                      SlideFadeTransition(
+                        index: 2,
+                        child: detailRow(text: "sies".tr, subText: homeCtrl.storeItemData.value.efficiency),
+                      ),
+                      SlideFadeTransition(
+                        index: 3,
+                        child: Text(
+                          homeCtrl.storeItemData.value.description ?? "",
+                          textAlign: TextAlign.center,
+                          style: subTextMontserrat(context, fontSize: 11),
+                        ).px(15).py(10),
+                      ),
+                      AppConfig.appDataSet?.showTwoAd == true
+                          ? SlideFadeTransition(index: 3, child: NativeBanner().pOnly(bottom: 7))
+                          : SizedBox(),
                       ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: homeCtrl.sItemData.value.plans?.length ?? 0,
+                        itemCount: homeCtrl.storeItemData.value.plans?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final plan = homeCtrl.sItemData.value.plans?[index];
+                          final plan = homeCtrl.storeItemData.value.plans?[index];
                           return SlideFadeTransition(
                             index: index + 4,
                             child: Obx(
                               () => GestureDetector(
                                 onTap: () {
                                   homeCtrl.selectedPlanIndex.value = index;
-                                  // homeCtrl.selectPlanDetails.value = plan;
+                                  homeCtrl.selectPlanDetails.value = plan;
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -124,7 +159,9 @@ class _StoreInfoState extends State<StoreInfo> {
                                             "${plan?.validity}",
                                             style: textRoboto(
                                               context,
-                                              color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
+                                              color: homeCtrl.selectedPlanIndex.value == index
+                                                  ? AppColor.text
+                                                  : AppColor.subText,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -136,32 +173,37 @@ class _StoreInfoState extends State<StoreInfo> {
                                                   ? FontWeight.bold
                                                   : FontWeight.w500,
                                               fontSize: homeCtrl.selectedPlanIndex.value == index ? 15 : 14,
-                                              color: homeCtrl.selectedPlanIndex.value == index ? AppColor.text : AppColor.subText,
+                                              color: homeCtrl.selectedPlanIndex.value == index
+                                                  ? AppColor.text
+                                                  : AppColor.subText,
                                             ),
                                           ),
                                         ],
                                       ),
-      
+
                                       plan?.discount != 0
                                           ? Container(
                                               decoration: BoxDecoration(
-                                                color: Color(0xffF44336),
-                                                /*      gradient: const LinearGradient(
+                                                gradient: const LinearGradient(
                                                   colors: [
                                                     Color(0xffFF9800), // Orange
                                                     Color(0xffF44336), // Red
                                                   ],
                                                   begin: Alignment.topLeft,
                                                   end: Alignment.bottomRight,
-                                                ),*/
+                                                ),
                                                 borderRadius: BorderRadius.circular(6),
                                               ),
                                               child: Row(
                                                 children: [
-                                                  Text('Limited-Time Offer – Save ', style: textRoboto(context, fontSize: 12)),
+                                                  Text('siltos'.tr, style: textRoboto(context, fontSize: 12)),
                                                   Text(
                                                     '${plan?.discount}%',
-                                                    style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 13),
+                                                    style: textRoboto(
+                                                      context,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 13,
+                                                    ),
                                                   ),
                                                 ],
                                               ).pSymmetric(v: 2, h: 10),
@@ -178,22 +220,69 @@ class _StoreInfoState extends State<StoreInfo> {
                           return 10.heightBox;
                         },
                       ),
-      
-                      15.heightBox,
+                      20.heightBox,
                       SlideFadeTransition(
                         index: 6,
-                        child: Container(
-                          decoration: BoxDecoration(color: AppColor.thirdCard, borderRadius: BorderRadius.circular(8)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'siap'.tr,
-                                style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 16),
-                              ).pSymmetric(v: 6),
-                            ],
-                          ),
-                        ).px(15),
+                        child: GestureDetector(
+                          onTap: () async {
+                            EasyLoading.show();
+
+                            final plan = homeCtrl.selectPlanDetails.value;
+                            final PurchaseResult result = await subscriptionService.buy(plan?.planId ?? "");
+
+                            if (!result.success) {
+                              EasyLoading.dismiss();
+                              EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
+                              return;
+                            }
+
+                            final addTimeFormatted =
+                                formatUtcMillisToLocal(result.transactionDate) ??
+                                DateTime.now().toUtc().millisecondsSinceEpoch.toString();
+
+                            try {
+                              await ApiRepo.getSubDetails(
+                                email: HiveService().getData<String>(AppConfig.userEmail),
+                                botType: homeCtrl.storeItemData.value.planName,
+                                plan: plan?.planId,
+                                power: homeCtrl.storeItemData.value.hashrate,
+                                durationSeconds: plan?.durationSeconds.toString(),
+                                durationType: plan?.renetalDays.toString(),
+                                type: homeCtrl.storeItemData.value.image,
+                                powerType: '',
+                                addTime: addTimeFormatted,
+                                token: result.token,
+                                productID: plan?.planId,
+                                purchaseStatus: result.status,
+                                purchaseId: '',
+                                originalJson: '',
+                              );
+
+                              homeCtrl.activeHashRate.value += parseMiningPowerToGh(
+                                homeCtrl.storeItemData.value.hashrate.toString(),
+                              );
+                              EasyLoading.dismiss();
+                              withdrawDialog(data: homeCtrl.selectPlanDetails.value);
+                            } catch (e) {
+                              EasyLoading.dismiss();
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColor.thirdCard,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'siap'.tr,
+                                  style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 16),
+                                ).pSymmetric(v: 6),
+                              ],
+                            ),
+                          ).px(15),
+                        ),
                       ),
                       5.heightBox,
                       SlideFadeTransition(
@@ -212,58 +301,58 @@ class _StoreInfoState extends State<StoreInfo> {
             ),
           ],
         ),
-        bottomNavigationBar: SmallNative(),
-        /*  bottomNavigationBar: SafeArea(
-          child: SizedBox(
-            height: context.responsive.heightPercent(4.7),
-            child: AppButton(
-              padding: EdgeInsets.symmetric(vertical: 5),
-              color: AppColor.button,
-              text: 'siap'.tr,
-              onTap: () async {
-                EasyLoading.show();
-      
-                final plan = homeCtrl.selectPlanDetails.value;
-                final PurchaseResult result = await subscriptionService.buy(plan?.planId ?? "");
-      
-                if (!result.success) {
-                  EasyLoading.dismiss();
-                  EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
-                  return;
-                }
-      
-                final addTimeFormatted =
-                    formatUtcMillisToLocal(result.transactionDate) ?? DateTime.now().toUtc().millisecondsSinceEpoch.toString();
-      
-                try {
-                  await ApiRepo.getSubDetails(
-                    email: HiveService().getData<String>(AppConfig.userEmail),
-                    botType: homeCtrl.storeItemData.value.name,
-                    plan: plan?.planId,
-                    power: homeCtrl.storeItemData.value.hashrate,
-                    durationSeconds: plan?.durationSeconds.toString(),
-                    durationType: plan?.renetalDays.toString(),
-                    type: homeCtrl.storeItemData.value.image,
-                    powerType: '',
-                    addTime: addTimeFormatted,
-                    token: result.token,
-                    productID: plan?.planId,
-                    purchaseStatus: result.status,
-                    purchaseId: '',
-                    originalJson: '',
-                  );
-      
-                  homeCtrl.activeHashRate.value += parseMiningPowerToGh(homeCtrl.storeItemData.value.hashrate.toString());
-                  EasyLoading.dismiss();
-                  withdrawDialog(data: homeCtrl.selectPlanDetails.value);
-                } catch (e) {
-                  EasyLoading.dismiss();
-                }
-              },
-            ).px(15),
-          ).pOnly(bottom: 10),
-        ),*/
       ),
+      bottomNavigationBar: SafeArea(child: SmallNative()),
+      /*  bottomNavigationBar: SafeArea(
+        child: SizedBox(
+          height: context.responsive.heightPercent(4.7),
+          child: AppButton(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            color: AppColor.button,
+            text: 'siap'.tr,
+            onTap: () async {
+              EasyLoading.show();
+
+              final plan = homeCtrl.selectPlanDetails.value;
+              final PurchaseResult result = await subscriptionService.buy(plan?.planId ?? "");
+
+              if (!result.success) {
+                EasyLoading.dismiss();
+                EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
+                return;
+              }
+
+              final addTimeFormatted =
+                  formatUtcMillisToLocal(result.transactionDate) ?? DateTime.now().toUtc().millisecondsSinceEpoch.toString();
+
+              try {
+                await ApiRepo.getSubDetails(
+                  email: HiveService().getData<String>(AppConfig.userEmail),
+                  botType: homeCtrl.storeItemData.value.name,
+                  plan: plan?.planId,
+                  power: homeCtrl.storeItemData.value.hashrate,
+                  durationSeconds: plan?.durationSeconds.toString(),
+                  durationType: plan?.renetalDays.toString(),
+                  type: homeCtrl.storeItemData.value.image,
+                  powerType: '',
+                  addTime: addTimeFormatted,
+                  token: result.token,
+                  productID: plan?.planId,
+                  purchaseStatus: result.status,
+                  purchaseId: '',
+                  originalJson: '',
+                );
+
+                homeCtrl.activeHashRate.value += parseMiningPowerToGh(homeCtrl.storeItemData.value.hashrate.toString());
+                EasyLoading.dismiss();
+                withdrawDialog(data: homeCtrl.selectPlanDetails.value);
+              } catch (e) {
+                EasyLoading.dismiss();
+              }
+            },
+          ).px(15),
+        ).pOnly(bottom: 10),
+      ),*/
     );
   }
 
@@ -302,7 +391,7 @@ class _StoreInfoState extends State<StoreInfo> {
 
         final activeMiner = ActiveBotModel(
           productID: '',
-          botType: data.name.toString(),
+          botType: data.planName.toString(),
           type: data.hashrate ?? '',
           power: data.power ?? '',
           machineType: data.efficiency ?? '',
@@ -340,15 +429,15 @@ class _StoreInfoState extends State<StoreInfo> {
             children: [
               Lottie.asset(AppAsset.done, width: 100, height: 100, fit: BoxFit.fill, repeat: true),
               10.heightBox,
-              /*              Text(
+              Text(
                 "sissm".trParams({
-                  "name": homeCtrl.storeItemData.value.name.toString(),
-                  "hashrate": homeCtrl.storeItemData.value.hashrate.toString(),
+                  "name": homeCtrl.storeItemData.value.planName.toString(),
+                  "speed": homeCtrl.storeItemData.value.hashrate.toString(),
                   "day": "${data?.renetalDays}",
                 }),
                 textAlign: TextAlign.center,
                 style: textRoboto(context, fontSize: 15),
-              ),*/
+              ),
               20.heightBox,
               AppButton(
                 padding: EdgeInsets.symmetric(vertical: 6),

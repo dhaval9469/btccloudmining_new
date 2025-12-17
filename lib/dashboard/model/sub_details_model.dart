@@ -36,68 +36,64 @@ class SubDetailsModel {
 
 class ListPlan {
   String? planName;
-  String? name;
   String? hashrate;
   String? power;
   String? efficiency;
-  String? algorithm;
-  String? image;
   int? adTime;
-  List<Plans>? plans;
+  String? image;
   bool? planads;
+  String? description;
+  List<Plans>? plans;
 
   ListPlan({
     this.planName,
-    this.name,
     this.hashrate,
     this.power,
     this.efficiency,
-    this.algorithm,
-    this.image,
     this.adTime,
-    this.plans,
+    this.image,
     this.planads,
+    this.description,
+    this.plans,
   });
 
   ListPlan.fromJson(Map<String, dynamic> json) {
     planName = json['planName'];
-    name = json['name'];
     hashrate = json['hashrate'];
     power = json['power'];
     efficiency = json['efficiency'];
-    algorithm = json['algorithm'];
-    image = json['image'];
     adTime = json['adTime'];
+    image = json['image'];
+    planads = json['planads'];
+    description = json['description'];
     if (json['plans'] != null) {
       plans = <Plans>[];
       json['plans'].forEach((v) {
         plans!.add(Plans.fromJson(v));
       });
     }
-    planads = json['planads'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['planName'] = planName;
-    data['name'] = name;
     data['hashrate'] = hashrate;
     data['power'] = power;
     data['efficiency'] = efficiency;
-    data['algorithm'] = algorithm;
-    data['image'] = image;
     data['adTime'] = adTime;
+    data['image'] = image;
+    data['planads'] = planads;
+    data['description'] = description;
     if (plans != null) {
       data['plans'] = plans!.map((v) => v.toJson()).toList();
     }
-    data['planads'] = planads;
-
     return data;
   }
 }
 
 class Plans {
   String? planId;
+  String? validity;
   int? renetalDays;
   String? amount;
   int? discount;
@@ -106,6 +102,7 @@ class Plans {
 
   Plans({
     this.planId,
+    this.validity,
     this.renetalDays,
     this.amount,
     this.discount,
@@ -115,6 +112,7 @@ class Plans {
 
   Plans.fromJson(Map<String, dynamic> json) {
     planId = json['planId'];
+    validity = json['validity'];
     renetalDays = json['renetalDays'];
     amount = json['amount'].toString();
     discount = json['discount'];
@@ -125,6 +123,7 @@ class Plans {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['planId'] = planId;
+    data['validity'] = validity;
     data['renetalDays'] = renetalDays;
     data['amount'] = amount.toString();
     data['discount'] = discount;

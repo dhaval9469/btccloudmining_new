@@ -1,8 +1,10 @@
 import 'package:btccloudmining/ad_modual/banner/banner.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
+import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/auth_service.dart';
+import 'package:btccloudmining/dashboard/service/subscription_service.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
@@ -10,6 +12,7 @@ import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
+import 'package:btccloudmining/utils/utils.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +37,8 @@ class _SettingPageState extends State<SettingPage> {
   String? userProfile = '';
   String? userEmail = '';
 
+  final subscriptionService = SubscriptionService();
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +55,9 @@ class _SettingPageState extends State<SettingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: [Text("Setting", style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
+              children: [
+                Text("bs".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
+              ],
             ).p(15),
             Expanded(
               child: cardLayout(
@@ -61,14 +68,17 @@ class _SettingPageState extends State<SettingPage> {
                       SlideFadeTransition(
                         index: 0,
                         child: Text(
-                          "Profile",
+                          "sp".tr,
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
                         index: 1,
                         child: Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: option(
@@ -76,7 +86,7 @@ class _SettingPageState extends State<SettingPage> {
                                 InterstitialAdManager().showInterstitialByCount();
                                 Navigation.pushNamed(Routes.profilePage);
                               },
-                              text: 'sp'.tr,
+                              text: 'sep'.tr,
                               image: AppAsset.profile,
                             ),
                           ),
@@ -86,14 +96,17 @@ class _SettingPageState extends State<SettingPage> {
                       SlideFadeTransition(
                         index: 2,
                         child: Text(
-                          "General",
+                          "sg".tr,
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
                         index: 3,
                         child: Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -104,7 +117,7 @@ class _SettingPageState extends State<SettingPage> {
                                     InterstitialAdManager().showInterstitialByCount();
                                     Navigation.pushNamed(Routes.viewActiveAsics);
                                   },
-                                  text: 'svaa'.tr,
+                                  text: 'scp'.tr,
                                   image: AppAsset.asic,
                                 ),
                                 option(
@@ -112,12 +125,16 @@ class _SettingPageState extends State<SettingPage> {
                                     InterstitialAdManager().showInterstitialByCount();
                                     Navigation.pushNamed(Routes.payoutPage);
                                   },
-                                  text: 'sbtc'.tr,
+                                  text: 'swb'.tr,
                                   image: AppAsset.wallet,
                                 ),
 
                                 if (homeCtrl.isPurchase.value != true) ...[
-                                  option(onTap: () => rateUs(), text: 'Restore Subscription', image: AppAsset.restore),
+                                  option(
+                                    onTap: () => restoreSubscription(),
+                                    text: 'srs'.tr,
+                                    image: AppAsset.restore,
+                                  ),
                                 ],
                               ],
                             ),
@@ -128,14 +145,17 @@ class _SettingPageState extends State<SettingPage> {
                       SlideFadeTransition(
                         index: 4,
                         child: Text(
-                          "Other",
+                          "so".tr,
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
                         index: 5,
                         child: Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -145,7 +165,7 @@ class _SettingPageState extends State<SettingPage> {
                                   onTap: () {
                                     Navigation.pushNamed(Routes.referFriendsPage);
                                   },
-                                  text: 'sre'.tr,
+                                  text: 'srf'.tr,
                                   image: AppAsset.link,
                                 ),
                                 option(
@@ -167,14 +187,17 @@ class _SettingPageState extends State<SettingPage> {
                       SlideFadeTransition(
                         index: 6,
                         child: Text(
-                          "Account & Support",
+                          "sas".tr,
                           style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
                         ).pOnly(top: 15, left: 17, bottom: 5),
                       ),
                       SlideFadeTransition(
                         index: 7,
                         child: Container(
-                          decoration: BoxDecoration(color: Color(0xFF222834), borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF222834),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(13),
                             child: Column(
@@ -217,7 +240,12 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  option({final String? image, final GestureTapCallback? onTap, final IconData? iconData, final String? text}) {
+  option({
+    final String? image,
+    final GestureTapCallback? onTap,
+    final IconData? iconData,
+    final String? text,
+  }) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -269,7 +297,7 @@ class _SettingPageState extends State<SettingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FaIcon(FontAwesomeIcons.circleXmark, color: Colors.transparent, size: 20),
-                  Text('sfh'.tr, style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 18)),
+                  Text('sruf'.tr, style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 18)),
                   GestureDetector(
                     onTap: () => Navigation.pop(),
                     child: FaIcon(FontAwesomeIcons.circleXmark, color: AppColor.subText, size: 20),
@@ -277,7 +305,7 @@ class _SettingPageState extends State<SettingPage> {
                 ],
               ),
               12.heightBox,
-              Text('sfText'.tr, textAlign: TextAlign.center, style: subTextRoboto(context)),
+              Text('srufText'.tr, textAlign: TextAlign.center, style: subTextRoboto(context)),
               15.heightBox,
               RatingBar.builder(
                 initialRating: homeCtrl.setRating.value,
@@ -323,7 +351,7 @@ class _SettingPageState extends State<SettingPage> {
                     }
                   }
                 },
-                text: 'sfsb'.tr,
+                text: 'srufsb'.tr,
               ),
               15.heightBox,
             ],
@@ -424,7 +452,9 @@ class _SettingPageState extends State<SettingPage> {
                       onTap: () async {
                         EasyLoading.show();
 
-                        await ApiRepo.accountDelete(email: HiveService().getData<String>(AppConfig.userEmail));
+                        await ApiRepo.accountDelete(
+                          email: HiveService().getData<String>(AppConfig.userEmail),
+                        );
                         await AuthService().signOut();
                         HiveService().saveData(AppConfig.isLogin, false);
                         HiveService().clearAllBoxes();
@@ -459,8 +489,61 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Future<void> shareInvite() async {
-    final message = 'sifText'.trParams({'referralCode': AppConfig.referralCode, "siAppLink": AppConfig.appLink});
-    await SharePlus.instance.share(ShareParams(text: message));
+  restoreSubscription() async {
+    try {
+      EasyLoading.show();
+
+      await Future.delayed(Duration(seconds: 2));
+
+      /*    final restoredPurchases = await subscriptionService.restorePurchases();
+
+      if (restoredPurchases.isNotEmpty) {
+        final email = HiveService().getData<String>(AppConfig.userEmail);
+        await ApiRepo.userLogin(email: email, reference: '', firstTime: 'yes');
+
+        homeCtrl.activeHashRate.value = AppConfig.appDataSet?.startHashRate ?? 9.7;
+
+        for (var purchase in restoredPurchases) {
+          for (var plan in homeCtrl.subscriptionPlanList) {
+            final plans = plan.plans ?? <Plans>[];
+            for (var planDetail in plans) {
+              if (planDetail.planId == purchase.productID) {
+                await ApiRepo.getSubDetails(
+                  email: email,
+                  botType: plan.planName,
+                  plan: planDetail.planId,
+                  power: plan.hashrate,
+                  durationSeconds: planDetail.durationSeconds.toString(),
+                  durationType: planDetail.renetalDays.toString(),
+                  powerType: '',
+                  type: plan.image,
+                  addTime: formatUtcMillisToLocal(purchase.transactionDate),
+                  token: purchase.verificationData.serverVerificationData,
+                  productID: purchase.productID,
+                  purchaseStatus: purchase.status.name,
+                  purchaseId: purchase.purchaseID,
+                  originalJson: purchase.verificationData.localVerificationData,
+                );
+
+                homeCtrl.activeHashRate.value += parseMiningPowerToGh(plan.hashrate.toString());
+              }
+            }
+          }
+        }
+      }*/
+
+      EasyLoading.dismiss();
+      showSuccessDialog(
+        context,
+        massage: 'srsm'.tr,
+        onTap: () {
+          InterstitialAdManager().showInterstitialAds();
+          Navigation.pop();
+        },
+      );
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint('$e');
+    }
   }
 }

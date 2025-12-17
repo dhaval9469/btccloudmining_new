@@ -39,12 +39,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColor.newBg,
-        body: Column(
+    return Scaffold(
+      backgroundColor: AppColor.newBg,
+      body: SafeArea(
+        child: Column(
           children: [
-            customHeader(context, 'sp'.tr),
+            customHeader(context, 'sep'.tr),
             Expanded(
               child: cardLayout(
                 child: Form(
@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         25.heightBox,
-                        SlideFadeTransition(index: 3, child: Text('Name', style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(index: 3, child: Text('epn'.tr, style: subTextRoboto(context)).px(18)),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 3,
@@ -93,14 +93,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             keyboardType: TextInputType.name,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "pnError".tr;
+                                return "epne".tr;
                               }
                               return null;
                             },
                           ).px(15),
                         ),
                         13.heightBox,
-                        SlideFadeTransition(index: 4, child: Text('Email', style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(index: 4, child: Text('epe'.tr, style: subTextRoboto(context)).px(18)),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 4,
@@ -111,14 +111,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "peError".tr;
+                                return "epee".tr;
                               }
                               return null;
                             },
                           ).px(15),
                         ),
                         13.heightBox,
-                        SlideFadeTransition(index: 5, child: Text('Phone Number', style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(index: 5, child: Text('epp'.tr, style: subTextRoboto(context)).px(18)),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 5,
@@ -129,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             keyboardType: TextInputType.phone,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'pmnumberError'.tr;
+                                return 'eppe'.tr;
                               }
                               return null;
                             },
@@ -162,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigation.pop();
                               }
                             },
-                            text: 'pub'.tr,
+                            text: 'epu'.tr,
                           ).px(15),
                         ),
                       ],
@@ -173,8 +173,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-        bottomNavigationBar: SmallNative(),
       ),
+      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 }

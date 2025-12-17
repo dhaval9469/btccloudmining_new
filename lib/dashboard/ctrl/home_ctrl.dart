@@ -30,6 +30,8 @@ class HomeCtrl extends GetxController {
   RxInt selectedLanguage = 0.obs;
   RxString languageCode = ''.obs;
   RxBool isChangingLanguage = false.obs;
+  RxInt planCount = 1.obs;
+
 
   RxDouble setRating = 2.0.obs;
   RxList<UserSubIdData> userActiveBotList = <UserSubIdData>[].obs;
@@ -43,12 +45,11 @@ class HomeCtrl extends GetxController {
   RxList<WDData> withdrawDetailsList = <WDData>[].obs;
 
   RxList<ListPlan> subscriptionPlanList = <ListPlan>[].obs;
-  // Rx<ListPlan> storeItemData = ListPlan().obs;
+  Rx<ListPlan> storeItemData = ListPlan().obs;
   Rx<ListPlan> randomPlan = ListPlan().obs;
   Rx<Plans?> selectPlanDetails = Plans().obs;
 
 
-  Rx<planD> sItemData = planD().obs;
 
   void getActiveSubscription() async {
     try {

@@ -7,6 +7,8 @@ import 'package:btccloudmining/dashboard/page/home.dart';
 import 'package:btccloudmining/dashboard/page/setting.dart';
 import 'package:btccloudmining/dashboard/page/store.dart';
 import 'package:btccloudmining/dashboard/page/top_miner.dart';
+import 'package:btccloudmining/dashboard/repository/daily_reward.dart';
+import 'package:btccloudmining/dashboard/repository/daily_reward_two.dart';
 import 'package:btccloudmining/dashboard/repository/start_time_rp.dart';
 import 'package:btccloudmining/dashboard/service/connection_service.dart';
 import 'package:btccloudmining/theme/asset.dart';
@@ -40,6 +42,7 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
 
   @override
   void initState() {
+    loadVersion();
     ConnectionService.instance.listenForStatusChange(context);
     WidgetsBinding.instance.addObserver(this);
     loadActiveMiners();
@@ -91,7 +94,9 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
 
           builder: (BuildContext context, int bValue, _) {
             return Theme(
-              data: Theme.of(context).copyWith(splashColor: Colors.transparent, highlightColor: Colors.transparent),
+              data: Theme.of(
+                context,
+              ).copyWith(splashColor: Colors.transparent, highlightColor: Colors.transparent),
               child: BottomNavigationBar(
                 backgroundColor: Color(0xff353F54),
                 type: BottomNavigationBarType.fixed,
@@ -185,7 +190,14 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
     await WakelockPlus.disable();
   }
 
-/*
+  void loadVersion() async {
+    await WakelockPlus.enable();
+    homeCtrl.getSubDetails();
+    DailyRewardService().init();
+    DailyRewardServiceTwo().init();
+  }
+
+  /*
   void loadVersion() async {
     await WakelockPlus.enable();
     homeCtrl.getSubDetails();

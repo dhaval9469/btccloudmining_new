@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 double getMiningPowerValue(double miningPowerGHs) {
@@ -182,11 +183,11 @@ showWatchAdDialog(
                 const SizedBox(height: 10),
                 Text(
                   "watchAdTitle".trParams({
-                    "text": text, // dynamic value
-                    "adTime": adTime, // dynamic value
+                    "text": text,
+                    "adTime": adTime,
                   }),
                   textAlign: TextAlign.center,
-                  style: textRoboto(context, fontSize: 15),
+                  style: subTextMontserrat(context, fontSize: 13),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -341,6 +342,39 @@ String decryptAESCryptoJS(Map body) {
   }
 }
 
+showSuccessDialog(BuildContext context, {String? massage, required GestureTapCallback onTap}) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        backgroundColor: AppColor.newCard,
+        insetPadding: EdgeInsets.symmetric(horizontal: 20),
+        child: CustomCard(
+          borderRadius: BorderRadius.circular(10),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(AppAsset.done, width: 130, height: 130, fit: BoxFit.fill, repeat: false),
+                Text(massage ?? '', textAlign: TextAlign.center, style: subTextMontserrat(context)),
+                15.heightBox,
+                AppButton(
+                  color: AppColor.thirdCard,
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  onTap: onTap,
+                  text: 'srd'.tr,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class FAQModel {
   String? qus;
   String? ans;
@@ -348,26 +382,3 @@ class FAQModel {
   FAQModel({this.qus, this.ans});
 }
 
-class planD {
-  String? planName;
-  String? speed;
-  String? image;
-  String? earning;
-  int? adTime;
-  bool? planads;
-  List<PlanDS>? plans;
-
-  planD({this.planName, this.speed, this.image, this.earning, this.adTime, this.planads, this.plans});
-}
-
-class PlanDS {
-  String? planId;
-  int? renetalDays;
-  String? amount;
-  int? discount;
-  int? durationSeconds;
-  String? description;
-  String? validity;
-
-  PlanDS({this.planId, this.renetalDays, this.amount, this.discount, this.validity, this.durationSeconds, this.description});
-}

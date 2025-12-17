@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:btccloudmining/ad_modual/banner/banner.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
@@ -109,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Speed", style: subTextRoboto(context)),
+                            Text("hs".tr, style: subTextRoboto(context)),
                             Obx(() {
                               return Row(
                                 children: [
@@ -217,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                                           final data = homeCtrl.activeBotList[index];
                                           return Row(
                                             children: [
-                                              Image.asset(AppAsset.miner, scale: 12),
+                                              Image.asset(AppAsset.miner, scale: 7),
                                               10.widthBox,
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
