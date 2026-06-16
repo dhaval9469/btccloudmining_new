@@ -1,5 +1,4 @@
-import 'package:btccloudmining/ad_modual/native/intro_small_native.dart';
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
@@ -24,32 +23,27 @@ class IpWidget3 extends StatelessWidget {
           Text(
             'Track Your Rewards in Real-Time',
             textAlign: TextAlign.center,
-            style: textRoboto(
-              context,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColor.white,
-            ),
+            style: textRoboto(context, fontSize: 20, fontWeight: FontWeight.w600, color: AppColor.text),
           ),
           15.heightBox,
           Text(
             'Monitor daily earnings directly from your dashboard. Stay informed and manage your mining progress easily.',
             textAlign: TextAlign.center,
-            style: textMontserrat(context, color: AppColor.white,fontSize: 13),
+            style: textMontserrat(context, color: AppColor.subText, fontSize: 13),
           ),
           20.heightBox,
 
           AppButton(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            color: AppColor.primary,
-            onTap:onFinish,
-            text: 'Next',
-            fontSize: 20,
+            padding: EdgeInsets.symmetric(vertical: 6),
+            color: AppColor.secondaryButton,
+            onTap: onFinish,
+            text: 'Get Start',
+            fontSize: 17,
           ),
-          20.heightBox,
+          30.heightBox,
         ],
       ).px(20),
-      bottomNavigationBar: SafeArea(child: IntoSmallNative()),
+      bottomNavigationBar: SafeArea(child: NativeBanner()),
     );
   }
 }

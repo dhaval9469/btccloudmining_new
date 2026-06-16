@@ -21,7 +21,6 @@ class UserProfileModel {
   String? messsage;
   String? statusCode;
 
-
   UserProfileModel({
     this.subscription,
     this.email,
@@ -111,7 +110,6 @@ class UserSubIdData {
   String? type;
   String? plan;
   String? power;
-  String? powerType;
   String? durationType;
   int? durationSeconds;
   int? days;
@@ -119,20 +117,20 @@ class UserSubIdData {
   String? addTime;
   String? expireTime;
 
-  UserSubIdData(
-      {this.email,
-      this.productID,
-      this.botType,
-      this.type,
-      this.plan,
-      this.power,
-      this.powerType,
-      this.durationType,
-      this.durationSeconds,
-      this.expireTime,
-      this.status,
-      this.days,
-      this.addTime});
+  UserSubIdData({
+    this.email,
+    this.productID,
+    this.botType,
+    this.type,
+    this.plan,
+    this.power,
+    this.durationType,
+    this.durationSeconds,
+    this.expireTime,
+    this.status,
+    this.days,
+    this.addTime,
+  });
 
   UserSubIdData.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -141,7 +139,6 @@ class UserSubIdData {
     type = json['type'];
     plan = json['plan'];
     power = json['power'];
-    powerType = json['powerType'];
     durationType = json['durationType'];
     durationSeconds = json['durationSeconds'];
     addTime = json['addTime'];
@@ -158,7 +155,6 @@ class UserSubIdData {
     data['type'] = type;
     data['plan'] = plan;
     data['power'] = power;
-    data['powerType'] = powerType;
     data['durationType'] = durationType;
     data['durationSeconds'] = durationSeconds;
     data['days'] = days;
@@ -168,4 +164,3 @@ class UserSubIdData {
     return data;
   }
 }
-

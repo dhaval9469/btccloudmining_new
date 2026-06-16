@@ -1,5 +1,4 @@
-import 'package:btccloudmining/ad_modual/native/intro_small_native.dart';
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
@@ -26,29 +25,29 @@ class IpWidget2 extends StatelessWidget {
             textAlign: TextAlign.center,
             style: textRoboto(
               context,
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: AppColor.white,
+              color: AppColor.text,
             ),
           ),
           15.heightBox,
           Text(
             'Scale your earnings without expensive equipment. Activate cloud mining and watch your BTC grow effortlessly.',
             textAlign: TextAlign.center,
-            style: textMontserrat(context, color: AppColor.white,fontSize: 13),
+            style: textMontserrat(context, color: AppColor.subText,fontSize: 13),
           ),
           20.heightBox,
           AppButton(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            color: AppColor.primary,
+            padding: EdgeInsets.symmetric(vertical: 6),
+            color: AppColor.secondaryButton,
             onTap:onNext,
             text: 'Next',
-            fontSize: 20,
+            fontSize: 17,
           ),
-          20.heightBox,
+          30.heightBox,
         ],
       ).px(20),
-      bottomNavigationBar: SafeArea(child: IntoSmallNative()),
+      bottomNavigationBar: SafeArea(child: NativeBanner()),
     );
   }
 }

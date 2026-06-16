@@ -1,8 +1,9 @@
-
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
+import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
@@ -10,6 +11,7 @@ import 'package:btccloudmining/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CustomerSupport extends StatefulWidget {
@@ -21,17 +23,48 @@ class CustomerSupport extends StatefulWidget {
 
 class _CustomerSupportState extends State<CustomerSupport> {
   final csFormKey = GlobalKey<FormState>();
-  TextEditingController nameCtrl = TextEditingController(text: HiveService().getData<String>(AppConfig.userName));
-  TextEditingController emailCtrl = TextEditingController(text: HiveService().getData<String>(AppConfig.userEmail));
+  TextEditingController nameCtrl = TextEditingController(
+    text: HiveService().getData<String>(AppConfig.userName),
+  );
+  TextEditingController emailCtrl = TextEditingController(
+    text: HiveService().getData<String>(AppConfig.userEmail),
+  );
   TextEditingController massageCtrl = TextEditingController();
 
+  PackageInfo packageInfo = PackageInfo(
+    appName: '',
+    packageName: '',
+    version: '',
+    buildNumber: '',
+    buildSignature: '',
+  );
+
+  Future<void> initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      packageInfo = info;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPackageInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
             customHeader(context, 'scs'.tr),
             Expanded(
@@ -44,8 +77,9 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       children: [
                         25.heightBox,
                         SlideFadeTransition(
-                            index: 1,
-                            child: Text('epn'.tr, style: subTextRoboto(context)).px(18)),
+                          index: 1,
+                          child: Text('epn'.tr, style: subTextRoboto(context)).px(18),
+                        ),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 1,
@@ -63,7 +97,10 @@ class _CustomerSupportState extends State<CustomerSupport> {
                           ).px(15),
                         ),
                         10.heightBox,
-                        SlideFadeTransition(index: 2,child: Text('epe'.tr, style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(
+                          index: 2,
+                          child: Text('epe'.tr, style: subTextRoboto(context)).px(18),
+                        ),
                         3.heightBox,
                         SlideFadeTransition(
                           index: 2,
@@ -81,9 +118,13 @@ class _CustomerSupportState extends State<CustomerSupport> {
                           ).px(15),
                         ),
                         10.heightBox,
-                        SlideFadeTransition(index: 3,child: Text('csym'.tr, style: subTextRoboto(context)).px(18)),
+                        SlideFadeTransition(
+                          index: 3,
+                          child: Text('csym'.tr, style: subTextRoboto(context)).px(18),
+                        ),
                         3.heightBox,
-                        SlideFadeTransition(index: 3,
+                        SlideFadeTransition(
+                          index: 3,
                           child: CommonTextField(
                             hintText: "cstymh".tr,
                             controller: massageCtrl,
@@ -103,16 +144,17 @@ class _CustomerSupportState extends State<CustomerSupport> {
                           index: 4,
                           child: AppButton(
                             padding: EdgeInsets.symmetric(vertical: 7),
-                            color: AppColor.thirdCard,
+                            color: AppColor.secondaryButton,
                             onTap: () async {
                               try {
                                 if (csFormKey.currentState!.validate()) {
                                   FocusScope.of(context).unfocus();
 
                                   final email = Email(
-                                    body: 'name: ${nameCtrl.text},\nemail: ${emailCtrl.text},\nmessage: ${massageCtrl.text}',
+                                    body:
+                                        'name: ${nameCtrl.text},\nemail: ${emailCtrl.text},\nmessage: ${massageCtrl.text}',
                                     subject:
-                                        'App: ${AppConfig.appName}, Version: ${AppConfig.appVersion}, email: ${emailCtrl.text}',
+                                        'App: ${AppConfig.appName}, Version: ${packageInfo.version}, email: ${emailCtrl.text}',
                                     recipients: [AppConfig.appDataSet?.contactEmail ?? ''],
                                     isHTML: false,
                                   );
@@ -134,9 +176,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
             ),
           ],
         ),
+        bottomNavigationBar: SafeArea(child: NativeBanner()),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
-
 }

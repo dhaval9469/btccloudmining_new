@@ -28,19 +28,8 @@ class IntOrRwdAdManger {
     }
   }
 
-  void showIntORRwdAdOnGift({
-    required VoidCallback onReward,
-    required VoidCallback onAdClosed,
-  }) {
-    if (AppConfig.appDataSet?.gift == 0 && rewardInterstitial.isAdReady) {
-      rewardInterstitial.showAd(
-        onUserEarnedReward: onReward,
-        onAdClosed: () {
-          onAdClosed();
-        },
-      );
-      return;
-    } else if (AppConfig.appDataSet?.gift == 1 && interstitial.isInterstitialAdLoaded) {
+  void showIntORRwdAdOnGift({required VoidCallback onReward, required VoidCallback onAdClosed}) {
+    if (AppConfig.appDataSet?.gift == 0) {
       interstitial.showInterstitial(
         onAdClosed: () {
           onReward();
@@ -48,7 +37,17 @@ class IntOrRwdAdManger {
         },
       );
       return;
-    } else if (AppConfig.appDataSet?.gift == 2 && rewarded.isAdReady) {
+    }
+
+    if (AppConfig.appDataSet?.gift == 1) {
+      rewardInterstitial.showAd(
+        onUserEarnedReward: onReward,
+        onAdClosed: () {
+          onAdClosed();
+        },
+      );
+      return;
+    } else if (AppConfig.appDataSet?.gift == 2) {
       rewarded.showAd(
         onUserEarnedReward: onReward,
         onAdClosed: () {
@@ -62,19 +61,8 @@ class IntOrRwdAdManger {
     }
   }
 
-  void showIntORRwdAdOnPlanAd({
-    required VoidCallback onReward,
-    required VoidCallback onAdClosed,
-  }) {
-    if (AppConfig.appDataSet?.planads == 0 && rewardInterstitial.isAdReady) {
-      rewardInterstitial.showAd(
-        onUserEarnedReward: onReward,
-        onAdClosed: () {
-          onAdClosed();
-        },
-      );
-      return;
-    } else if (AppConfig.appDataSet?.planads == 1 && interstitial.isInterstitialAdLoaded) {
+  void showIntORRwdAdOnPlanAd({required VoidCallback onReward, required VoidCallback onAdClosed}) {
+    if (AppConfig.appDataSet?.planads == 0) {
       interstitial.showInterstitial(
         onAdClosed: () {
           onReward();
@@ -82,7 +70,15 @@ class IntOrRwdAdManger {
         },
       );
       return;
-    } else if (AppConfig.appDataSet?.planads == 2 && rewarded.isAdReady) {
+    } else if (AppConfig.appDataSet?.planads == 1) {
+      rewardInterstitial.showAd(
+        onUserEarnedReward: onReward,
+        onAdClosed: () {
+          onAdClosed();
+        },
+      );
+      return;
+    } else if (AppConfig.appDataSet?.planads == 2) {
       rewarded.showAd(
         onUserEarnedReward: onReward,
         onAdClosed: () {
@@ -95,19 +91,8 @@ class IntOrRwdAdManger {
     }
   }
 
-  void showIntORRwdAdOnStart({
-    required VoidCallback onReward,
-    required VoidCallback onAdClosed,
-  }) {
-    if (AppConfig.appDataSet?.start == 0 && rewardInterstitial.isAdReady) {
-      rewardInterstitial.showAd(
-        onUserEarnedReward: onReward,
-        onAdClosed: () {
-          onAdClosed();
-        },
-      );
-      return;
-    } else if (AppConfig.appDataSet?.start == 1 && interstitial.isInterstitialAdLoaded) {
+  void showIntORRwdAdOnStart({required VoidCallback onReward, required VoidCallback onAdClosed}) {
+    if (AppConfig.appDataSet?.start == 0) {
       interstitial.showInterstitial(
         onAdClosed: () {
           onReward();
@@ -115,7 +100,15 @@ class IntOrRwdAdManger {
         },
       );
       return;
-    } else if (AppConfig.appDataSet?.start == 2 && rewarded.isAdReady) {
+    } else if (AppConfig.appDataSet?.start == 1) {
+      rewardInterstitial.showAd(
+        onUserEarnedReward: onReward,
+        onAdClosed: () {
+          onAdClosed();
+        },
+      );
+      return;
+    } else if (AppConfig.appDataSet?.start == 2) {
       rewarded.showAd(
         onUserEarnedReward: onReward,
         onAdClosed: () {

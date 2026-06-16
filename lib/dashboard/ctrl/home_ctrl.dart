@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/model/appdataset_model.dart';
@@ -10,12 +9,14 @@ import 'package:btccloudmining/dashboard/model/withdraw_details_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
-import 'package:btccloudmining/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class HomeCtrl extends GetxController {
+  late VideoPlayerController videoPlayerController;
+
   RxBool isPurchase = false.obs;
 
   Timer? activeMinerCount;
@@ -30,8 +31,6 @@ class HomeCtrl extends GetxController {
   RxInt selectedLanguage = 0.obs;
   RxString languageCode = ''.obs;
   RxBool isChangingLanguage = false.obs;
-  RxInt planCount = 1.obs;
-
 
   RxDouble setRating = 2.0.obs;
   RxList<UserSubIdData> userActiveBotList = <UserSubIdData>[].obs;
@@ -45,11 +44,10 @@ class HomeCtrl extends GetxController {
   RxList<WDData> withdrawDetailsList = <WDData>[].obs;
 
   RxList<ListPlan> subscriptionPlanList = <ListPlan>[].obs;
+  RxList<ListReward> rewardList = <ListReward>[].obs;
+  Rx<ListReward> randomRewardList = ListReward().obs;
   Rx<ListPlan> storeItemData = ListPlan().obs;
-  Rx<ListPlan> randomPlan = ListPlan().obs;
   Rx<Plans?> selectPlanDetails = Plans().obs;
-
-
 
   void getActiveSubscription() async {
     try {
@@ -63,6 +61,7 @@ class HomeCtrl extends GetxController {
         reference: '',
         firstTime: '',
       );
+
       final now = DateTime.now();
 
       final activeSubs = (userProfileModel.subscription ?? []).where((sub) {
@@ -93,11 +92,12 @@ class HomeCtrl extends GetxController {
 
       leaderBoardList.clear();
       subscriptionPlanList.clear();
+      rewardList.clear();
       String? email = HiveService().getData<String>(AppConfig.userEmail);
       subDetailsModel.value = await ApiRepo.subscriptionDetails(email: email ?? "");
       isPurchase.value = subDetailsModel.value.purchase ?? false;
-
       subscriptionPlanList.addAll(subDetailsModel.value.listPlan ?? []);
+      rewardList.addAll(subDetailsModel.value.listReward ?? []);
       leaderBoardList.addAll(subDetailsModel.value.leaderboard ?? []);
       shoeRandomPlan();
       EasyLoading.dismiss();
@@ -118,13 +118,39 @@ class HomeCtrl extends GetxController {
 
   void shoeRandomPlan() {
     final random = Random();
-    randomPlan.value = subscriptionPlanList[random.nextInt(subscriptionPlanList.length)];
+    randomRewardList.value = rewardList[random.nextInt(rewardList.length)];
   }
 
   @override
   void onInit() {
     super.onInit();
+    initializePlayer();
     appDataSet();
+  }
+
+
+  @override
+  void onClose() {
+    super.onClose();
+    videoPlayerController.dispose();
+  }
+
+  void initializePlayer() async {
+    videoPlayerController = VideoPlayerController.asset('assets/lottie/home_top.mp4');
+
+    await videoPlayerController.initialize();
+    await videoPlayerController.setLooping(true);
+    update();
+  }
+
+  void startMiningVideo() async {
+    await videoPlayerController.play();
+    update();
+  }
+
+  void stopMiningVideo() {
+    videoPlayerController.pause();
+    update();
   }
 
   appDataSet() async {
@@ -192,9 +218,7 @@ class HomeCtrl extends GetxController {
   }
 
   Duration remainingTime(ActiveBotModel miner) {
-    final endTime = DateTime.fromMillisecondsSinceEpoch(
-      miner.addTime,
-    ).add(Duration(seconds: miner.duration));
+    final endTime = DateTime.fromMillisecondsSinceEpoch(miner.addTime).add(Duration(seconds: miner.duration));
     final remaining = endTime.difference(DateTime.now());
 
     if (remaining.isNegative || remaining.inSeconds == 0) {
@@ -203,6 +227,28 @@ class HomeCtrl extends GetxController {
       });
     }
     return remaining.isNegative ? Duration.zero : remaining;
+  }
+
+  Future<bool> isBTCStillLocked() async {
+    final bool isLocked = HiveService().getData<bool>(AppConfig.lockMinedBTC) ?? false;
+
+    if (!isLocked) return false;
+
+    final int? lockTime = HiveService().getData<int>(AppConfig.lockMinedBTCTime);
+
+    if (lockTime == null) return false;
+
+    final DateTime lockedAt = DateTime.fromMillisecondsSinceEpoch(lockTime);
+
+    final bool expired = DateTime.now().difference(lockedAt).inHours >= 24;
+
+    if (expired) {
+      await HiveService().saveData(AppConfig.lockMinedBTC, false);
+      await HiveService().deleteData(AppConfig.lockMinedBTCTime);
+      return false;
+    }
+
+    return true;
   }
 }
 

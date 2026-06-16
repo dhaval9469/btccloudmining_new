@@ -9,83 +9,73 @@ class RewardInterstitialAdManager {
 
   RewardInterstitialAdManager._internal();
 
-  RewardedInterstitialAd? _rewardedAd;
-  bool _isAdLoading = false;
+  RewardedInterstitialAd? _rewardInterstitialAd;
+
   bool _isShowingAd = false;
 
-  bool get isAdReady => _rewardedAd != null;
+  bool get isShowingRewIntAd => _isShowingAd;
 
-  bool get isShowingAd => _isShowingAd;
+  int _index = 0;
+
+  final List<String> _adUnitIds = [
+    AppConfig.appDataSet?.googleRewardedIntrestialId ?? '',
+    AppConfig.appDataSet?.adxRewardedIntrestialId ?? '',
+  ];
 
   void loadAd() {
-    if (_isAdLoading || _rewardedAd != null) return;
+    if (_rewardInterstitialAd != null) return;
 
-    _isAdLoading = true;
+    final adUnitId = _adUnitIds[_index].trim();
+
     RewardedInterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5354046379',
-      // adUnitId: '${AppConfig.appDataSet?.googleRewardedIntrestialId}',
+      adUnitId: adUnitId,
       request: const AdRequest(),
       rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          _rewardedAd = ad;
-          _isAdLoading = false;
-          _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              _isShowingAd = false;
-
-              ad.dispose();
-              _rewardedAd = null;
-            },
-            onAdFailedToShowFullScreenContent: (ad, error) {
-              _isShowingAd = false;
-              ad.dispose();
-              _rewardedAd = null;
-              _isAdLoading = false;
-            },
-            onAdShowedFullScreenContent: (ad) {
-              _isShowingAd = true;
-            },
-          );
+          _rewardInterstitialAd = ad;
+          _index = 0;
         },
         onAdFailedToLoad: (error) {
-          _isAdLoading = false;
-          _rewardedAd = null;
+          _rewardInterstitialAd = null;
+          if (_index == 0 && _adUnitIds.length > 1) {
+            _index = 1;
+            loadAd();
+            return;
+          }
         },
       ),
     );
   }
 
   void showAd({required VoidCallback onUserEarnedReward, required VoidCallback onAdClosed}) {
-    if (_rewardedAd == null) {
+    if (_rewardInterstitialAd == null) {
       onAdClosed();
       loadAd();
       return;
     }
     _isShowingAd = true;
 
-    _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
+    _rewardInterstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _isShowingAd = true;
       },
       onAdDismissedFullScreenContent: (ad) {
-        _isShowingAd = false;
         ad.dispose();
-        _rewardedAd = null;
-        _isAdLoading = false;
-        loadAd();
+        _rewardInterstitialAd = null;
+        _isShowingAd = false;
         onAdClosed();
+        loadAd();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        _isShowingAd = false;
         ad.dispose();
-        _rewardedAd = null;
-        _isAdLoading = false;
-        loadAd();
+        _rewardInterstitialAd = null;
+        _isShowingAd = false;
         onAdClosed();
+        loadAd();
       },
     );
 
-    _rewardedAd!.show(
+    _rewardInterstitialAd!.show(
       onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
         onUserEarnedReward();
       },

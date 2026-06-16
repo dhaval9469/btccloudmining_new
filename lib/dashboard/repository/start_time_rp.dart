@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/theme/config.dart';
@@ -32,6 +31,8 @@ class StartTimeService {
     hive.saveData(AppConfig.checkMining, true);
 
     homeCtrl.isMining.value = true;
+    homeCtrl.startMiningVideo();
+
     _startCD = Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (startTimeLeft.value.inSeconds > 1) {
         startTimeLeft.value -= const Duration(seconds: 1);
@@ -40,7 +41,7 @@ class StartTimeService {
       }
     });
 
-    _miningCD = Timer.periodic(Duration(seconds: 3), (timer) {
+    _miningCD = Timer.periodic(Duration(seconds: 5), (timer) {
       final earned = _calculateEarning();
       homeCtrl.miningBtc.value += earned;
     });
@@ -54,7 +55,10 @@ class StartTimeService {
   }
 
   String formatDecimal(double value) {
-    return value.toStringAsFixed(20).replaceFirst(RegExp(r'0+$'), '').replaceFirst(RegExp(r'\.$'), '');
+    return value
+        .toStringAsFixed(20)
+        .replaceFirst(RegExp(r'0+$'), '')
+        .replaceFirst(RegExp(r'\.$'), '');
   }
 
   Future<void> stop({bool callComplete = true}) async {
@@ -67,6 +71,8 @@ class StartTimeService {
     hive.saveData(AppConfig.checkMining, false);
 
     if (callComplete) {
+      homeCtrl.stopMiningVideo();
+
       double minedBtc = 0.0;
 
       if (homeCtrl.totalMineBtc.value != 0.0) {
@@ -100,7 +106,7 @@ class StartTimeService {
     _startCD = null;
     _miningCD = null;
     homeCtrl.isMining.value = false;
-
+    homeCtrl.stopMiningVideo();
     startTimeLeft.value = Duration.zero;
   }
 
@@ -128,17 +134,16 @@ class StartTimeService {
           homeCtrl.miningBtc.value = savedBtc + earned;
           stop(callComplete: true);
         } else {
-          homeCtrl.miningBtc.value = savedBtc + 0.000000003784;
+          homeCtrl.miningBtc.value = savedBtc;
           stop(callComplete: true);
         }
       } else {
-
         if (secondsSinceLast > AppConfig.miningIntervals) {
           final earnedPerInterval = _calculateEarning();
-          earned = earnedPerInterval * secondsSinceLast / 3;
+          earned = earnedPerInterval * secondsSinceLast / 5;
           homeCtrl.miningBtc.value = savedBtc + earned;
         } else {
-          homeCtrl.miningBtc.value = savedBtc + 0.000000003369;
+          homeCtrl.miningBtc.value = savedBtc;
         }
         final remaining = (totalMiningSeconds - secondsSinceLast).clamp(0, totalMiningSeconds);
         start(seconds: remaining);

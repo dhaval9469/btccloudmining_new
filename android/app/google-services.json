@@ -1,49 +1,57 @@
 {
   "project_info": {
-    "project_number": "171714414505",
-    "project_id": "partymaster-8c9ac",
-    "storage_bucket": "partymaster-8c9ac.firebasestorage.app"
+    "project_number": "607299445368",
+    "project_id": "cryptorise-1986e",
+    "storage_bucket": "cryptorise-1986e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:171714414505:android:94079b2a5ed8ac973d66b8",
+        "mobilesdk_app_id": "1:607299445368:android:22bd1c90029993ac2d438d",
         "android_client_info": {
-          "package_name": "com.bitcoin.asicnew.miner.app"
+          "package_name": "btc.cloud.mining.crypto.rise"
         }
       },
       "oauth_client": [
         {
-          "client_id": "171714414505-81ldgtgvok6hpnk2pfstlsnmaups68jv.apps.googleusercontent.com",
+          "client_id": "607299445368-nu6ldvnel2b9a0ork6kmt68aqjkssh2g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.bitcoin.asicnew.miner.app",
+            "package_name": "btc.cloud.mining.crypto.rise",
             "certificate_hash": "48b0241987ef57f365871c670c6818c6f94bd72a"
           }
         },
         {
-          "client_id": "171714414505-9uuav3v6jojk8bng6o56dgdkef5afvbn.apps.googleusercontent.com",
+          "client_id": "607299445368-o3drqo9h5op00vgndsiv6267um89ckl0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.bitcoin.asicnew.miner.app",
-            "certificate_hash": "6e1b4d97c39319fe0da5a7cdd96cf0031c9877dc"
+            "package_name": "btc.cloud.mining.crypto.rise",
+            "certificate_hash": "8641b190e46983b94efdf90506d94f5594aa7167"
           }
         },
         {
-          "client_id": "171714414505-7alajf43rjc8lkque5faln73e6310lks.apps.googleusercontent.com",
+          "client_id": "607299445368-rkfh0dl9137pqkiab59scgckn4djj3go.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "btc.cloud.mining.crypto.rise",
+            "certificate_hash": "a7f8fe66914da02e571e7ce355187714ea9d50a4"
+          }
+        },
+        {
+          "client_id": "607299445368-0dmhdabhk5dm6tj6m63bdvqfj7slae49.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBBxhHrFcEAWhm5JgKjPwrb39yJ0WE26vg"
+          "current_key": "AIzaSyDOZHSM9KEiKUAcviS0uzkaM9At2-BfpSo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "171714414505-7alajf43rjc8lkque5faln73e6310lks.apps.googleusercontent.com",
+              "client_id": "607299445368-0dmhdabhk5dm6tj6m63bdvqfj7slae49.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

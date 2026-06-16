@@ -62,7 +62,7 @@ class NoInternetPopup extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 7),
                       decoration: BoxDecoration(
-                        color: AppColor.thirdCard,
+                        color: AppColor.secondaryButton,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
@@ -81,7 +81,7 @@ class NoInternetPopup extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 7),
                       decoration: BoxDecoration(
-                          color: AppColor.thirdCard,
+                          color: AppColor.secondaryButton,
                           borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(

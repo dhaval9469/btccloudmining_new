@@ -13,6 +13,7 @@ class LanguageService {
     'sw': Locale('sw', 'TZ'),
     'ha': Locale('ha', 'NG'),
     'pt': Locale('pt', 'PT'),
+    'de': Locale('de', 'DE'),
   };
 
   static Future<void> changeLanguage(String langCode) async {

@@ -2,11 +2,12 @@ import 'dart:async';
 import 'package:btccloudmining/ad_modual/app_open.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/rewarded.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/rewarded_interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/page/home.dart';
 import 'package:btccloudmining/dashboard/page/setting.dart';
 import 'package:btccloudmining/dashboard/page/store.dart';
-import 'package:btccloudmining/dashboard/page/top_miner.dart';
+import 'package:btccloudmining/dashboard/page/payout_page.dart';
 import 'package:btccloudmining/dashboard/repository/daily_reward.dart';
 import 'package:btccloudmining/dashboard/repository/daily_reward_two.dart';
 import 'package:btccloudmining/dashboard/repository/start_time_rp.dart';
@@ -34,7 +35,7 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
   final pages = [
     const HomePage(key: ValueKey('home')),
     const StorePage(key: ValueKey('store')),
-    TopMiner(key: ValueKey('top')),
+    const PayoutPage(key: ValueKey('payout')),
     const SettingPage(key: ValueKey('setting')),
   ];
   final HomeCtrl homeCtrl = Get.find();
@@ -54,7 +55,10 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final bool isAnyAdShowing = RewardedAdManager().isShowingAd || InterstitialAdManager().isShowingAd;
+    final bool isAnyAdShowing =
+        RewardInterstitialAdManager().isShowingRewIntAd ||
+        InterstitialAdManager().isShowingIntAd ||
+        RewardedAdManager().isShowingRewAd;
     if (isAnyAdShowing) {
       return;
     }
@@ -91,23 +95,26 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
         ),
         bottomNavigationBar: ValueListenableBuilder(
           valueListenable: AppConfig.bottomBarValue,
-
           builder: (BuildContext context, int bValue, _) {
             return Theme(
               data: Theme.of(
                 context,
               ).copyWith(splashColor: Colors.transparent, highlightColor: Colors.transparent),
               child: BottomNavigationBar(
-                backgroundColor: Color(0xff353F54),
+                backgroundColor: Color(0xff1E252C),
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: AppColor.text,
                 unselectedItemColor: AppColor.subText,
-                selectedLabelStyle: textMontserrat(context, fontSize: 14, fontWeight: FontWeight.bold),
+                selectedLabelStyle: textMontserrat(
+                  context,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
                 unselectedLabelStyle: subTextRoboto(context, fontSize: 10),
                 currentIndex: bValue,
                 onTap: (value) async {
                   AppConfig.bottomBarValue.value = value;
-                  // InterstitialAdManager().showInterstitialByCount();
+                  InterstitialAdManager().showInterstitialByCount();
                 },
                 items: [
                   BottomNavigationBarItem(
@@ -119,7 +126,9 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
                       child: Image.asset(
                         AppConfig.bottomBarValue.value == 0 ? AppAsset.homes : AppAsset.home,
                         key: ValueKey<bool>(AppConfig.bottomBarValue.value == 0),
-                        color: AppConfig.bottomBarValue.value == 0 ? AppColor.text : AppColor.subText,
+                        color: AppConfig.bottomBarValue.value == 0
+                            ? AppColor.text
+                            : AppColor.subText,
                         scale: 22,
                       ),
                     ),
@@ -135,7 +144,9 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
                       child: Image.asset(
                         AppConfig.bottomBarValue.value == 1 ? AppAsset.upgrades : AppAsset.upgrade,
                         key: ValueKey<bool>(AppConfig.bottomBarValue.value == 1),
-                        color: AppConfig.bottomBarValue.value == 1 ? AppColor.text : AppColor.subText,
+                        color: AppConfig.bottomBarValue.value == 1
+                            ? AppColor.text
+                            : AppColor.subText,
                         scale: 22,
                       ),
                     ),
@@ -149,13 +160,15 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
                         return FadeTransition(opacity: animation, child: child);
                       },
                       child: Image.asset(
-                        AppConfig.bottomBarValue.value == 2 ? AppAsset.leaderboards : AppAsset.leaderboard,
+                        AppConfig.bottomBarValue.value == 2 ? AppAsset.cards : AppAsset.card,
                         key: ValueKey<bool>(AppConfig.bottomBarValue.value == 2),
-                        color: AppConfig.bottomBarValue.value == 2 ? AppColor.text : AppColor.subText,
+                        color: AppConfig.bottomBarValue.value == 2
+                            ? AppColor.text
+                            : AppColor.subText,
                         scale: 20,
                       ),
                     ),
-                    label: 'bl'.tr,
+                    label: 'wh'.tr,
                   ),
 
                   BottomNavigationBarItem(
@@ -167,7 +180,9 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
                       child: Image.asset(
                         AppConfig.bottomBarValue.value == 3 ? AppAsset.gears : AppAsset.gear,
                         key: ValueKey<bool>(AppConfig.bottomBarValue.value == 3),
-                        color: AppConfig.bottomBarValue.value == 3 ? AppColor.text : AppColor.subText,
+                        color: AppConfig.bottomBarValue.value == 3
+                            ? AppColor.text
+                            : AppColor.subText,
                         scale: 22,
                       ),
                     ),
@@ -193,6 +208,8 @@ class _BottomBarPageState extends State<BottomBarPage> with WidgetsBindingObserv
   void loadVersion() async {
     await WakelockPlus.enable();
     homeCtrl.getSubDetails();
+    homeCtrl.getWithdrawDetails();
+    homeCtrl.isBTCStillLocked();
     DailyRewardService().init();
     DailyRewardServiceTwo().init();
   }

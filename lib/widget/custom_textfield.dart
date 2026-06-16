@@ -70,6 +70,7 @@ class CommonTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: Colors.black87,
       enableInteractiveSelection: enableInteractiveSelection,
       inputFormatters: inputFormatters,
       textCapitalization: textCapitalization ?? TextCapitalization.none,
@@ -83,7 +84,7 @@ class CommonTextField extends StatelessWidget {
       maxLines: maxLines,
       validator: validator,
       textInputAction: textInputAction ?? TextInputAction.next,
-      style: textRoboto(context, fontSize: 16, color: Color(0xFF1F2937)),
+      style: textMontserrat(context, fontSize: 16,fontWeight: FontWeight.w600),
       autocorrect: true,
       decoration: InputDecoration(
         isDense: true,
@@ -109,7 +110,7 @@ class CommonTextField extends StatelessWidget {
           borderSide: BorderSide.none,
         ),
         hintText: hintText,
-        hintStyle: subTextMontserrat(context, color: Color(0xFF6B7280)),
+        hintStyle: subTextMontserrat(context),
         errorStyle: subTextRoboto(context, color: AppColor.error),
         labelText: labelText,
         labelStyle: labelStyle,
@@ -117,7 +118,7 @@ class CommonTextField extends StatelessWidget {
         prefixIconConstraints: prefixIconConstraints,
         prefix: prefix,
         suffixIcon: suffixIcon,
-        fillColor: AppColor.primaryCard,
+        fillColor: AppColor.newCard,
         filled: true,
       ),
     );

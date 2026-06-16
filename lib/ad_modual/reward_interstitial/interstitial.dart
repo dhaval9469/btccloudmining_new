@@ -11,39 +11,50 @@ class InterstitialAdManager {
 
   InterstitialAdManager._internal();
 
-  InterstitialAd? _adMobInterstitialAd;
+  InterstitialAd? _interstitialAd;
 
-  static const AdRequest _request = AdRequest(
-    keywords: <String>['foo', 'bar'],
-    contentUrl: 'http://foo.com/bar.html',
-    nonPersonalizedAds: true,
-  );
-
-  bool isInterstitialAdLoaded = false;
-
-  int _numInterstitialLoadAttempts = 0;
+  int loadAttempts = 0;
   int interstitialAdShow = 0;
+  int interstitialAdBackShow = 0;
 
-  bool _isShowingAd = false;
+  bool _isShowingIntAd = false;
 
-  bool get isShowingAd => _isShowingAd;
+  bool get isShowingIntAd => _isShowingIntAd;
+
+  int _index = 0;
+
+  final List<String> _adUnitIds = [
+    AppConfig.appDataSet?.googleInterstitialId ?? '',
+    AppConfig.appDataSet?.adxInterstitialId ?? '',
+  ];
 
   void loadAdMobAd() {
+    if (_interstitialAd != null) {
+      return;
+    }
+
+    final adUnitId = _adUnitIds[_index].trim();
+
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
-      // adUnitId: AppConfig.appDataSet?.googleInterstitialId ?? '',
-      request: _request,
+      adUnitId: adUnitId,
+      request: AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) {
-          _adMobInterstitialAd = ad;
-          _numInterstitialLoadAttempts = 0;
-          isInterstitialAdLoaded = true;
+          _interstitialAd = ad;
+          _index = 0;
+          loadAttempts = 0;
         },
         onAdFailedToLoad: (LoadAdError error) {
-          _numInterstitialLoadAttempts += 1;
-          _adMobInterstitialAd = null;
-          isInterstitialAdLoaded = false;
-          if (_numInterstitialLoadAttempts <= maxFailedLoadAttempts) {
+          _interstitialAd = null;
+          loadAttempts++;
+
+          if (_index == 0 && _adUnitIds.length > 1) {
+            _index = 1;
+            loadAdMobAd();
+            return;
+          }
+
+          if (loadAttempts <= maxFailedLoadAttempts) {
             loadAdMobAd();
           }
         },
@@ -53,24 +64,24 @@ class InterstitialAdManager {
 
   void showInterstitialAds() {
     if (AppConfig.appDataSet?.showInterstitial == true) {
-      if (_adMobInterstitialAd != null) {
-        _isShowingAd = true;
+      if (_interstitialAd != null) {
+        _isShowingIntAd = true;
 
-        _adMobInterstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
+        _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
           onAdDismissedFullScreenContent: (InterstitialAd ad) {
-            _isShowingAd = false;
             ad.dispose();
+            _isShowingIntAd = false;
             loadAdMobAd();
           },
           onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-            _isShowingAd = false;
             ad.dispose();
+            _isShowingIntAd = false;
             loadAdMobAd();
           },
         );
 
-        _adMobInterstitialAd?.show();
-        _adMobInterstitialAd = null;
+        _interstitialAd?.show();
+        _interstitialAd = null;
       } else {
         loadAdMobAd();
       }
@@ -82,24 +93,24 @@ class InterstitialAdManager {
       if (interstitialAdShow == AppConfig.appDataSet?.interstitialAdCount) {
         interstitialAdShow = 0;
 
-        if (_adMobInterstitialAd != null) {
-          _isShowingAd = true;
+        if (_interstitialAd != null) {
+          _isShowingIntAd = true;
 
-          _adMobInterstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
+          _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (InterstitialAd ad) {
-              _isShowingAd = false;
               ad.dispose();
+              _isShowingIntAd = false;
               loadAdMobAd();
             },
             onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-              _isShowingAd = false;
               ad.dispose();
+              _isShowingIntAd = false;
               loadAdMobAd();
             },
           );
 
-          _adMobInterstitialAd?.show();
-          _adMobInterstitialAd = null;
+          _interstitialAd?.show();
+          _interstitialAd = null;
         } else {
           loadAdMobAd();
         }
@@ -109,30 +120,62 @@ class InterstitialAdManager {
     }
   }
 
+  void showInterstitialByBackCount() {
+    if (AppConfig.appDataSet?.showInterstitial == true) {
+      if (interstitialAdBackShow == AppConfig.appDataSet?.interstitialBackAdCount) {
+        interstitialAdBackShow = 0;
+
+        if (_interstitialAd != null) {
+          _isShowingIntAd = true;
+
+          _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (InterstitialAd ad) {
+              ad.dispose();
+              _isShowingIntAd = false;
+              loadAdMobAd();
+            },
+            onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+              ad.dispose();
+              _isShowingIntAd = false;
+              loadAdMobAd();
+            },
+          );
+
+          _interstitialAd?.show();
+          _interstitialAd = null;
+        } else {
+          loadAdMobAd();
+        }
+      } else {
+        interstitialAdBackShow++;
+      }
+    }
+  }
+
   void showInterstitial({required VoidCallback onAdClosed}) {
     if (AppConfig.appDataSet?.showInterstitial == true) {
-      if (_adMobInterstitialAd != null) {
-        _isShowingAd = true;
+      if (_interstitialAd != null) {
+        _isShowingIntAd = true;
 
-        _adMobInterstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
+        _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
           onAdDismissedFullScreenContent: (InterstitialAd ad) {
-            _isShowingAd = false;
             ad.dispose();
+            _isShowingIntAd = false;
             loadAdMobAd();
 
             onAdClosed();
           },
           onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-            _isShowingAd = false;
             ad.dispose();
+            _isShowingIntAd = false;
             loadAdMobAd();
 
             onAdClosed();
           },
         );
 
-        _adMobInterstitialAd?.show();
-        _adMobInterstitialAd = null;
+        _interstitialAd?.show();
+        _interstitialAd = null;
       } else {
         loadAdMobAd();
         onAdClosed();

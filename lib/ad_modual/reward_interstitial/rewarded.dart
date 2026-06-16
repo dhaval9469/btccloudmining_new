@@ -10,45 +10,37 @@ class RewardedAdManager {
   RewardedAdManager._internal();
 
   RewardedAd? _rewardedAd;
-  bool _isAdLoading = false;
-  bool _isShowingAd = false;
+  bool _isShowingRewAd = false;
 
-  bool get isAdReady => _rewardedAd != null;
+  bool get isShowingRewAd => _isShowingRewAd;
 
-  bool get isShowingAd => _isShowingAd;
+  int _index = 0;
+
+  final List<String> _adUnitIds = [
+    AppConfig.appDataSet?.googleRewardedId ?? '',
+    AppConfig.appDataSet?.adxRewardedId ?? '',
+  ];
 
   void loadAd() {
-    if (_isAdLoading || _rewardedAd != null) return;
+    if (_rewardedAd != null) return;
 
-    _isAdLoading = true;
+    final adUnitId = _adUnitIds[_index].trim();
+
     RewardedAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5224354917',
-      // adUnitId: '${AppConfig.appDataSet?.googleRewardedId}',
+      adUnitId: adUnitId,
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           _rewardedAd = ad;
-          _isAdLoading = false;
-          _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
-            onAdShowedFullScreenContent: (ad) {
-              _isShowingAd = true;
-            },
-            onAdDismissedFullScreenContent: (ad) {
-              _isShowingAd = false;
-              ad.dispose();
-              _rewardedAd = null;
-            },
-            onAdFailedToShowFullScreenContent: (ad, error) {
-              _isShowingAd = false;
-              ad.dispose();
-              _rewardedAd = null;
-              _isAdLoading = false;
-            },
-          );
+          _index = 0;
         },
         onAdFailedToLoad: (error) {
-          _isAdLoading = false;
           _rewardedAd = null;
+          if (_index == 0 && _adUnitIds.length > 1) {
+            _index = 1;
+            loadAd();
+            return;
+          }
         },
       ),
     );
@@ -61,27 +53,25 @@ class RewardedAdManager {
       return;
     }
 
-    _isShowingAd = true;
+    _isShowingRewAd = true;
 
     _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
-        _isShowingAd = true;
+        _isShowingRewAd = true;
       },
       onAdDismissedFullScreenContent: (ad) {
-        _isShowingAd = false;
         ad.dispose();
         _rewardedAd = null;
-        _isAdLoading = false;
-        loadAd();
+        _isShowingRewAd = false;
         onAdClosed();
+        loadAd();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        _isShowingAd = false;
         ad.dispose();
         _rewardedAd = null;
-        _isAdLoading = false;
-        loadAd();
+        _isShowingRewAd = false;
         onAdClosed();
+        loadAd();
       },
     );
 

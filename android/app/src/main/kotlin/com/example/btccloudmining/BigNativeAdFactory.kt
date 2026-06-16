@@ -1,4 +1,4 @@
-package com.bitcoin.asicnew.miner.app
+package btc.cloud.mining.crypto.rise
 
 import android.content.Context
 import android.graphics.BlendMode
@@ -145,7 +145,7 @@ class BigNativeAdFactory(private val context: Context) : GoogleMobileAdsPlugin.N
     private fun safeParseColor(colorStr: String?, defaultColor: String): Int {
         return try {
             (colorStr ?: defaultColor).toColorInt()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             defaultColor.toColorInt()
         }
     }

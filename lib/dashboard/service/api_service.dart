@@ -15,12 +15,25 @@ import 'package:btccloudmining/theme/config.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ApiRepo {
-  static Future<UserProfileModel> userLogin({String? email, String? reference, String? firstTime}) async {
+  static Future<UserProfileModel> userLogin({
+    String? email,
+    String? reference,
+    String? firstTime,
+  }) async {
     try {
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-      final body = {'email': email, 'refrence': reference ?? '', 'first_time': firstTime ?? '', 'token': AppConfig.token};
+      final body = {
+        'email': email,
+        'refrence': reference ?? '',
+        'first_time': firstTime ?? '',
+        'token': AppConfig.token,
+      };
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.login ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.login ?? '',
+        body,
+        header: headers,
+      );
 
       if (response['status_code'] == '200') {
         return UserProfileModel.fromJson(response);
@@ -41,7 +54,11 @@ class ApiRepo {
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'email': email, "btc": btc, "type": type, "token": AppConfig.token};
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.addBtcNew ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.addBtcNew ?? '',
+        body,
+        header: headers,
+      );
 
       EasyLoading.dismiss();
       if (response['status_code'] == '200') {
@@ -94,7 +111,11 @@ class ApiRepo {
         "token": AppConfig.token,
       };
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.subscriptionAdd ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.subscriptionAdd ?? '',
+        body,
+        header: headers,
+      );
 
       if (response['status_code'] != '200') {
         final message = response['messsage'] ?? 'Unknown error';
@@ -115,7 +136,11 @@ class ApiRepo {
 
       final body = {'email': email, "token": AppConfig.token};
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.viewBtc ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.viewBtc ?? '',
+        body,
+        header: headers,
+      );
 
       EasyLoading.dismiss();
 
@@ -138,7 +163,12 @@ class ApiRepo {
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'token': AppConfig.token};
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.ads ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.ads ?? '',
+        body,
+        header: headers,
+      );
+      log("check --------- : ${jsonEncode(response)}");
       return AppDataSetModel.fromJson(response);
     } catch (e, st) {
       AppException.showException(e, st);
@@ -150,7 +180,11 @@ class ApiRepo {
     try {
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'email': email, "token": AppConfig.token};
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.subscriptionBtc ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.subscriptionBtc ?? '',
+        body,
+        header: headers,
+      );
       return SubDetailsModel.fromJson(response);
     } catch (e, st) {
       AppException.showException(e, st);
@@ -177,7 +211,11 @@ class ApiRepo {
       };
       EasyLoading.show();
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.profile ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.profile ?? '',
+        body,
+        header: headers,
+      );
 
       EasyLoading.dismiss();
       if (response['status_code'] == '200') {
@@ -200,7 +238,11 @@ class ApiRepo {
 
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'email': email, "btc": btc, "token": AppConfig.token};
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.addWithdraw ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.addWithdraw ?? '',
+        body,
+        header: headers,
+      );
 
       EasyLoading.dismiss();
       return AddWDModel.fromJson(response);
@@ -213,13 +255,14 @@ class ApiRepo {
 
   static Future<WithdrawDetailsModel> viewWithdrawDetails({String? email}) async {
     try {
-      EasyLoading.show();
-
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'email': email, "token": AppConfig.token};
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.viewWithdraw ?? '', body, header: headers);
-      EasyLoading.dismiss();
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.viewWithdraw ?? '',
+        body,
+        header: headers,
+      );
 
       if (response['status_code'] == '200') {
         return WithdrawDetailsModel.fromJson(response);
@@ -229,7 +272,6 @@ class ApiRepo {
         throw Exception(message);
       }
     } catch (e, st) {
-      EasyLoading.dismiss();
       AppException.showException(e, st);
       rethrow;
     }
@@ -240,7 +282,11 @@ class ApiRepo {
       final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       final body = {'email': email, "token": AppConfig.token};
 
-      final response = await NetworkAPICall().post(AppConfig.endpoint?.deleteBtc ?? '', body, header: headers);
+      final response = await NetworkAPICall().post(
+        AppConfig.endpoint?.deleteBtc ?? '',
+        body,
+        header: headers,
+      );
 
       if (response['status_code'] != '200') {
         final message = response['messsage'] ?? 'Unknown error';

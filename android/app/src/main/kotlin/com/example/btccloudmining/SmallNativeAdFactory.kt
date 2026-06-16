@@ -1,4 +1,4 @@
-package com.bitcoin.asicnew.miner.app
+package btc.cloud.mining.crypto.rise
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -59,7 +59,8 @@ class SmallNativeAdFactory(private val context: Context) : GoogleMobileAdsPlugin
             try {
                 val bgColor = safeParseColor(customOptions["backgroundColor"] as String?, "#FFFFFF")
                 val textColor = safeParseColor(customOptions["textColor"] as String?, "#000000")
-                val subTextColor = safeParseColor(customOptions["subTextColor"] as String?, "#666666")
+                val subTextColor =
+                    safeParseColor(customOptions["subTextColor"] as String?, "#666666")
                 val buttonColor = safeParseColor(customOptions["buttonColor"] as String?, "#1E88E5")
                 val starColor = safeParseColor(customOptions["startColor"] as String?, "#FFD700")
 
@@ -122,7 +123,7 @@ class SmallNativeAdFactory(private val context: Context) : GoogleMobileAdsPlugin
     private fun safeParseColor(colorStr: String?, defaultColor: String): Int {
         return try {
             (colorStr ?: defaultColor).toColorInt()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             defaultColor.toColorInt()
         }
     }

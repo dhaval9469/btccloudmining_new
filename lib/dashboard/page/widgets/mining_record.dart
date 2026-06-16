@@ -1,4 +1,4 @@
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/model/mining_record.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
@@ -145,7 +145,7 @@ class _MiningRecordState extends State<MiningRecord> {
                 ),
         ],
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
+      bottomNavigationBar: SafeArea(child: NativeBanner()),
     );
   }
 }

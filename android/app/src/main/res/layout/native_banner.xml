@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/native_small_bannerAd"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="135dp"
     android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="135dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardElevation="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp">
+            android:layout_height="135dp">
 
             <com.google.android.gms.ads.nativead.AdChoicesView
                 android:id="@+id/ad_choices_view"
@@ -28,12 +28,12 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="7dp">
+                android:paddingHorizontal="8dp">
 
                 <ImageView
                     android:id="@+id/ad_app_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="48dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter" />
 
@@ -44,11 +44,25 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+
+                    <TextView
+                        android:id="@+id/ad_text_headline"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Ad Headline Here"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:paddingVertical="5dp"
+                        >
 
                         <TextView
                             android:id="@+id/ad_notification_view"
@@ -62,17 +76,17 @@
                             android:textSize="8sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/ad_text_headline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Ad Headline Here"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp"
-                            android:paddingStart="6dp"
-                            android:textStyle="bold" />
+                        <RatingBar
+                            android:id="@+id/ad_stars"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:paddingStart="10dp"
+                            android:stepSize="0.5"
+                            android:visibility="visible" />
+
 
                     </LinearLayout>
 
@@ -88,88 +102,23 @@
                         android:text="Ad description here"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="11sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/ad_call_to_action"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/rounded_button"
+                        android:gravity="center"
+                        android:text="Install"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/ad_call_to_action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/nb_button"
-                    android:gravity="center"
-                    android:minWidth="70dp"
-                    android:text="Install"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp" />
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </com.google.android.gms.ads.nativead.NativeAdView>
-
-<!--
-<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/native_small_bannerAd"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardElevation="0dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingHorizontal="7dp">
-
-            <ImageView
-                android:id="@+id/ad_app_icon"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                />
-
-
-            &lt;!&ndash; Title + Description &ndash;&gt;
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:id="@+id/ad_text_body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:text="Ad description here"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/ad_call_to_action"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:background="@drawable/nb_button"
-                android:gravity="center"
-                android:minWidth="70dp"
-                android:text="Install"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</com.google.android.gms.ads.nativead.NativeAdView>
--->

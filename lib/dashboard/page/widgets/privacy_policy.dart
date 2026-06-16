@@ -1,5 +1,7 @@
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
+import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,10 +38,17 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
             customHeader(context, 'spp'.tr),
             Expanded(

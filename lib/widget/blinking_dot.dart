@@ -22,7 +22,8 @@ class BlinkingGreenDotState extends State<BlinkingGreenDot> with SingleTickerPro
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: Duration(milliseconds: 1000), vsync: this)..repeat(reverse: true);
+    _controller = AnimationController(duration: Duration(milliseconds: 1000), vsync: this)
+      ..repeat(reverse: true);
 
     _animation = Tween<double>(begin: 0.2, end: 1.0).animate(_controller);
   }
@@ -76,7 +77,6 @@ class _CustomCardState extends State<CustomCard> {
 class AppButton extends StatelessWidget {
   final GestureTapCallback? onTap;
   final String? text;
-  final bool? isRoboto;
   final Color? color;
   final Color? textColor;
   final BoxBorder? border;
@@ -84,12 +84,12 @@ class AppButton extends StatelessWidget {
   final double? fontSize;
   final EdgeInsetsGeometry? padding;
   final Widget? child;
+  final FontWeight? fontWeight;
 
   const AppButton({
     super.key,
     this.onTap,
     this.text,
-    this.isRoboto = true,
     this.color,
     this.border,
     this.textColor,
@@ -97,6 +97,7 @@ class AppButton extends StatelessWidget {
     this.padding,
     this.fontSize,
     this.child,
+    this.fontWeight,
   });
 
   @override
@@ -113,19 +114,12 @@ class AppButton extends StatelessWidget {
               padding: padding ?? EdgeInsets.symmetric(vertical: 4),
               child: Text(
                 text ?? '',
-                style: isRoboto == true
-                    ? textRoboto(
-                        context,
-                        color: textColor ?? AppColor.white,
-                        fontSize: fontSize ?? 16,
-                        fontWeight: FontWeight.bold,
-                      )
-                    : textMontserrat(
-                        context,
-                        color: textColor ?? AppColor.white,
-                        fontSize: fontSize ?? 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                style: textMontserrat(
+                  context,
+                  color: textColor ?? AppColor.white,
+                  fontSize: fontSize ?? 16,
+                  fontWeight: fontWeight ?? FontWeight.bold,
+                ),
               ),
             ),
       ),
@@ -161,7 +155,7 @@ AppBar buildCustomAppBar(
           actions: actions,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(1),
-            child: child ?? Divider(color: Colors.white, height: 0, thickness: 0.1),
+            child: child ?? Divider(color: AppColor.primaryButton, height: 0, thickness: 0.1),
           ),
         )
       : AppBar(
@@ -177,12 +171,12 @@ AppBar buildCustomAppBar(
               : SizedBox.shrink(),
           title: Text(
             title ?? "",
-            style: textRoboto(context, fontSize: 18, fontWeight: FontWeight.w600, color: AppColor.white),
+            style: textMontserrat(context, fontSize: 17, fontWeight: FontWeight.w600, color: AppColor.text),
           ),
           actions: actions,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(1),
-            child: Divider(color: Colors.white, height: 0, thickness: 0.1),
+            child: Divider(color: AppColor.primaryButton, height: 0, thickness: 0.5),
           ),
         );
 }

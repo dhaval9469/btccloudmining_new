@@ -1,6 +1,7 @@
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/service/language_service.dart';
 import 'package:btccloudmining/theme/config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -45,12 +46,16 @@ class HiveService {
     return _boxes[boxName]?.values.toList() ?? [];
   }
 
-
   Future<void> clearAllBoxes() async {
     for (var box in _boxes.values) {
       await box.clear();
     }
   }
+
+  ValueListenable<Box> getListenable({String boxName = 'brm_box', List<String>? keys}) {
+    return _boxes[boxName]!.listenable(keys: keys);
+  }
+
   Locale getSavedLocale() {
     String? langCode = getData<String>(AppConfig.locale);
     return LanguageService.supportedLocales[langCode] ?? const Locale('en', 'US');

@@ -1,11 +1,11 @@
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/dashboard/service/language_service.dart';
+import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
-import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
@@ -39,10 +39,17 @@ class _LanguagePageState extends State<LanguagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,14 +71,12 @@ class _LanguagePageState extends State<LanguagePage> {
                         )
                       : GestureDetector(
                           onTap: () async {
-                            InterstitialAdManager().showInterstitialByCount();
                             homeCtrl.isChangingLanguage.value = true;
                             await Future.delayed(Duration(seconds: 2));
-
                             LanguageService.changeLanguage(homeCtrl.languageCode.value);
-
-                              Navigation.pop();
-                              homeCtrl.isChangingLanguage.value = false;
+                            Navigation.pop();
+                            homeCtrl.isChangingLanguage.value = false;
+                            InterstitialAdManager().showInterstitialByCount();
                           },
                           child: FaIcon(FontAwesomeIcons.check, color: AppColor.text, size: 20),
                         );
@@ -94,7 +99,7 @@ class _LanguagePageState extends State<LanguagePage> {
                         child: SlideAnimation(
                           verticalOffset: 20,
                           child: FadeInAnimation(
-                            child:Obx(() {
+                            child: Obx(() {
                               return GestureDetector(
                                 onTap: () {
                                   homeCtrl.languageCode.value = data['code'].toString();
@@ -103,32 +108,60 @@ class _LanguagePageState extends State<LanguagePage> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: AppColor.card),
-                                    color: homeCtrl.selectedLanguage.value == index ? AppColor.thirdCard : AppColor.newCard,
+                                    border: Border.all(
+                                      color: homeCtrl.selectedLanguage.value == index
+                                          ? AppColor.primaryButton
+                                          : AppColor.divider,
+                                    ),
+                                    color: homeCtrl.selectedLanguage.value == index
+                                        ? AppColor.primaryButton
+                                        : AppColor.newCard,
                                   ),
                                   child: Row(
                                     children: [
-                                      Container(
-                                        height: 20,
-                                        width: 35,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(2),
-                                          image: DecorationImage(image: NetworkImage('${data['flag']}'), fit: BoxFit.cover),
+                                      ClipOval(
+                                        child: Image.network(
+                                          "${data['flag']}",
+                                          height: 25,
+                                          width: 25,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return SizedBox(
+                                              height: 25,
+                                              width: 25,
+                                              child: Center(
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 1,
+                                                  color: AppColor.subText,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return ClipOval(
+                                              child: Image.asset(AppAsset.earth, scale: 20, fit: BoxFit.cover),
+                                            );
+                                          },
                                         ),
                                       ),
-                                      15.widthBox,
+                                      13.widthBox,
                                       Text(
                                         '${data['language']}',
                                         style: textRoboto(
                                           context,
-                                          fontSize: 15,
-                                          color: homeCtrl.selectedLanguage.value == index ? AppColor.white : AppColor.text,
-                                          fontWeight: homeCtrl.selectedLanguage.value == index ? FontWeight.w600 : FontWeight.w500,
+                                          fontSize: 16,
+                                          color: homeCtrl.selectedLanguage.value == index
+                                              ? AppColor.text
+                                              : AppColor.subText,
+                                          fontWeight: homeCtrl.selectedLanguage.value == index
+                                              ? FontWeight.bold
+                                              : FontWeight.w500,
                                         ),
                                       ),
                                       Spacer(),
-                                      Radio<int>(
-                                        value: index,
+
+                                      RadioGroup<int>(
                                         groupValue: homeCtrl.selectedLanguage.value,
                                         onChanged: (int? value) {
                                           setState(() {
@@ -136,24 +169,26 @@ class _LanguagePageState extends State<LanguagePage> {
                                             homeCtrl.languageCode.value = data['code'].toString();
                                           });
                                         },
-                                        fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                          if (states.contains(WidgetState.selected)) {
-                                            return AppColor.white;
-                                          }
-                                          return AppColor.card;
-                                        }),
-                                        visualDensity: VisualDensity(vertical: -4, horizontal: -4),
-                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        child: Radio<int>(
+                                          value: index,
+                                          fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                            if (states.contains(WidgetState.selected)) {
+                                              return AppColor.text;
+                                            }
+                                            return AppColor.divider;
+                                          }),
+                                          visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+                                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                        ),
                                       ),
                                     ],
-                                  ).pSymmetric(v: 6, h: 10),
+                                  ).pSymmetric(v: 7, h: 10),
                                 ),
                               );
                             }),
                           ),
                         ),
                       );
-
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return SizedBox(height: 12);
@@ -164,14 +199,15 @@ class _LanguagePageState extends State<LanguagePage> {
             ),
           ],
         ),
+        bottomNavigationBar: SafeArea(child: NativeBanner()),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 
   final languagesList = [
     {"language": "English", "code": "en", "flag": "https://flagcdn.com/w80/gb.png"},
     {"language": "French", "code": "fr", "flag": "https://flagcdn.com/w80/fr.png"},
+    {"language": "German", "code": "de", "flag": "https://flagcdn.com/w80/de.png"},
     {"language": "Spanish", "code": "es", "flag": "https://flagcdn.com/w80/es.png"},
     {"language": "Portuguese", "code": "pt", "flag": "https://flagcdn.com/w80/nl.png"},
     {"language": "Malay", "code": "ms", "flag": "https://flagcdn.com/w80/my.png"},

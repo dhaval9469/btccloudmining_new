@@ -15,6 +15,8 @@ class EndPointModel {
   String? appName;
   String? ppLink;
   double? startingReward;
+  String? superCoinValue;
+
 
   EndPointModel({
     this.api,
@@ -33,6 +35,8 @@ class EndPointModel {
     this.appName,
     this.ppLink,
     this.startingReward,
+    this.superCoinValue,
+
   });
 
   EndPointModel.fromJson(Map<String, dynamic> json) {
@@ -52,6 +56,8 @@ class EndPointModel {
     appName = json['appName'];
     ppLink = json['ppLink'];
     startingReward = json['startingreward'];
+    superCoinValue = json['super_coin_value'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +78,8 @@ class EndPointModel {
     data['appName'] = appName;
     data['ppLink'] = ppLink;
     data['startingreward'] = startingReward;
+    data['super_coin_value'] = superCoinValue;
+
     return data;
   }
 }

@@ -1,10 +1,7 @@
-import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/banner/large_banner.dart';
 import 'package:btccloudmining/ad_modual/native/small_native.dart';
-import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
-import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
-import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
-import 'package:btccloudmining/dashboard/repository/storeinfo_rewardservice.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/subscription_service.dart';
 import 'package:btccloudmining/helper/exception_handler.dart';
@@ -20,6 +17,7 @@ import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -45,6 +43,34 @@ class _StoreInfoState extends State<StoreInfo> {
   setData() async {
     try {
       EasyLoading.show();
+      await Future.delayed(const Duration(seconds: 1));
+
+      final currentItem = homeCtrl.storeItemData.value;
+
+      final updatedPlans = (currentItem.plans ?? []).map((plan) {
+        final product = subscriptionService.products.firstWhereOrNull((p) => p.id == plan.planId);
+
+        if (product != null) {
+          return plan.copyWith(amount: product.price);
+        }
+        return plan;
+      }).toList();
+
+      homeCtrl.storeItemData.value = currentItem.copyWith(plans: updatedPlans);
+
+      homeCtrl.selectedPlanIndex.value = 0;
+      homeCtrl.selectPlanDetails.value = updatedPlans.first;
+
+      EasyLoading.dismiss();
+    } catch (e, st) {
+      EasyLoading.dismiss();
+      AppException.showException(e, st);
+    }
+  }
+
+  /*  setData() async {
+    try {
+      EasyLoading.show();
       await Future.delayed(Duration(seconds: 1));
 
       homeCtrl.selectedPlanIndex.value = 0;
@@ -57,21 +83,28 @@ class _StoreInfoState extends State<StoreInfo> {
         if (match != null) {
           match.amount = element.price;
         }
+        homeCtrl.storeItemData.refresh();
       }
-      // setState(() {});
       EasyLoading.dismiss();
     } catch (e, st) {
       EasyLoading.dismiss();
       AppException.showException(e, st);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
             customHeader(context, '${homeCtrl.storeItemData.value.planName}'),
             Expanded(
@@ -90,210 +123,251 @@ class _StoreInfoState extends State<StoreInfo> {
                               if (loadingProgress == null) return child;
                               return SizedBox(
                                 child: Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColor.button,
-                                  ),
+                                  child: CircularProgressIndicator(strokeWidth: 1, color: AppColor.subText),
                                 ),
                               );
                             },
                             errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(AppAsset.blockEdge);
+                              return Image.asset(AppAsset.blockEdge, scale: 4);
                             },
                           ),
                         ).py(20),
                       ),
+
+
+                      SlideFadeTransition(index: 2, child: SmallNative(radius: 8,)).pOnly(bottom: 15,left: 15,right: 15),
+
                       SlideFadeTransition(
                         index: 2,
                         child: detailRow(text: "sisa".tr, subText: homeCtrl.storeItemData.value.hashrate),
                       ),
                       SlideFadeTransition(
                         index: 2,
-                        child: detailRow(text: "sip".tr, subText: homeCtrl.storeItemData.value.power),
+                        child: detailRow(text: "sip".tr, subText: homeCtrl.storeItemData.value.efficiency),
                       ),
                       SlideFadeTransition(
                         index: 2,
-                        child: detailRow(text: "sies".tr, subText: homeCtrl.storeItemData.value.efficiency),
+                        child: detailRow(text: "sies".tr, subText: homeCtrl.storeItemData.value.miningBoost),
                       ),
+                      15.heightBox,
                       SlideFadeTransition(
                         index: 3,
                         child: Text(
                           homeCtrl.storeItemData.value.description ?? "",
                           textAlign: TextAlign.center,
                           style: subTextMontserrat(context, fontSize: 11),
-                        ).px(15).py(10),
-                      ),
-                      AppConfig.appDataSet?.showTwoAd == true
-                          ? SlideFadeTransition(index: 3, child: NativeBanner().pOnly(bottom: 7))
-                          : SizedBox(),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: homeCtrl.storeItemData.value.plans?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          final plan = homeCtrl.storeItemData.value.plans?[index];
-                          return SlideFadeTransition(
-                            index: index + 4,
-                            child: Obx(
-                              () => GestureDetector(
-                                onTap: () {
-                                  homeCtrl.selectedPlanIndex.value = index;
-                                  homeCtrl.selectPlanDetails.value = plan;
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: homeCtrl.selectedPlanIndex.value == index
-                                          ? AppColor.thirdCard
-                                          : AppColor.unSelectPlan,
-                                      width: homeCtrl.selectedPlanIndex.value == index ? 2 : 1,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${plan?.validity}",
-                                            style: textRoboto(
-                                              context,
-                                              color: homeCtrl.selectedPlanIndex.value == index
-                                                  ? AppColor.text
-                                                  : AppColor.subText,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            "${plan?.amount}",
-                                            style: textMontserrat(
-                                              context,
-                                              fontWeight: homeCtrl.selectedPlanIndex.value == index
-                                                  ? FontWeight.bold
-                                                  : FontWeight.w500,
-                                              fontSize: homeCtrl.selectedPlanIndex.value == index ? 15 : 14,
-                                              color: homeCtrl.selectedPlanIndex.value == index
-                                                  ? AppColor.text
-                                                  : AppColor.subText,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      plan?.discount != 0
-                                          ? Container(
-                                              decoration: BoxDecoration(
-                                                gradient: const LinearGradient(
-                                                  colors: [
-                                                    Color(0xffFF9800), // Orange
-                                                    Color(0xffF44336), // Red
-                                                  ],
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                ),
-                                                borderRadius: BorderRadius.circular(6),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text('siltos'.tr, style: textRoboto(context, fontSize: 12)),
-                                                  Text(
-                                                    '${plan?.discount}%',
-                                                    style: textRoboto(
-                                                      context,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ).pSymmetric(v: 2, h: 10),
-                                            ).pOnly(top: 10)
-                                          : SizedBox.shrink(),
-                                    ],
-                                  ).px(15).py(10),
-                                ).px(15),
-                              ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return 10.heightBox;
-                        },
-                      ),
-                      20.heightBox,
-                      SlideFadeTransition(
-                        index: 6,
-                        child: GestureDetector(
-                          onTap: () async {
-                            EasyLoading.show();
-
-                            final plan = homeCtrl.selectPlanDetails.value;
-                            final PurchaseResult result = await subscriptionService.buy(plan?.planId ?? "");
-
-                            if (!result.success) {
-                              EasyLoading.dismiss();
-                              EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
-                              return;
-                            }
-
-                            final addTimeFormatted =
-                                formatUtcMillisToLocal(result.transactionDate) ??
-                                DateTime.now().toUtc().millisecondsSinceEpoch.toString();
-
-                            try {
-                              await ApiRepo.getSubDetails(
-                                email: HiveService().getData<String>(AppConfig.userEmail),
-                                botType: homeCtrl.storeItemData.value.planName,
-                                plan: plan?.planId,
-                                power: homeCtrl.storeItemData.value.hashrate,
-                                durationSeconds: plan?.durationSeconds.toString(),
-                                durationType: plan?.renetalDays.toString(),
-                                type: homeCtrl.storeItemData.value.image,
-                                powerType: '',
-                                addTime: addTimeFormatted,
-                                token: result.token,
-                                productID: plan?.planId,
-                                purchaseStatus: result.status,
-                                purchaseId: '',
-                                originalJson: '',
-                              );
-
-                              homeCtrl.activeHashRate.value += parseMiningPowerToGh(
-                                homeCtrl.storeItemData.value.hashrate.toString(),
-                              );
-                              EasyLoading.dismiss();
-                              withdrawDialog(data: homeCtrl.selectPlanDetails.value);
-                            } catch (e) {
-                              EasyLoading.dismiss();
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColor.thirdCard,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'siap'.tr,
-                                  style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 16),
-                                ).pSymmetric(v: 6),
-                              ],
-                            ),
-                          ).px(15),
-                        ),
-                      ),
-                      5.heightBox,
-                      SlideFadeTransition(
-                        index: 7,
-                        child: Text(
-                          'sisub'.tr,
-                          textAlign: TextAlign.center,
-                          style: subTextRoboto(context, fontWeight: FontWeight.w400, fontSize: 12),
                         ).px(15),
                       ),
                       20.heightBox,
+                      SlideFadeTransition(
+                        index: 4,
+                        child: Obx(
+                          () => StaggeredGrid.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                            children: List.generate(homeCtrl.storeItemData.value.plans?.length ?? 0, (index) {
+                              final plan = homeCtrl.storeItemData.value.plans?[index];
+                              return StaggeredGridTile.fit(
+                                crossAxisCellCount: index == 2 ? 2 : 1,
+                                child: Obx(
+                                  () => GestureDetector(
+                                    onTap: () {
+                                      homeCtrl.selectedPlanIndex.value = index;
+                                      homeCtrl.selectPlanDetails.value = plan;
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                          color: homeCtrl.selectedPlanIndex.value == index
+                                              ? AppColor.primaryButton
+                                              : Colors.white30,
+                                          width: homeCtrl.selectedPlanIndex.value == index ? 2 : 1,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          plan?.discount == 0
+                                              ? SizedBox(height: context.responsive.heightPercent(3))
+                                              : Container(
+                                                  height: context.responsive.heightPercent(3),
+                                                  decoration: const BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      colors: [Color(0xffFF9800), Color(0xffF44336)],
+                                                    ),
+                                                    borderRadius: BorderRadius.vertical(
+                                                      top: Radius.circular(14),
+                                                    ),
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    'siltos'.trParams({"discount": "${plan?.discount}"}),
+                                                    style: textMontserrat(
+                                                      context,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                          10.heightBox,
+
+                                          index == 2
+                                              ? Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "${plan?.validity}",
+                                                      style: textMontserrat(
+                                                        context,
+                                                        color: homeCtrl.selectedPlanIndex.value == index
+                                                            ? AppColor.text
+                                                            : AppColor.subText,
+                                                        fontWeight: homeCtrl.selectedPlanIndex.value == index
+                                                            ? FontWeight.bold
+                                                            : FontWeight.w500,
+                                                        fontSize: homeCtrl.selectedPlanIndex.value == index
+                                                            ? 16
+                                                            : 14,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "${plan?.amount}",
+                                                      style: textMontserrat(
+                                                        context,
+                                                        fontWeight: homeCtrl.selectedPlanIndex.value == index
+                                                            ? FontWeight.bold
+                                                            : FontWeight.w500,
+                                                        fontSize: homeCtrl.selectedPlanIndex.value == index
+                                                            ? 16
+                                                            : 14,
+                                                        color: homeCtrl.selectedPlanIndex.value == index
+                                                            ? AppColor.text
+                                                            : AppColor.subText,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ).px(20)
+                                              : Column(
+                                                  children: [
+                                                    Text(
+                                                      "${plan?.validity}",
+                                                      style: textMontserrat(
+                                                        context,
+                                                        color: homeCtrl.selectedPlanIndex.value == index
+                                                            ? AppColor.text
+                                                            : AppColor.subText,
+                                                        fontWeight: homeCtrl.selectedPlanIndex.value == index
+                                                            ? FontWeight.bold
+                                                            : FontWeight.w500,
+                                                        fontSize: homeCtrl.selectedPlanIndex.value == index
+                                                            ? 16
+                                                            : 14,
+                                                      ),
+                                                    ),
+                                                    2.heightBox,
+                                                    Text(
+                                                      "${plan?.amount}",
+                                                      style: textMontserrat(
+                                                        context,
+                                                        fontWeight: homeCtrl.selectedPlanIndex.value == index
+                                                            ? FontWeight.bold
+                                                            : FontWeight.w500,
+                                                        fontSize: homeCtrl.selectedPlanIndex.value == index
+                                                            ? 16
+                                                            : 14,
+                                                        color: homeCtrl.selectedPlanIndex.value == index
+                                                            ? AppColor.text
+                                                            : AppColor.subText,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                          10.heightBox,
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ).px(15),
+                        ),
+                      ),
+                      15.heightBox,
+                      SlideFadeTransition(
+                        index: 5,
+                        child: CustomCard(
+                          child: Obx(() {
+                            final plans = homeCtrl.selectPlanDetails.value;
+                            String priceString = plans?.amount ?? "₹0";
+                            String cleanedPrice = priceString.replaceAll(RegExp(r'[^\d.]'), '');
+                            double discountedPrice = double.tryParse(cleanedPrice) ?? 0;
+                            int discountPercent = plans?.discount ?? 0;
+                            double originalPrice = discountPercent > 0
+                                ? discountedPrice / (1 - discountPercent / 100)
+                                : discountedPrice;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'siod'.tr,
+                                  style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 15),
+                                ).pOnly(left: 10, top: 7),
+                                Divider(color: AppColor.card),
+                                orderDetail(text: 'siods'.tr, subText: homeCtrl.storeItemData.value.hashrate),
+                                3.heightBox,
+                                orderDetail(
+                                  text: 'siode'.tr,
+                                  subText: homeCtrl.storeItemData.value.efficiency,
+                                ),
+                                3.heightBox,
+                                orderDetail(
+                                  text: 'siodn'.tr,
+                                  subText: homeCtrl.storeItemData.value.miningBoost,
+                                ),
+                                3.heightBox,
+                                orderDetail(text: 'siot'.tr, subText: "${plans?.renetalDays} Days"),
+                                Divider(color: AppColor.card),
+
+                                plans?.discount != 0
+                                    ? Column(
+                                        children: [
+                                          orderDetail(
+                                            text: 'siodop'.tr,
+                                            subText: '₹${originalPrice.toStringAsFixed(2)}',
+                                          ),
+                                          3.heightBox,
+                                          orderDetail(text: 'siodd'.tr, subText: '${plans?.discount}%'),
+                                          3.heightBox,
+                                        ],
+                                      )
+                                    : SizedBox.shrink(),
+                                orderDetail(text: 'siodp'.tr, subText: '${plans?.amount}'),
+                                7.heightBox,
+                              ],
+                            );
+                          }),
+                        ).px(15),
+                      ),
+                      15.heightBox,
+                      SlideFadeTransition(
+                        index: 6,
+                        child: Text(
+                          'sisub'.tr,
+                          textAlign: TextAlign.center,
+                          style: subTextMontserrat(context, fontSize: 12),
+                        ).px(15),
+                      ),
+                      20.heightBox,
+                      SlideFadeTransition(index: 10, child: LargeBanner()),
+                      40.heightBox,
+
+                      // SlideFadeTransition(index: 7, child: SmallNative()),
+                      // 80.heightBox,
                     ],
                   ),
                 ),
@@ -301,15 +375,9 @@ class _StoreInfoState extends State<StoreInfo> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
-      /*  bottomNavigationBar: SafeArea(
-        child: SizedBox(
-          height: context.responsive.heightPercent(4.7),
-          child: AppButton(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            color: AppColor.button,
-            text: 'siap'.tr,
+        bottomNavigationBar: SlideFadeTransition(
+          index: 7,
+          child: GestureDetector(
             onTap: () async {
               EasyLoading.show();
 
@@ -318,17 +386,18 @@ class _StoreInfoState extends State<StoreInfo> {
 
               if (!result.success) {
                 EasyLoading.dismiss();
-                EasyLoading.showToast("⚠️ Error: ${result.message ?? 'Unknown error'}");
+                EasyLoading.showToast("⚠️  ${result.status}");
                 return;
               }
 
               final addTimeFormatted =
-                  formatUtcMillisToLocal(result.transactionDate) ?? DateTime.now().toUtc().millisecondsSinceEpoch.toString();
+                  formatUtcMillisToLocal(result.transactionDate) ??
+                  DateTime.now().toUtc().millisecondsSinceEpoch.toString();
 
               try {
                 await ApiRepo.getSubDetails(
                   email: HiveService().getData<String>(AppConfig.userEmail),
-                  botType: homeCtrl.storeItemData.value.name,
+                  botType: homeCtrl.storeItemData.value.planName,
                   plan: plan?.planId,
                   power: homeCtrl.storeItemData.value.hashrate,
                   durationSeconds: plan?.durationSeconds.toString(),
@@ -343,16 +412,37 @@ class _StoreInfoState extends State<StoreInfo> {
                   originalJson: '',
                 );
 
-                homeCtrl.activeHashRate.value += parseMiningPowerToGh(homeCtrl.storeItemData.value.hashrate.toString());
+                homeCtrl.activeHashRate.value += parseMiningPowerToGh(
+                  homeCtrl.storeItemData.value.hashrate.toString(),
+                );
                 EasyLoading.dismiss();
-                withdrawDialog(data: homeCtrl.selectPlanDetails.value);
+                withdrawDialog();
               } catch (e) {
                 EasyLoading.dismiss();
               }
             },
-          ).px(15),
-        ).pOnly(bottom: 10),
-      ),*/
+            child: Container(
+              color: AppColor.newCard,
+              child: SafeArea(
+                child: Container(
+                  height: context.responsive.heightPercent(5),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [Color(0xffFF9800), Color(0xffF44336)]),
+                    // color: AppColor.primaryButton,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('siap'.tr, style: textRoboto(context, fontWeight: FontWeight.bold, fontSize: 17)),
+                    ],
+                  ),
+                ).pSymmetric(h: 15, v: 15),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -378,37 +468,7 @@ class _StoreInfoState extends State<StoreInfo> {
     ).px(10);
   }
 
-  Future<void> handleBoostTap(StoreInfoAdRewardService timer, ListPlan data) async {
-    if (timer.isRunning) return;
-
-    EasyLoading.show(status: 'Loading ad...');
-
-    await Future.delayed(Duration(seconds: 1));
-
-    IntOrRwdAdManger().showIntORRwdAdOnPlanAd(
-      onReward: () async {
-        timer.start(seconds: data.adTime ?? 120, bonusPower: data.hashrate ?? '50 TH');
-
-        final activeMiner = ActiveBotModel(
-          productID: '',
-          botType: data.planName.toString(),
-          type: data.hashrate ?? '',
-          power: data.power ?? '',
-          machineType: data.efficiency ?? '',
-          duration: data.adTime ?? 60,
-          addTime: DateTime.now().millisecondsSinceEpoch,
-          expireTime: data.adTime ?? 60,
-        );
-
-        await HiveService().addToBox(activeMiner, boxName: 'brm_activeBot_box');
-      },
-      onAdClosed: () {},
-    );
-
-    EasyLoading.dismiss();
-  }
-
-  withdrawDialog({Plans? data}) {
+  withdrawDialog() {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColor.newCard,
@@ -417,39 +477,42 @@ class _StoreInfoState extends State<StoreInfo> {
       isScrollControlled: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
       builder: (context) {
-        return Container(
-          height: context.responsive.heightPercent(38),
-          decoration: BoxDecoration(
-            color: AppColor.newCard,
-            border: Border(top: BorderSide(color: AppColor.card)),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        return SafeArea(
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColor.cardLayout,
+              border: Border(top: BorderSide(color: AppColor.neonBlue, width: 2)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(AppAsset.done, width: 100, height: 100, fit: BoxFit.fill, repeat: true),
+                10.heightBox,
+                Text(
+                  "sissm".trParams({
+                    "name": homeCtrl.storeItemData.value.planName.toString(),
+                    "speed": homeCtrl.storeItemData.value.hashrate.toString(),
+                    "day": homeCtrl.selectPlanDetails.value?.renetalDays.toString() ?? "",
+                  }),
+                  textAlign: TextAlign.center,
+                  style: textRoboto(context, fontSize: 15),
+                ),
+                20.heightBox,
+                AppButton(
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  color: AppColor.secondaryButton,
+                  onTap: () {
+                    Navigation.pop();
+                    Navigation.pop();
+                    InterstitialAdManager().showInterstitialAds();
+                  },
+                  text: 'sipsb'.tr,
+                ),
+                10.heightBox,
+              ],
+            ).p(12),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Lottie.asset(AppAsset.done, width: 100, height: 100, fit: BoxFit.fill, repeat: true),
-              10.heightBox,
-              Text(
-                "sissm".trParams({
-                  "name": homeCtrl.storeItemData.value.planName.toString(),
-                  "speed": homeCtrl.storeItemData.value.hashrate.toString(),
-                  "day": "${data?.renetalDays}",
-                }),
-                textAlign: TextAlign.center,
-                style: textRoboto(context, fontSize: 15),
-              ),
-              20.heightBox,
-              AppButton(
-                padding: EdgeInsets.symmetric(vertical: 6),
-                color: AppColor.primary,
-                onTap: () {
-                  Navigation.pop();
-                  Navigation.pop();
-                },
-                text: 'wwb'.tr,
-              ),
-            ],
-          ).p(12),
         );
       },
     );

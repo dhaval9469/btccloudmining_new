@@ -1,5 +1,4 @@
-import 'package:btccloudmining/ad_modual/native/intro_small_native.dart';
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
@@ -19,36 +18,26 @@ class IpWidget1 extends StatelessWidget {
       body: Column(
         children: [
           30.heightBox,
-          Image.asset(AppAsset.introOne,height: 350,fit: BoxFit.cover),
+          Image.asset(AppAsset.introOne, height: 350, fit: BoxFit.cover),
           Spacer(),
+
           Text(
-            'Earn Bitcoin the Smart Way ',
+            'Mine BTC Remotely with Secure Cloud Technology.No Hardware Required. Earn Daily.',
             textAlign: TextAlign.center,
-            style: textRoboto(
-              context,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColor.white,
-            ),
+            style: textMontserrat(context, color: AppColor.subText, fontSize: 13),
           ),
-          15.heightBox,
-          Text(
-            'Start remote BTC mining with zero setup.No hardware. No hassle. Just daily earnings on autopilot.',
-            textAlign: TextAlign.center,
-            style: textMontserrat(context, color: AppColor.white,fontSize: 13),
-          ),
-          25.heightBox,
+          30.heightBox,
           AppButton(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            color: AppColor.primary,
-            onTap:onNext,
+            padding: EdgeInsets.symmetric(vertical: 6),
+            color: AppColor.primaryButton,
+            onTap: onNext,
             text: 'Next',
-            fontSize: 20,
+            fontSize: 17,
           ),
-          20.heightBox,
+          50.heightBox,
         ],
       ).px(20),
-      bottomNavigationBar: SafeArea(child: IntoSmallNative()),
+      bottomNavigationBar: SafeArea(child: NativeBanner()),
     );
   }
 }

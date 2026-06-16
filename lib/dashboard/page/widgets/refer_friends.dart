@@ -1,10 +1,13 @@
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
+import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/export.dart';
 import 'package:share_plus/share_plus.dart';
@@ -20,10 +23,17 @@ class ReferFriendsPage extends StatefulWidget {
 class _ReferFriendsPageState extends State<ReferFriendsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
             customHeader(context, 'srf'.tr),
             Expanded(
@@ -39,8 +49,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                           Text("rfyrc".tr, style: textMontserrat(context)),
                           GestureDetector(
                             onTap: () async {
-                              final message = AppConfig.referralCode;
-                              await SharePlus.instance.share(ShareParams(text: message));
+                              shareInvite();
                             },
                             child: FaIcon(FontAwesomeIcons.shareNodes, color: AppColor.text, size: 15),
                           ),
@@ -53,7 +62,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: AppColor.card,
+                          color: AppColor.newCard,
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 7),
@@ -77,12 +86,18 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () async {
-                                shareInvite();
+                                await FlutterClipboard.copy(
+                                  'rfct'.trParams({
+                                    'referralCode': AppConfig.referralCode,
+                                    "siAppLink": AppConfig.appLink,
+                                  }),
+                                );
+                                EasyLoading.showToast("Copy Referral Code");
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: AppColor.thirdCard),
+                                  border: Border.all(color: AppColor.divider),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 6),
@@ -114,7 +129,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: AppColor.thirdCard),
+                                  border: Border.all(color: AppColor.divider),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 6),
@@ -159,22 +174,16 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
                       index: 5,
                       child: benefitRow('rfgber'.trParams({"rBTC": AppConfig.referEarn.toStringAsFixed(12)})),
                     ),
-                    SlideFadeTransition(
-                      index: 6,
-                      child: benefitRow('rfyfghbsm'.tr),
-                    ),
-                    SlideFadeTransition(
-                      index: 7,
-                      child: benefitRow('rfurimyw'.tr),
-                    ),
+                    SlideFadeTransition(index: 6, child: benefitRow('rfyfghbsm'.tr)),
+                    SlideFadeTransition(index: 7, child: benefitRow('rfurimyw'.tr)),
                   ],
                 ),
               ),
             ),
           ],
         ),
+        bottomNavigationBar: SafeArea(child: NativeBanner()),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 
@@ -189,10 +198,7 @@ class _ReferFriendsPageState extends State<ReferFriendsPage> {
   }
 
   Future<void> shareInvite() async {
-    final message = 'rfct'.trParams({
-      'referralCode': AppConfig.referralCode,
-      "siAppLink": AppConfig.appLink,
-    });
+    final message = 'rfct'.trParams({'referralCode': AppConfig.referralCode, "siAppLink": AppConfig.appLink});
     await SharePlus.instance.share(ShareParams(text: message));
   }
 }

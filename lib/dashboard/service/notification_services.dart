@@ -53,11 +53,11 @@ class NotificationService {
   }
 
   Future<void> _initFirebaseMessaging() async {
-    await _messaging.subscribeToTopic("bama");
-
+    await _messaging.subscribeToTopic("btccr");
 
     FirebaseMessaging.onMessage.listen((msg) => showNotification(msg));
     FirebaseMessaging.onMessageOpenedApp.listen((msg) {
+      showNotification(msg);
     });
 
     final initialMessage = await _messaging.getInitialMessage();
@@ -65,19 +65,14 @@ class NotificationService {
       _handleTap(initialMessage.data['action']);
     }
 
-    await _messaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    await _messaging.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
   }
 
   Future<void> showNotification(RemoteMessage message) async {
-    final title = message.data['title'] ?? message.notification?.title ?? "BTC Alert";
-    final body = message.data['body'] ?? message.notification?.body ?? "New update!";
+    final title = message.data['title'] ?? message.notification?.title;
+    final body = message.data['body'] ?? message.notification?.body;
     final imageUrl = message.data['image'] as String?;
-    final payload = message.data['action'] ?? 'default';
-
+    final payload = message.data['action'];
 
     final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     BigPictureStyleInformation? bigPicture;
@@ -106,9 +101,7 @@ class NotificationService {
       styleInformation: bigPicture ?? BigTextStyleInformation(body),
       fullScreenIntent: true,
       visibility: NotificationVisibility.public,
-      actions: [
-        AndroidNotificationAction('start_mining', "Let's Start Mining"),
-      ],
+      actions: [AndroidNotificationAction('start_mining', "Let's Start Mining")],
     );
 
     const iOSDetails = DarwinNotificationDetails();
@@ -135,8 +128,5 @@ class NotificationService {
     }
   }
 
-  void _handleTap(String? payload) {
-    if (payload == 'bottom') {
-    } else if (payload == 'open_btc_mining_page') {}
-  }
+  void _handleTap(String? payload) {}
 }

@@ -1,14 +1,19 @@
-package com.bitcoin.asicnew.miner.app
+package btc.cloud.mining.crypto.rise
 
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import com.google.android.gms.ads.nativead.AdChoicesView
 import com.google.android.gms.ads.nativead.NativeAd
@@ -37,6 +42,8 @@ class NativeBannerAdFactory(private val context: Context) : GoogleMobileAdsPlugi
         val callToActionView: Button = adView.findViewById(R.id.ad_call_to_action)
         val adChoicesView: AdChoicesView = adView.findViewById(R.id.ad_choices_view)
         val adBadge: TextView? = adView.findViewById(R.id.ad_notification_view)
+        val starRatingView: RatingBar = adView.findViewById(R.id.ad_stars)
+
 
         // Apply custom colors if available
         if (customOptions != null) {
@@ -47,7 +54,8 @@ class NativeBannerAdFactory(private val context: Context) : GoogleMobileAdsPlugi
 //                int buttonColor = Color.parseColor((String) customOptions.get("buttonColor"));
                 val bgColor = safeParseColor(customOptions["backgroundColor"] as String?, "#FFFFFF")
                 val textColor = safeParseColor(customOptions["textColor"] as String?, "#000000")
-                val subTextColor = safeParseColor(customOptions["subTextColor"] as String?, "#666666")
+                val subTextColor =
+                    safeParseColor(customOptions["subTextColor"] as String?, "#666666")
                 val buttonColor = safeParseColor(customOptions["buttonColor"] as String?, "#1E88E5")
                 val starColor = safeParseColor(customOptions["startColor"] as String?, "#FFD700")
 
@@ -83,20 +91,40 @@ class NativeBannerAdFactory(private val context: Context) : GoogleMobileAdsPlugi
                 shapeDrawable.setColor(Color.TRANSPARENT)
 
                 // Border (stroke)
-                shapeDrawable.setStroke(
-                    TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        1f, // border width = 2dp
-                        context.resources.displayMetrics
-                    ).toInt(),
-                    buttonColor // border color
+//                shapeDrawable.setStroke(
+//                    TypedValue.applyDimension(
+//                        TypedValue.COMPLEX_UNIT_DIP,
+//                        1f, // border width = 2dp
+//                        context.resources.displayMetrics
+//                    ).toInt(),
+//                    buttonColor // border color
+//                )
+//
+//                // Apply background to button
+//                callToActionView.background = shapeDrawable
+//
+//                // Optional: set text color to match border for better look
+//                callToActionView.setTextColor(buttonColor)
+
+                val buttonRadiusPx = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    8f,
+                    context.resources.displayMetrics
                 )
+                val btnDrawable = GradientDrawable().apply {
+                    cornerRadius = buttonRadiusPx
+                    setColor(buttonColor)
+                }
+                callToActionView.background = btnDrawable
 
-                // Apply background to button
-                callToActionView.background = shapeDrawable
-
-                // Optional: set text color to match border for better look
-                callToActionView.setTextColor(buttonColor)
+                starRatingView.progressDrawable?.let {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        it.colorFilter = BlendModeColorFilter(starColor, BlendMode.SRC_ATOP)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        it.setColorFilter(starColor, PorterDuff.Mode.SRC_ATOP)
+                    }
+                }
 
                 if (adBadge != null) {
                     adBadge.text = "Ad"
@@ -126,6 +154,8 @@ class NativeBannerAdFactory(private val context: Context) : GoogleMobileAdsPlugi
         adView.iconView = iconView
         adView.callToActionView = callToActionView
         adView.adChoicesView = adChoicesView
+        adView.starRatingView = starRatingView
+
 
         // Set ad content
         headlineView.text = nativeAd.headline
@@ -166,6 +196,13 @@ class NativeBannerAdFactory(private val context: Context) : GoogleMobileAdsPlugi
             iconView.visibility = View.GONE
         }
 
+        if (nativeAd.starRating != null) {
+            starRatingView.rating = nativeAd.starRating!!.toFloat()
+            starRatingView.visibility = View.VISIBLE
+        } else {
+            starRatingView.visibility = View.GONE
+        }
+
         // Final binding
         adView.setNativeAd(nativeAd)
         return adView
@@ -175,7 +212,7 @@ class NativeBannerAdFactory(private val context: Context) : GoogleMobileAdsPlugi
     private fun safeParseColor(colorStr: String?, defaultColor: String): Int {
         return try {
             (colorStr ?: defaultColor).toColorInt()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             defaultColor.toColorInt()
         }
     }

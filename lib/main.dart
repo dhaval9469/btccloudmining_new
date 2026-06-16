@@ -23,16 +23,16 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarBrightness:Brightness.light,
+      statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarIconBrightness: Brightness.light,
       systemNavigationBarColor: Colors.black,
     ),
   );
   await Firebase.initializeApp();
+  await InitializationHelper().initialize();
   await FirebaseRemoteConfigService().init();
   await HiveService().init();
-  await InitializationHelper().initialize();
   configLoading();
   runApp(const BtcCloudMiningApp());
 }

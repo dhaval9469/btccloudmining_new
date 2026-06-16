@@ -95,6 +95,7 @@ class ConnectionService {
             },
           );
         }
+
         NoInternetPopup.show(context, onTryAgain: onTryAgain);
       } else if (!_hasConnection && isConnected) {
         Navigation.pop();

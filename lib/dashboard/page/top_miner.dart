@@ -1,9 +1,11 @@
-import 'package:btccloudmining/ad_modual/banner/banner.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
 import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/textstyles.dart';
+import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +25,19 @@ class _TopMinerState extends State<TopMiner> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
-            Row(
-              children: [Text("bl".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
-            ).p(15),
+            customHeader(context, 'bl'.tr),
 
             Expanded(
               child: cardLayout(
@@ -57,11 +64,32 @@ class _TopMinerState extends State<TopMiner> {
                                       children: [
                                         Text(
                                           data.name ?? '',
-                                          style: textMontserrat(context, fontSize: 13, fontWeight: FontWeight.w600),
+                                          style: textMontserrat(
+                                            context,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                        Text(
-                                          data.btc ?? '',
-                                          style: subTextRoboto(context, fontSize: 12, fontWeight: FontWeight.w600),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              data.message ?? '',
+                                              style: subTextRoboto(
+                                                context,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            10.widthBox,
+                                            Text(
+                                              data.btc ?? '',
+                                              style: subTextRoboto(
+                                                context,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -85,7 +113,11 @@ class _TopMinerState extends State<TopMiner> {
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(height: 10);
+                      return index == 2
+                          ? SlideFadeTransition(index: 3, child: SmallNative(radius: 8,)).py(10)
+                          : index != 0 && index % 10 == 0
+                          ? SlideFadeTransition(index: 3, child: NativeBanner(radius: 8,)).py(10)
+                          : SizedBox(height: 10);
                     },
                   ),
                 ),
@@ -94,7 +126,6 @@ class _TopMinerState extends State<TopMiner> {
           ],
         ),
       ),
-      bottomNavigationBar: SafeArea(child: ShowBanner()),
     );
   }
 }

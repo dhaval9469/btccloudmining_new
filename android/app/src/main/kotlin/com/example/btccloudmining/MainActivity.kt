@@ -1,4 +1,4 @@
-package com.bitcoin.asicnew.miner.app
+package btc.cloud.mining.crypto.rise
 
 import android.os.Build
 import android.os.Bundle

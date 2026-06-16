@@ -1,4 +1,4 @@
-package com.bitcoin.asicnew.miner.app
+package btc.cloud.mining.crypto.rise
 
 import android.content.Context
 import android.graphics.*

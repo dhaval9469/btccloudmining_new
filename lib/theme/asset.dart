@@ -9,12 +9,15 @@ class AppAsset {
   static const done = '$lottie/done.json';
   static const error404 = '$lottie/error_404.json';
   static const splashLottie = '$lottie/splash_lottie.json';
+  static const lockLoader = '$lottie/lockloader.json';
 
 
   static const home = '$image/home.png';
   static const homes = '$image/homes.png';
   static const upgrade = '$image/upgrade.png';
   static const upgrades = '$image/upgrades.png';
+  static const card = '$image/card.png';
+  static const cards = '$image/cards.png';
   static const leaderboard = '$image/leaderboard.png';
   static const leaderboards = '$image/leaderboards.png';
   static const gear = '$image/gear.png';
@@ -42,8 +45,6 @@ class AppAsset {
   static const watchAd = '$image/watchad.png';
   static const faqs = '$image/faqs.png';
   static const splash = '$image/splash.png';
-  static const login = '$image/login.png';
-  static const referFriend = '$image/refer_friend.png';
   static const coin = '$image/coin.png';
   static const bitcoin = '$image/bitcoin.png';
   static const appLogo = '$image/app_logo.png';
@@ -55,6 +56,14 @@ class AppAsset {
   static const wallet = '$image/wallet.png';
   static const restore = '$image/restore.png';
   static const boost = '$image/boost.png';
+  static const earth = '$image/earth.png';
+  static const lock = '$image/lock.png';
+  static const unLock = '$image/unlock.png';
+  static const voucher = '$image/voucher.png';
+  static const rewardCoin = '$image/reward_coin.png';
+  static const superCoin = '$image/super_coin.png';
+  static const giftCard = '$image/gift_card.png';
+
 
 
   static const rcm = '$icon/rcm.png';
@@ -72,5 +81,6 @@ class AppAsset {
   static const four= '$icon/4.png';
   static const five= '$icon/5.png';
   static const miner= '$icon/miner.png';
+  static const minerAd= '$icon/miner_ad.png';
 
 }

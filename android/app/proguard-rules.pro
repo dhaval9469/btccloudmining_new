@@ -111,3 +111,14 @@
 -keep class com.facebook.** { *; }
 -keep class com.google.ads.mediation.facebook.** { *; }
 
+
+# Keep Google Play Services Ads
+-keep class com.google.android.gms.ads.** { *; }
+
+# Keep Meta Audience Network
+-keep class com.facebook.ads.** { *; }
+-keep class com.google.ads.mediation.facebook.** { *; }
+
+# Keep Firebase
+-keep class com.google.firebase.** { *; }
+

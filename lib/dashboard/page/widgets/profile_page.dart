@@ -1,4 +1,5 @@
-import 'package:btccloudmining/ad_modual/native/small_native.dart';
+import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/model/update_profile_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/theme/colors.dart';
@@ -39,10 +40,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        InterstitialAdManager().showInterstitialByBackCount();
+        Navigation.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: Column(
           children: [
             customHeader(context, 'sep'.tr),
             Expanded(
@@ -140,10 +148,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           index: 6,
                           child: AppButton(
                             padding: EdgeInsets.symmetric(vertical: 7),
-                            color: AppColor.thirdCard,
+                            color: AppColor.secondaryButton,
                             onTap: () async {
                               FocusScope.of(context).unfocus();
-        
                               if (formKey.currentState?.validate() == true) {
                                 UpdateProfileModel updateProfileModel = await ApiRepo.updateProfile(
                                   email: emailCtrl.text.trim(),
@@ -152,14 +159,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   btcAddress: "",
                                   gender: "",
                                 );
-        
+
                                 if (updateProfileModel.statusCode == '200') {
                                   HiveService().saveData(AppConfig.userEmail, updateProfileModel.email);
                                   HiveService().saveData(AppConfig.userName, updateProfileModel.name);
                                   HiveService().saveData(AppConfig.userMobile, updateProfileModel.mobile);
                                 }
-        
+
                                 Navigation.pop();
+                                InterstitialAdManager().showInterstitialByCount();
                               }
                             },
                             text: 'epu'.tr,
@@ -173,8 +181,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
+        bottomNavigationBar: SafeArea(child: NativeBanner()),
       ),
-      bottomNavigationBar: SafeArea(child: SmallNative()),
     );
   }
 }

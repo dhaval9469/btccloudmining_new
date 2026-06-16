@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:btccloudmining/dashboard/model/end_point_model.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -15,8 +15,7 @@ class AppConfig {
 
   static String appLink = "";
   static String ppLink = "";
-  static String appVersion = "1.0.0";
-  static String appName = "Bitcoin Mining (ASIC Miner)";
+  static String appName = "BTC Cloud Mining : CryptoRise";
 
   static SpIdModel? spIdData;
   static EndPointModel? endpoint;
@@ -34,6 +33,7 @@ class AppConfig {
   static double factorUltraSlow = 0.000000000000005;
   static int miningIntervals = 60;
 
+
   static const locale = 'locale';
   static const dailyReward = 'dailyReward';
   static const dailyRewardTwo = 'dailyRewardTwo';
@@ -42,6 +42,10 @@ class AppConfig {
   static const lastMiningTime = 'lastMiningTime';
   static const lastMiningTimeSecond = 'lastMiningTimeSecond';
   static const checkMining = 'checkMining';
+  static const lockMinedBTC = 'lockMinedBTC';
+  static const lockMinedBTCTime = 'lockMinedBTCTime';
+  static const String superCoin = 'super_coin';
+
 
   static final String isLogin = 'IS_LOGIN';
   static final String isInstall = 'IS_INSTALL';

@@ -1,16 +1,14 @@
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NativeBanner extends StatefulWidget {
+  final double? radius;
   final bool isBGTransparent;
 
-  const NativeBanner({super.key, this.isBGTransparent = true});
+  const NativeBanner({super.key, this.isBGTransparent = true, this.radius});
 
   @override
   State<NativeBanner> createState() => _NativeBannerState();
@@ -18,37 +16,62 @@ class NativeBanner extends StatefulWidget {
 
 class _NativeBannerState extends State<NativeBanner> {
   NativeAd? _nativeAd;
-  bool isLoading = true;
+  bool isLoading = false;
+
+  int index = 0;
+
+  final List<String> _adUnitIds = [
+    AppConfig.appDataSet?.googleNativeId ?? '',
+    AppConfig.appDataSet?.adxNativeId ?? '',
+  ];
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    loadAd();
+    if (AppConfig.appDataSet?.googleNativeAdStatus == true) {
+      loadAd();
+    }
   }
 
   Future<void> loadAd() async {
+    final adUnitId = _adUnitIds[index].trim();
+    isLoading = true;
+    if (mounted) setState(() {});
+
     NativeAd(
-      adUnitId: 'ca-app-pub-3940256099942544/2247696110',
-      // adUnitId: AppConfig.appDataSet?.googleNativeId ?? '',
+      adUnitId: adUnitId,
       factoryId: 'native_banner',
       customOptions: {
-        'backgroundColor': widget.isBGTransparent ? '#242C3B' : "#222834",
-        'textColor': '#FFFFFF',
-        'subTextColor': '#B3B3B3',
-        'buttonColor': '#0061A0',
-        'startColor': '#373737',
-        // 'startColor': '#2286FE'
+        'backgroundColor': "#161B22",
+        'textColor': '#E6EDF3',
+        'subTextColor': '#8B949E',
+        'buttonColor': '#F35383',
+        'startColor': '#cd7f32',
       },
+
       listener: NativeAdListener(
         onAdLoaded: (ad) {
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          _nativeAd?.dispose();
+          _nativeAd = ad as NativeAd;
+
           isLoading = false;
-          _nativeAd = ad as NativeAd?;
           setState(() {});
         },
-        onAdFailedToLoad: (ad, error) {
-          isLoading = false;
+        onAdFailedToLoad: (ad, err) {
           ad.dispose();
-          setState(() {});
+          if (!mounted) return;
+
+          if (index == 0 && _adUnitIds.length > 1) {
+            index++;
+            loadAd();
+          } else {
+            isLoading = false;
+            setState(() {});
+          }
         },
       ),
       request: const AdRequest(),
@@ -63,76 +86,93 @@ class _NativeBannerState extends State<NativeBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 400),
-      child: isLoading
-          ? NativeBannerShimmer(isBGTransparent: widget.isBGTransparent)
-          : _nativeAd != null
-          ? SizedBox(
-              key: const ValueKey('nbAd'),
-              height: 65,
-              width: double.infinity,
-              child: AdWidget(ad: _nativeAd!),
-            )
-          : const SizedBox.shrink(),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(widget.radius ?? 0),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        child: isLoading
+            ? NativeBannerShimmer()
+            : _nativeAd != null
+            ? SizedBox(
+                key: const ValueKey('nbAd'),
+                height: 135,
+                width: double.infinity,
+                child: AdWidget(ad: _nativeAd!),
+              )
+            : const SizedBox.shrink(),
+      ),
     );
   }
 }
 
 class NativeBannerShimmer extends StatelessWidget {
-  final bool isBGTransparent;
-
-  const NativeBannerShimmer({super.key, required this.isBGTransparent});
+  const NativeBannerShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = Colors.black12;
-    final highlightColor = Colors.white10;
-    return Container(
+    const baseColor = AppColor.baseColor;
+    const highlightColor = AppColor.highlightColor;
+
+    return SizedBox(
       width: double.infinity,
-      height: 65,
-      decoration: BoxDecoration(color: isBGTransparent ? Colors.transparent : Color(0xff242C3B)),
+      height: 135,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Shimmer.fromColors(
-                  baseColor: baseColor,
-                  highlightColor: highlightColor,
-                  child: Container(
-                    width: 48,
-                    height: 44,
-                    decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(8)),
+            Shimmer.fromColors(
+              baseColor: baseColor,
+              highlightColor: highlightColor,
+              period: const Duration(milliseconds: 1100),
+              child: Container(
+                width: 125,
+                height: 125,
+                decoration: BoxDecoration(color: baseColor, borderRadius: BorderRadius.circular(8)),
+              ),
+            ),
+
+            const SizedBox(width: 10),
+
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: baseColor,
+                    highlightColor: highlightColor,
+                    period: const Duration(milliseconds: 1100),
+                    child: Container(
+                      height: 30,
+                      decoration: BoxDecoration(color: baseColor, borderRadius: BorderRadius.circular(8)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Shimmer.fromColors(
-                  baseColor: baseColor,
-                  highlightColor: highlightColor,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(height: 15, width: 180, color: Colors.grey),
-                      const SizedBox(height: 6),
-                      Container(height: 20, width: 180, color: Colors.grey),
-                    ],
+
+                  const SizedBox(height: 7),
+
+                  Shimmer.fromColors(
+                    baseColor: baseColor,
+                    highlightColor: highlightColor,
+                    period: const Duration(milliseconds: 1100),
+                    child: Container(
+                      height: 30,
+                      decoration: BoxDecoration(color: baseColor, borderRadius: BorderRadius.circular(8)),
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Shimmer.fromColors(
-                  baseColor: baseColor,
-                  highlightColor: highlightColor,
-                  child: Container(
-                    width: 80,
-                    height: 26,
-                    decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+
+                  const SizedBox(height: 12),
+
+                  Shimmer.fromColors(
+                    baseColor: baseColor,
+                    highlightColor: highlightColor,
+                    period: const Duration(milliseconds: 1100),
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(color: baseColor, borderRadius: BorderRadius.circular(8)),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

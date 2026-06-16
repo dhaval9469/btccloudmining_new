@@ -5,6 +5,7 @@ import 'package:btccloudmining/dashboard/page/intro/widget/ip_w3.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
+import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatefulWidget {
@@ -46,15 +47,20 @@ class _IntroPageState extends State<IntroPage> {
 
   void finishIntro() {
     InterstitialAdManager().showInterstitialAds();
-    Navigation.pushNamed(Routes.countryPage);
+    Navigation.pushNamed(Routes.cLanPage);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.newBg,
-      body: SafeArea(
-        child: PageView.builder(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.newBg,
+        appBar: commonAppBar(),
+        body: PageView.builder(
           controller: pageController,
           itemCount: introPages.length,
           itemBuilder: (context, index) => introPages[index],
@@ -62,19 +68,5 @@ class _IntroPageState extends State<IntroPage> {
       ),
     );
   }
-/*   Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: SmoothPageIndicator(
-                controller: pageController,
-                count: introPages.length,
-                effect: ExpandingDotsEffect(
-                  dotHeight: 7,
-                  dotWidth: 7,
-                  spacing: 8,
-                  activeDotColor: AppColor.thirdCard,
-                  dotColor: AppColor.secondaryCard.withAlpha(100),
-                ),
-              ),
-            ),*/
 
 }

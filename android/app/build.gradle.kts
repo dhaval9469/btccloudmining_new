@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.bitcoin.asicnew.miner.app"
+    namespace = "btc.cloud.mining.crypto.rise"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -30,11 +30,12 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.bitcoin.asicnew.miner.app"
+        applicationId = "btc.cloud.mining.crypto.rise"
         minSdk = 26
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     signingConfigs {
@@ -70,7 +71,9 @@ flutter {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.1.0"))
-    implementation("com.google.ads.mediation:facebook:6.20.0.0")
+    implementation("com.google.android.gms:play-services-ads:24.9.0")
+    implementation("com.google.ads.mediation:facebook:6.21.0.0")
+    annotationProcessor("com.google.ads.mediation:facebook:6.21.0.0")
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.google.android.material:material:1.12.0")

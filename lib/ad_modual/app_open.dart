@@ -4,7 +4,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AppOpenAdManager {
   // Singleton setup
   static final AppOpenAdManager _instance = AppOpenAdManager._internal();
+
   factory AppOpenAdManager() => _instance;
+
   AppOpenAdManager._internal();
 
   AppOpenAd? _appOpenAd;
@@ -13,18 +15,31 @@ class AppOpenAdManager {
   /// Whether an ad is available to be shown.
   bool get isAdAvailable => _appOpenAd != null;
 
+  int _index = 0;
+
+  final List<String> _adUnitIds = [
+    AppConfig.appDataSet?.googleAppOpenId ?? '',
+    AppConfig.appDataSet?.adxAppOpenId ?? '',
+  ];
+
   /// Load an AppOpenAd (regular load)
   Future<void> loadAd() async {
+    final adUnitId = _adUnitIds[_index].trim();
+
     await AppOpenAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/9257395921',
-      // adUnitId: AppConfig.appDataSet?.googleAppOpenId ?? '',
+      adUnitId: adUnitId,
       request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
           _appOpenAd = ad;
+          _index = 0;
         },
         onAdFailedToLoad: (error) {
-          // You can log or handle error here if needed
+          if (_index == 0 && _adUnitIds.length > 1) {
+            _index = 1;
+            loadAd();
+            return;
+          }
         },
       ),
     );

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ShowBanner extends StatefulWidget {
-  const ShowBanner({super.key});
+  final EdgeInsetsGeometry? padding;
+
+  const ShowBanner({super.key, this.padding});
 
   @override
   State<ShowBanner> createState() => _ShowBannerState();
@@ -21,25 +23,50 @@ class _ShowBannerState extends State<ShowBanner> {
     }
   }
 
+  int index = 0;
+
+  final List<String> _adUnitIds = [
+    AppConfig.appDataSet?.googleBannerId ?? '',
+    AppConfig.appDataSet?.adxBannerId ?? '',
+  ];
+
   Future<void> loadAd() async {
-    final ad = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/9214589741',
-      // adUnitId: AppConfig.appDataSet?.googleBannerId ?? '',
+    final adUnitId = _adUnitIds[index].trim();
+
+    _isAdLoaded = true;
+    if (mounted) setState(() {});
+
+    BannerAd(
+      adUnitId: adUnitId,
       request: const AdRequest(),
-      size: AdSize(width: MediaQuery.of(context).size.width.toInt(), height: 60),
+      size: AdSize(width: MediaQuery.of(context).size.width.toInt(), height: 50),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          bannerAd = ad as BannerAd;
-          setState(() => _isAdLoaded = true);
+          if (!mounted) {
+            ad.dispose();
+            return;
+          }
+          bannerAd?.dispose();
+          bannerAd = ad as BannerAd?;
+
+          _isAdLoaded = false;
+          setState(() {});
         },
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
-          setState(() => _isAdLoaded = false);
+
+          if (!mounted) return;
+
+          if (index == 0 && _adUnitIds.length > 1) {
+            index++;
+            loadAd();
+          } else {
+            _isAdLoaded = false;
+            setState(() {});
+          }
         },
       ),
-    );
-
-    await ad.load();
+    ).load();
   }
 
   @override
