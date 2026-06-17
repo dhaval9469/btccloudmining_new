@@ -47,7 +47,7 @@ class _IntroPageState extends State<IntroPage> {
 
   void finishIntro() {
     InterstitialAdManager().showInterstitialAds();
-    Navigation.pushNamed(Routes.cLanPage);
+    Navigation.pushNamed(Routes.countryPage);
   }
 
   @override

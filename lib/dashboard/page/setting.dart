@@ -2,10 +2,8 @@ import 'package:btccloudmining/ad_modual/native/big_native.dart';
 import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
-import 'package:btccloudmining/dashboard/model/sub_details_model.dart';
 import 'package:btccloudmining/dashboard/service/api_service.dart';
 import 'package:btccloudmining/dashboard/service/auth_service.dart';
-import 'package:btccloudmining/dashboard/service/subscription_service.dart';
 import 'package:btccloudmining/theme/asset.dart';
 import 'package:btccloudmining/theme/colors.dart';
 import 'package:btccloudmining/theme/config.dart';
@@ -13,7 +11,6 @@ import 'package:btccloudmining/theme/textstyles.dart';
 import 'package:btccloudmining/utils/app_navigation/app_navigation.dart';
 import 'package:btccloudmining/utils/app_navigation/navigation.dart';
 import 'package:btccloudmining/utils/hive_service.dart';
-import 'package:btccloudmining/utils/utils.dart';
 import 'package:btccloudmining/widget/app_widget.dart';
 import 'package:btccloudmining/widget/blinking_dot.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,7 +34,6 @@ class _SettingPageState extends State<SettingPage> {
   String? userProfile = '';
   String? userEmail = '';
 
-  final subscriptionService = SubscriptionService();
 
   @override
   void initState() {
@@ -55,9 +51,7 @@ class _SettingPageState extends State<SettingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
-              Text("bs".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
-            ],
+            children: [Text("bs".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
           ).pOnly(left: 15, right: 15, top: 10, bottom: 15),
           Expanded(
             child: cardLayout(
@@ -127,7 +121,11 @@ class _SettingPageState extends State<SettingPage> {
 
                               if (homeCtrl.isPurchase.value == true) ...[
                                 option(
-                                  onTap: () => restoreSubscription(),
+                                  onTap: () {
+                                    InterstitialAdManager().showInterstitialByCount();
+                                    Navigation.pushNamed(Routes.restoreSubsPage);
+                                    // restoreSubscription();
+                                  },
                                   text: 'srs'.tr,
                                   image: AppAsset.restore,
                                 ),
@@ -232,12 +230,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  option({
-    final String? image,
-    final GestureTapCallback? onTap,
-    final IconData? iconData,
-    final String? text,
-  }) {
+  option({final String? image, final GestureTapCallback? onTap, final IconData? iconData, final String? text}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -441,11 +434,7 @@ class _SettingPageState extends State<SettingPage> {
                 10.heightBox,
                 Text('sdh'.tr, textAlign: TextAlign.center, style: subTextMontserrat(context, fontSize: 15)),
                 10.heightBox,
-                Text(
-                  'sdsub'.tr,
-                  textAlign: TextAlign.center,
-                  style: subTextMontserrat(context, fontSize: 13),
-                ),
+                Text('sdsub'.tr, textAlign: TextAlign.center, style: subTextMontserrat(context, fontSize: 13)),
                 20.heightBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -458,9 +447,7 @@ class _SettingPageState extends State<SettingPage> {
                         onTap: () async {
                           EasyLoading.show();
 
-                          await ApiRepo.accountDelete(
-                            email: HiveService().getData<String>(AppConfig.userEmail),
-                          );
+                          await ApiRepo.accountDelete(email: HiveService().getData<String>(AppConfig.userEmail));
                           await AuthService().signOut();
                           HiveService().saveData(AppConfig.isLogin, false);
                           HiveService().clearAllBoxes();
@@ -496,6 +483,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+/*
   restoreSubscription() async {
     EasyLoading.show();
 
@@ -569,4 +557,5 @@ class _SettingPageState extends State<SettingPage> {
       return;
     }
   }
+*/
 }

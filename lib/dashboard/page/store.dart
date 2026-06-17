@@ -1,5 +1,5 @@
 import 'package:btccloudmining/ad_modual/banner/large_banner.dart';
-import 'package:btccloudmining/ad_modual/native/native_banner.dart';
+import 'package:btccloudmining/ad_modual/native/small_native.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/ad_modual/reward_interstitial/interstitial.dart';
 import 'package:btccloudmining/dashboard/ctrl/home_ctrl.dart';
@@ -39,11 +39,308 @@ class _StorePageState extends State<StorePage> {
   CarouselSliderController carouselSliderController = CarouselSliderController();
 
   @override
+  void initState() {
+    super.initState();
+    homeCtrl.planKeys = List.generate(homeCtrl.subscriptionPlanList.length, (_) => GlobalKey());
+    homeCtrl.storePlanIndex.value = 0;
+    homeCtrl.storePlanName.value = homeCtrl.subscriptionPlanList[0].planName.toString();
+    homeCtrl.storePlanDetailsList.value = homeCtrl.subscriptionPlanList[0].plans ?? [];
+    homeCtrl.storePlanAdsTime.value = homeCtrl.subscriptionPlanList[0].adTime ?? 0;
+    homeCtrl.storePlanAds.value = homeCtrl.subscriptionPlanList[0].planads ?? false;
+    homeCtrl.storePlanDetails.value = homeCtrl.subscriptionPlanList[0];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.newBg,
       appBar: commonAppBar(),
       body: Column(
+        children: [
+          Row(
+            children: [Text("bu".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
+          ).pOnly(left: 15, right: 15, top: 10, bottom: 15),
+
+          Obx(
+            () => homeCtrl.subscriptionPlanList.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.only(top: context.responsive.heightPercent(30)),
+                    child: Column(children: [CircularProgressIndicator()]),
+                  )
+                : Expanded(
+                    child: cardLayout(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            20.heightBox,
+                            SlideFadeTransition(
+                              index: 1,
+                              child: CustomCard(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'scpeed'.tr,
+                                      style: subTextMontserrat(context, fontSize: 14, fontWeight: FontWeight.w600),
+                                    ),
+
+                                    Text(
+                                      ' ${getMiningPowerValue(homeCtrl.activeHashRate.value).toStringAsFixed(2)}  TH/s',
+                                      style: subTextRoboto(
+                                        context,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: AppColor.text,
+                                      ),
+                                    ),
+                                    Text(' + ', style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 16)),
+                                    Text(
+                                      '${homeCtrl.storePlanDetails.value.hashrate}',
+                                      style: textMontserrat(
+                                        context,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: AppColor.accent,
+                                      ),
+                                    ),
+                                  ],
+                                ).px(15).py(10),
+                              ).px(15),
+                            ),
+                            SlideFadeTransition(index: 2, child: SmallNative(radius: 8)).p(10),
+                            SlideFadeTransition(
+                              index: 2,
+                              child: CustomCard(
+                                child: Center(
+                                  child: Image.network(
+                                    "${AppConfig.imageBaseurl}${homeCtrl.storePlanDetails.value.image}",
+                                    height: context.responsive.heightPercent(15),
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return SizedBox(
+                                        height: context.responsive.heightPercent(15),
+                                        width: context.responsive.widthPercent(15),
+                                        child: Center(child: CircularProgressIndicator(strokeWidth: 1, color: AppColor.subText)),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(AppAsset.blockEdge, scale: 4.5);
+                                    },
+                                  ),
+                                ).pSymmetric(v: 15),
+                              ).px(15),
+                            ),
+                            20.heightBox,
+
+                            SlideFadeTransition(
+                              index: 3,
+                              child: SizedBox(
+                                height: context.responsive.heightPercent(5),
+                                child: ListView.separated(
+                                  controller: homeCtrl.planScrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  padding: EdgeInsets.symmetric(horizontal: context.responsive.widthPercent(4)),
+                                  itemCount: homeCtrl.subscriptionPlanList.length,
+                                  itemBuilder: (context, index) {
+                                    final data = homeCtrl.subscriptionPlanList[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        homeCtrl.storePlanIndex.value = index;
+                                        homeCtrl.storePlanName.value = data.planName.toString();
+                                        homeCtrl.storePlanAdsTime.value = data.adTime ?? 0;
+                                        homeCtrl.storePlanAds.value = data.planads ?? false;
+                                        homeCtrl.storePlanDetailsList.value = data.plans ?? [];
+                                        homeCtrl.storePlanDetails.value = data;
+
+                                        final tabContext = homeCtrl.planKeys[index].currentContext;
+
+                                        if (tabContext != null) {
+                                          Scrollable.ensureVisible(
+                                            tabContext,
+                                            duration: const Duration(milliseconds: 300),
+                                            curve: Curves.easeOut,
+                                            alignment: 0.5,
+                                          );
+                                        }
+                                      },
+                                      child: AnimatedContainer(
+                                        key: homeCtrl.planKeys[index],
+                                        duration: const Duration(milliseconds: 250),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: homeCtrl.storePlanIndex.value == index
+                                                ? [Color(0xffFF9800), Color(0xffF44336)]
+                                                : [AppColor.secondaryButton, AppColor.secondaryButton],
+                                          ),
+                                          borderRadius: BorderRadius.circular(14),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.bolt_rounded,
+                                              size: 20,
+                                              color: homeCtrl.storePlanIndex.value == index
+                                                  ? AppColor.white
+                                                  : AppColor.accentColor,
+                                            ),
+                                            SizedBox(width: 3),
+                                            Text(
+                                              "${data.hashrate}",
+                                              textAlign: TextAlign.center,
+                                              textHeightBehavior: const TextHeightBehavior(
+                                                applyHeightToFirstAscent: false,
+                                                applyHeightToLastDescent: false,
+                                              ),
+                                              style: textMontserrat(
+                                                context,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                color: AppColor.text,
+                                              ).copyWith(height: 1),
+                                            ),
+                                          ],
+                                        ).px(16).py(5),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (BuildContext context, int index) {
+                                    return SizedBox(width: context.responsive.widthPercent(4));
+                                  },
+                                ),
+                              ),
+                            ),
+
+                            22.heightBox,
+
+                            homeCtrl.isPurchase.value
+                                ? GestureDetector(
+                                    onTap: () {
+                                      InterstitialAdManager().showInterstitialByCount();
+                                      homeCtrl.storeItemData.value = homeCtrl.storePlanDetails.value;
+                                      Navigation.pushNamed(Routes.storeInfo);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(colors: [Color(0xffFF9800), Color(0xffF44336)]),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'spn'.tr,
+                                            style: textMontserrat(context, fontWeight: FontWeight.bold, fontSize: 16),
+                                          ).pSymmetric(v: 8),
+                                        ],
+                                      ),
+                                    ).px(15),
+                                  )
+                                : SizedBox.shrink(),
+
+                            homeCtrl.storePlanAds.value != true
+                                ? Obx(() {
+                                    final sessionTimer = StoreAdRewardService();
+                                    final time = homeCtrl.storePlanAdsTime.value / 60;
+                                    return GestureDetector(
+                                      onTap: !sessionTimer.isRunning
+                                          ? () {
+                                              showWatchAdDialog(
+                                                context,
+                                                text: homeCtrl.storePlanDetails.value.hashrate.toString(),
+                                                time: homeCtrl.storePlanDetails.value.adTime ?? 120,
+                                                onWatchAd: () {
+                                                  handleBoostTap(sessionTimer, homeCtrl.storePlanDetails.value);
+                                                },
+                                              );
+                                            }
+                                          : () {},
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppColor.secondaryButton,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: sessionTimer.isRunning
+                                            ? Text(
+                                                sessionTimer.formatDuration(sessionTimer.adRewardTimeLeft.value),
+                                                style: textMontserrat(context, fontSize: 15, fontWeight: FontWeight.w600),
+                                              ).pSymmetric(v: 8)
+                                            : Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    width: context.responsive.widthPercent(40),
+                                                    child: Text(
+                                                      'swab'.tr,
+                                                      style: textMontserrat(context, fontSize: 14, fontWeight: FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '(${time.toStringAsFixed(0)} minute)',
+                                                    style: subTextRoboto(context, color: AppColor.text),
+                                                  ),
+                                                ],
+                                              ).pSymmetric(v: 8),
+                                      ).px(15),
+                                    ).pOnly(top: 18);
+                                  })
+                                : SizedBox.shrink(),
+
+                            15.heightBox,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 3),
+                                  child: FaIcon(FontAwesomeIcons.circleCheck, size: 10, color: AppColor.subText),
+                                ),
+                                10.widthBox,
+                                Flexible(child: Text('s1'.tr, style: subTextMontserrat(context, fontSize: 12))),
+                              ],
+                            ).px(15),
+                            3.heightBox,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FaIcon(FontAwesomeIcons.circleCheck, size: 10, color: AppColor.subText),
+                                10.widthBox,
+                                Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 's2'.tr,
+                                      style: subTextMontserrat(context, fontSize: 12),
+                                      children: [
+                                        TextSpan(
+                                          text: " Privacy Policy",
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigation.pushNamed(Routes.privacyPolicy);
+                                            },
+                                          style: subTextMontserrat(
+                                            context,
+                                            fontSize: 12,
+                                            color: Color(0xFF4D9EFF),
+                                          ).copyWith(decoration: TextDecoration.underline),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ).px(15),
+                            25.heightBox,
+                            SlideFadeTransition(index: 3, child: LargeBanner()),
+                            40.heightBox,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
+      /*      body: Column(
         children: [
           Row(
             children: [
@@ -90,7 +387,8 @@ class _StorePageState extends State<StorePage> {
                                 ).px(15).py(10),
                               ).px(15),
                             ),
-                            SlideFadeTransition(index: 2, child: NativeBanner(radius: 8)).p(15),
+                            // SlideFadeTransition(index: 2, child: NativeBanner(radius: 8)).p(15),
+                            20.heightBox,
                             SlideFadeTransition(
                               index: 2,
                               child: CarouselSlider.builder(
@@ -313,7 +611,7 @@ class _StorePageState extends State<StorePage> {
                   ),
           ),
         ],
-      ),
+      ),*/
     );
   }
 

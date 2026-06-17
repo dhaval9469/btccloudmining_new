@@ -65,7 +65,7 @@ class _CLanPageState extends State<CLanPage> {
                         homeCtrl.isChangingLanguage.value = true;
                         await Future.delayed(Duration(seconds: 2));
                         LanguageService.changeLanguage(homeCtrl.languageCode.value);
-                        Navigation.pushNamed(Routes.countryPage);
+                        Navigation.pushNamed(Routes.signInPage);
                         homeCtrl.isChangingLanguage.value = false;
                         // InterstitialAdManager().showInterstitialAds();
                       },
@@ -74,103 +74,99 @@ class _CLanPageState extends State<CLanPage> {
             }),
           ],
         ),
-        body: Column(
-          children: [
-            ListView.separated(
-              shrinkWrap: true,
-              itemCount: languagesList.length,
-              padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20, top: 20),
-              itemBuilder: (context, index) {
-                final data = languagesList[index];
-                return Obx(() {
-                  return GestureDetector(
-                    onTap: () {
-                      homeCtrl.languageCode.value = data['code'].toString();
-                      homeCtrl.selectedLanguage.value = index;
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: homeCtrl.selectedLanguage.value == index
-                              ? AppColor.primaryButton
-                              : AppColor.divider,
-                        ),
-                        color: homeCtrl.selectedLanguage.value == index
-                            ? AppColor.primaryButton
-                            : AppColor.newCard,
-                      ),
-                      child: Row(
-                        children: [
-                          ClipOval(
-                            child: Image.network(
-                              "${data['flag']}",
+        body: ListView.separated(
+          shrinkWrap: true,
+          itemCount: languagesList.length,
+          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 30, top: 20),
+          itemBuilder: (context, index) {
+            final data = languagesList[index];
+            return Obx(() {
+              return GestureDetector(
+                onTap: () {
+                  homeCtrl.languageCode.value = data['code'].toString();
+                  homeCtrl.selectedLanguage.value = index;
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: homeCtrl.selectedLanguage.value == index
+                          ? AppColor.primaryButton
+                          : AppColor.divider,
+                    ),
+                    color: homeCtrl.selectedLanguage.value == index
+                        ? AppColor.primaryButton
+                        : AppColor.newCard,
+                  ),
+                  child: Row(
+                    children: [
+                      ClipOval(
+                        child: Image.network(
+                          "${data['flag']}",
+                          height: 25,
+                          width: 25,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return SizedBox(
                               height: 25,
                               width: 25,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return SizedBox(
-                                  height: 25,
-                                  width: 25,
-                                  child: Center(
-                                    child: CircularProgressIndicator(strokeWidth: 1, color: AppColor.subText),
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return ClipOval(
-                                  child: Image.asset(AppAsset.earth, scale: 20, fit: BoxFit.cover),
-                                );
-                              },
-                            ),
-                          ),
-                          13.widthBox,
-                          Text(
-                            '${data['language']}',
-                            style: textRoboto(
-                              context,
-                              fontSize: 16,
-                              color: homeCtrl.selectedLanguage.value == index
-                                  ? AppColor.text
-                                  : AppColor.subText,
-                              fontWeight: homeCtrl.selectedLanguage.value == index
-                                  ? FontWeight.bold
-                                  : FontWeight.w500,
-                            ),
-                          ),
-                          Spacer(),
-                          RadioGroup<int>(
-                            groupValue: homeCtrl.selectedLanguage.value,
-                            onChanged: (int? value) {
-                              setState(() {
-                                homeCtrl.selectedLanguage.value = value ?? 0;
-                                homeCtrl.languageCode.value = data['code'].toString();
-                              });
-                            },
-                            child: Radio<int>(
-                              value: index,
-                              fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                if (states.contains(WidgetState.selected)) {
-                                  return AppColor.text;
-                                }
-                                return AppColor.divider;
-                              }),
-                              visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                          ),
-                        ],
-                      ).pSymmetric(v: 7, h: 10),
-                    ),
-                  );
-                });
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 12);
-              },
-            ),
-          ],
+                              child: Center(
+                                child: CircularProgressIndicator(strokeWidth: 1, color: AppColor.subText),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return ClipOval(
+                              child: Image.asset(AppAsset.earth, scale: 20, fit: BoxFit.cover),
+                            );
+                          },
+                        ),
+                      ),
+                      13.widthBox,
+                      Text(
+                        '${data['language']}',
+                        style: textRoboto(
+                          context,
+                          fontSize: 16,
+                          color: homeCtrl.selectedLanguage.value == index
+                              ? AppColor.text
+                              : AppColor.subText,
+                          fontWeight: homeCtrl.selectedLanguage.value == index
+                              ? FontWeight.bold
+                              : FontWeight.w500,
+                        ),
+                      ),
+                      Spacer(),
+                      RadioGroup<int>(
+                        groupValue: homeCtrl.selectedLanguage.value,
+                        onChanged: (int? value) {
+                          setState(() {
+                            homeCtrl.selectedLanguage.value = value ?? 0;
+                            homeCtrl.languageCode.value = data['code'].toString();
+                          });
+                        },
+                        child: Radio<int>(
+                          value: index,
+                          fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return AppColor.text;
+                            }
+                            return AppColor.divider;
+                          }),
+                          visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                    ],
+                  ).pSymmetric(v: 10, h: 12),
+                ),
+              );
+            });
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(height: 12);
+          },
         ),
         bottomNavigationBar: SafeArea(child: NativeBanner()),
       ),

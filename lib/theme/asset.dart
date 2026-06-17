@@ -8,7 +8,6 @@ class AppAsset {
 
   static const done = '$lottie/done.json';
   static const error404 = '$lottie/error_404.json';
-  static const splashLottie = '$lottie/splash_lottie.json';
   static const lockLoader = '$lottie/lockloader.json';
 
 

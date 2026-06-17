@@ -31,7 +31,6 @@ class StartTimeService {
     hive.saveData(AppConfig.checkMining, true);
 
     homeCtrl.isMining.value = true;
-    homeCtrl.startMiningVideo();
 
     _startCD = Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (startTimeLeft.value.inSeconds > 1) {
@@ -71,7 +70,6 @@ class StartTimeService {
     hive.saveData(AppConfig.checkMining, false);
 
     if (callComplete) {
-      homeCtrl.stopMiningVideo();
 
       double minedBtc = 0.0;
 
@@ -106,7 +104,6 @@ class StartTimeService {
     _startCD = null;
     _miningCD = null;
     homeCtrl.isMining.value = false;
-    homeCtrl.stopMiningVideo();
     startTimeLeft.value = Duration.zero;
   }
 

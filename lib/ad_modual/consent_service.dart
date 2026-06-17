@@ -69,6 +69,7 @@ class InitializationHelper {
     MobileAds.instance.updateRequestConfiguration(
       RequestConfiguration(
         testDeviceIds: [
+          '2A581A06FDB24097186284D628763E8C',
           '1349036EC2C027766AF9F02B2EC7B50D',
           '7BF4930313C659FBAAC6DF00F27812F7',
           '5225B41FEA978316BBC519D23A232B84',

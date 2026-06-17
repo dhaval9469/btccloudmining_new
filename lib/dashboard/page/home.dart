@@ -23,8 +23,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:lottie/lottie.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:video_player/video_player.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -79,162 +79,112 @@ class _HomePageState extends State<HomePage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    10.heightBox,
                     SlideFadeTransition(
                       index: 1,
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                            child: AspectRatio(
-                              aspectRatio: homeCtrl.videoPlayerController.value.aspectRatio,
-                              child: VideoPlayer(homeCtrl.videoPlayerController),
-                            ),
+                          Image.asset(AppAsset.bitcoin, scale: 20),
+                          13.widthBox,
+                          Obx(() {
+                            return AnimatedFlipCounter(
+                              value: homeCtrl.miningBtc.value,
+                              fractionDigits: 12,
+                              duration: Duration(seconds: 5),
+                              curve: Curves.easeOut,
+                              textStyle: textRoboto(
+                                context,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ).copyWith(letterSpacing: 1),
+                            );
+                          }),
+                          10.widthBox,
+                          Text("BTC", style: textRoboto(context, fontSize: 18, fontWeight: FontWeight.w600)),
+                          Spacer(),
+                          ValueListenableBuilder(
+                            valueListenable: HiveService().getListenable(keys: [AppConfig.lockMinedBTC]),
+                            builder: (context, Box box, _) {
+                              bool isLocked = box.get(AppConfig.lockMinedBTC, defaultValue: false);
+
+                              return GestureDetector(
+                                onTap: () {
+                                  InterstitialAdManager().showInterstitialByCount();
+                                  if (isLocked) {
+                                    Navigation.pushNamed(Routes.unlockPage);
+                                  } else {
+                                    Navigation.pushNamed(Routes.lockPage);
+                                  }
+                                },
+                                child: Image.asset(isLocked ? AppAsset.lock : AppAsset.unLock, scale: 22, color: AppColor.text),
+                              );
+                            },
                           ),
-
-                          Positioned(
-                            bottom: 10,
-                            left: 0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Image.asset(AppAsset.bitcoin, scale: 20),
-                                13.widthBox,
-                                Obx(() {
-                                  return AnimatedFlipCounter(
-                                    value: homeCtrl.miningBtc.value,
-                                    fractionDigits: 12,
-                                    duration: Duration(seconds: 5),
-                                    curve: Curves.easeOut,
-                                    textStyle: textRoboto(
-                                      context,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w600,
-                                    ).copyWith(letterSpacing: 1,),
-                                  );
-                                }),
-                                10.widthBox,
-                                Text(
-                                  "BTC",
-                                  style: textRoboto(context, fontSize: 18, fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ).pOnly(left: 15),
-
-                            /* child: Row(
-                              children: [
-                                const FaIcon(FontAwesomeIcons.bitcoin, color: Colors.white, size: 22),
-                                12.widthBox,
-                                Obx(() {
-                                  final value = homeCtrl.mineBtc.value;
-                                  return AnimatedFlipCounter(
-                                    value: value,
-                                    fractionDigits: 12,
-                                    duration: const Duration(seconds: 3),
-                                    textStyle: GoogleFonts.sora(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  );
-                                }),
-                              ],
-                            ),*/
-                          ),
-                          Positioned(
-                            bottom: 10,
-                            right: 0,
-                            child: ValueListenableBuilder(
-                              valueListenable: HiveService().getListenable(
-                                keys: [AppConfig.lockMinedBTC],
-                              ),
-                              builder: (context, Box box, _) {
-                                bool isLocked = box.get(AppConfig.lockMinedBTC, defaultValue: false);
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    InterstitialAdManager().showInterstitialByCount();
-                                    if (isLocked) {
-                                      Navigation.pushNamed(Routes.unlockPage);
-                                    } else {
-                                      Navigation.pushNamed(Routes.lockPage);
-                                    }
-                                  },
-                                  child: Image.asset(
-                                    isLocked ? AppAsset.lock : AppAsset.unLock,
-                                    scale: 22,
-                                    color: AppColor.text,
-                                  ),
-                                );
-                              },
-                            ).pOnly(right: 15,bottom: 5),
-                          ),
-
                         ],
-                      ),
+                      ).px(15).py(15),
                     ),
 
-                    // SlideFadeTransition(
-                    //   index: 2,
-                    //   child: Obx(() {
-                    //     return Lottie.asset(
-                    //       "assets/lottie/cma.json",
-                    //       repeat: true,
-                    //       animate: homeCtrl.isMining.value,
-                    //     );
-                    //   }),
-                    // ),
-
-                    SlideFadeTransition(index: 2, child: SmallNative()).py(12),
 
                     SlideFadeTransition(
-                      index: 3,
+                      index: 2,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("hs".tr, style: subTextRoboto(context)),
-                          Obx(() {
-                            return Row(
-                              children: [
-                                AnimatedFlipCounter(
-                                  duration: Duration(seconds: 1),
-                                  fractionDigits: 2,
-                                  value: getMiningPowerValue(homeCtrl.activeHashRate.value),
-                                  textStyle: textMontserrat(
-                                    context,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(() {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    AnimatedFlipCounter(
+                                      duration: Duration(seconds: 1),
+                                      fractionDigits: 2,
+                                      value: getMiningPowerValue(homeCtrl.activeHashRate.value),
+                                      textStyle: textMontserrat(context, fontSize: 25, fontWeight: FontWeight.bold),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 2, left: 5),
+                                      child: Text("TH/s", style: subTextRoboto(context, fontSize: 20)),
+                                    ),
+                                  ],
+                                );
+                              }),
+
+                              Row(
+                                children: [
+                                  BlinkingGreenDot(),
+                                  5.widthBox,
+                                  Obx(
+                                    () => AnimatedFlipCounter(
+                                      duration: Duration(seconds: 1),
+                                      value: int.parse(homeCtrl.activeMiners.value.toString()),
+                                      textStyle: subTextRoboto(context, fontSize: 13),
+                                    ),
                                   ),
-                                ),
-                                Text(" TH/s", style: subTextRoboto(context, fontSize: 15)),
-                              ],
+                                  5.widthBox,
+                                  Text("ham".tr, style: subTextRoboto(context, fontSize: 13)),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Obx(() {
+                            return Lottie.asset(
+                              "assets/lottie/splash_lottie.json",
+                              height: 100,
+                              repeat: true,
+                              animate: homeCtrl.isMining.value,
                             );
                           }),
                         ],
-                      ).px(15),
+                      ).p(10).px(15),
                     ),
+
+                    SlideFadeTransition(index: 3, child: SmallNative()),
 
                     SlideFadeTransition(
                       index: 4,
-                      child: Row(
-                        children: [
-                          Text("ham".tr, style: subTextRoboto(context, fontSize: 13)),
-                          Spacer(),
-                          BlinkingGreenDot(),
-                          5.widthBox,
-                          Obx(
-                            () => AnimatedFlipCounter(
-                              duration: Duration(seconds: 1),
-                              value: int.parse(homeCtrl.activeMiners.value.toString()),
-                              textStyle: subTextRoboto(context, fontSize: 13),
-                            ),
-                          ),
-                        ],
-                      ).px(15),
-                    ),
-
-                    SlideFadeTransition(
-                      index: 5,
                       child: Obx(() {
                         final sessionTimer = StartTimeService();
                         return GestureDetector(
@@ -244,8 +194,7 @@ class _HomePageState extends State<HomePage> {
                                   showStartAdDialog(
                                     context,
                                     text: 'swadt'.trParams({
-                                      "cs":
-                                          "${getMiningPowerValue(homeCtrl.activeHashRate.value).toStringAsFixed(2)} TH/s",
+                                      "cs": "${getMiningPowerValue(homeCtrl.activeHashRate.value).toStringAsFixed(2)} TH/s",
                                     }),
                                     onWatchAd: () {
                                       handleMiningTap(sessionTimer);
@@ -281,11 +230,11 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         );
-                      }).pOnly(right: 15, left: 15, top: 20, bottom: 10),
+                      }).pOnly(right: 15, left: 15, top: 20, bottom: 13),
                     ),
 
                     SlideFadeTransition(
-                      index: 6,
+                      index: 5,
                       child: Text(
                         'hsmn'.tr,
                         textAlign: TextAlign.center,
@@ -294,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     SlideFadeTransition(
-                      index: 7,
+                      index: 5,
                       child: Obx(() {
                         return homeCtrl.activeBotList.isEmpty
                             ? SizedBox.shrink()
@@ -302,10 +251,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'hab'.tr,
-                                      style: subTextRoboto(context, fontWeight: FontWeight.w600),
-                                    ).px(10),
+                                    Text('hab'.tr, style: subTextRoboto(context, fontWeight: FontWeight.w600)).px(10),
                                     7.heightBox,
                                     Divider(color: AppColor.divider, height: 0),
                                     10.heightBox,
@@ -321,10 +267,7 @@ class _HomePageState extends State<HomePage> {
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  data.botType,
-                                                  style: subTextRoboto(context, fontSize: 13),
-                                                ),
+                                                Text(data.botType, style: subTextRoboto(context, fontSize: 13)),
                                                 Text(data.type, style: subTextRoboto(context, fontSize: 12)),
                                               ],
                                             ),
@@ -335,10 +278,7 @@ class _HomePageState extends State<HomePage> {
                                               }),
                                               builder: (context, snapshot) {
                                                 final remaining = snapshot.data ?? Duration.zero;
-                                                return Text(
-                                                  formatDuration(remaining),
-                                                  style: textRoboto(context, fontSize: 14),
-                                                );
+                                                return Text(formatDuration(remaining), style: textRoboto(context, fontSize: 14));
                                               },
                                             ),
                                           ],
@@ -355,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     SlideFadeTransition(
-                      index: 8,
+                      index: 6,
                       child: Row(
                         children: [
                           Expanded(
@@ -407,15 +347,11 @@ class _HomePageState extends State<HomePage> {
                                       child: Container(
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                          color: isEligible
-                                              ? AppColor.secondaryButton
-                                              : AppColor.secondaryButton.withAlpha(100),
+                                          color: isEligible ? AppColor.secondaryButton : AppColor.secondaryButton.withAlpha(100),
                                           borderRadius: BorderRadius.circular(6),
                                         ),
                                         child: Text(
-                                          rewardTime != Duration.zero
-                                              ? service.formatDuration(rewardTime)
-                                              : 'hadboost'.tr,
+                                          rewardTime != Duration.zero ? service.formatDuration(rewardTime) : 'hadboost'.tr,
                                           style: subTextRoboto(
                                             context,
                                             color: isEligible ? AppColor.subTextTwo : AppColor.subText,
@@ -479,15 +415,11 @@ class _HomePageState extends State<HomePage> {
                                       child: Container(
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                          color: isEligible
-                                              ? AppColor.secondaryButton
-                                              : AppColor.secondaryButton.withAlpha(100),
+                                          color: isEligible ? AppColor.secondaryButton : AppColor.secondaryButton.withAlpha(100),
                                           borderRadius: BorderRadius.circular(6),
                                         ),
                                         child: Text(
-                                          rewardTime != Duration.zero
-                                              ? service.formatDuration(rewardTime)
-                                              : 'hadboost'.tr,
+                                          rewardTime != Duration.zero ? service.formatDuration(rewardTime) : 'hadboost'.tr,
                                           style: subTextRoboto(
                                             context,
                                             color: isEligible ? AppColor.subTextTwo : AppColor.subText,
@@ -501,11 +433,76 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ],
-                      ).px(15).py(20),
+                      ).px(15).py(18),
+                    ),
+
+                    Obx(
+                      () => homeCtrl.isPurchase.value
+                          ? SlideFadeTransition(
+                              index: 7,
+                              child: CustomCard(
+                                child: Row(
+                                  children: [
+
+                                    Image.asset('assets/images/turbo_min.png',scale: 20),
+                                    10.widthBox,
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("Power: ", style: subTextRoboto(context, fontSize: 12)),
+
+                                            Text(
+                                              homeCtrl.randomRewardList.value.hashrate.toString(),
+                                              style: textRoboto(context, fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Boost: ", style: subTextRoboto(context, fontSize: 12)),
+                                            Text(
+                                              "${homeCtrl.randomRewardList.value.miningBoost}",
+                                              style: textRoboto(context, fontWeight: FontWeight.bold,),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        InterstitialAdManager().showInterstitialByCount();
+                                        homeCtrl.storeItemData.value = homeCtrl.randomRewardList.value;
+                                        Navigation.pushNamed(Routes.storeInfo);
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF44336),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'Turbo Mine',
+                                          style: textMontserrat(
+                                            context,
+                                            color: AppColor.text,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ).pSymmetric(h: 10, v: 6),
+                                      ),
+                                    ),
+                                  ],
+                                ).pOnly(top: 10,bottom: 10,right: 12,left: 8),
+                              ).px(15),
+                            ).pOnly(bottom: 20)
+                          : SizedBox.shrink(),
                     ),
 
                     SlideFadeTransition(
-                      index: 9,
+                      index: 8,
                       child: ExpansionTile(
                         backgroundColor: AppColor.newCard,
                         collapsedBackgroundColor: AppColor.newCard,
@@ -524,10 +521,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Image.asset(AppAsset.faqs, scale: 20),
                             10.widthBox,
-                            Text(
-                              'FAQs',
-                              style: subTextMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
+                            Text('FAQs', style: subTextMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
                           ],
                         ),
                         children: [
@@ -548,21 +542,13 @@ class _HomePageState extends State<HomePage> {
                                   curve: Curves.easeInOut,
                                 ),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                collapsedShape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                collapsedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 childrenPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                                 title: Text(
                                   "${data.qus}",
-                                  style: textMontserrat(
-                                    context,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColor.subTextTwo,
-                                  ),
+                                  style: textMontserrat(context, fontWeight: FontWeight.w600, color: AppColor.subTextTwo),
                                 ),
-                                children: [
-                                  Text("${data.ans}", style: subTextMontserrat(context, fontSize: 13)),
-                                ],
+                                children: [Text("${data.ans}", style: subTextMontserrat(context, fontSize: 13))],
                               );
                             },
                             separatorBuilder: (BuildContext context, int index) {
@@ -588,10 +574,12 @@ class _HomePageState extends State<HomePage> {
   Future<void> handleMiningTap(StartTimeService timer) async {
     if (timer.isRunning) return;
     await Future.delayed(Duration(seconds: 1));
-    IntOrRwdAdManger().showIntORRwdAdOnStart(onReward: () {}, onAdClosed: () {
-      timer.start(seconds: AppConfig.mingTimer);
-
-    });
+    IntOrRwdAdManger().showIntORRwdAdOnStart(
+      onReward: () {},
+      onAdClosed: () {
+        timer.start(seconds: AppConfig.mingTimer);
+      },
+    );
   }
 
   Future<void> handleBoostTap(DailyRewardService service) async {

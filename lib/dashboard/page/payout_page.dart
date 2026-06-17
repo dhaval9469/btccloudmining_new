@@ -53,9 +53,7 @@ class _PayoutPageState extends State<PayoutPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
-              Text("wh".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600)),
-            ],
+            children: [Text("wh".tr, style: textMontserrat(context, fontSize: 16, fontWeight: FontWeight.w600))],
           ).pOnly(left: 15, right: 15, top: 10, bottom: 15),
 
           Expanded(
@@ -68,10 +66,7 @@ class _PayoutPageState extends State<PayoutPage> {
                     index: 1,
                     child: Row(
                       children: [
-                        Text(
-                          'BTC/USD:  ',
-                          style: subTextRoboto(context, fontSize: 13, fontWeight: FontWeight.w600),
-                        ),
+                        Text('BTC/USD:  ', style: subTextRoboto(context, fontSize: 13, fontWeight: FontWeight.w600)),
                         Text(
                           NumberFormat.currency(
                             symbol: '\$',
@@ -90,10 +85,7 @@ class _PayoutPageState extends State<PayoutPage> {
                       children: [
                         Image.asset(AppAsset.bitcoin, scale: 18),
                         10.widthBox,
-                        Text(
-                          balance.toStringAsFixed(12),
-                          style: textRoboto(context, fontSize: 22, fontWeight: FontWeight.w600),
-                        ),
+                        Text(balance.toStringAsFixed(12), style: textRoboto(context, fontSize: 22, fontWeight: FontWeight.w600)),
                         10.widthBox,
                         ValueListenableBuilder(
                           valueListenable: HiveService().getListenable(keys: [AppConfig.lockMinedBTC]),
@@ -109,11 +101,7 @@ class _PayoutPageState extends State<PayoutPage> {
                                   Navigation.pushNamed(Routes.lockPage);
                                 }
                               },
-                              child: Image.asset(
-                                isLocked ? AppAsset.lock : AppAsset.unLock,
-                                scale: 22,
-                                color: AppColor.text,
-                              ),
+                              child: Image.asset(isLocked ? AppAsset.lock : AppAsset.unLock, scale: 22, color: AppColor.text),
                             );
                           },
                         ),
@@ -134,7 +122,7 @@ class _PayoutPageState extends State<PayoutPage> {
                       ],
                     ).px(13),
                   ),
-                  SlideFadeTransition(index: 2, child: SmallNative(radius: 8,)).p(15),
+                  SlideFadeTransition(index: 2, child: SmallNative(radius: 8)).p(15),
                   SlideFadeTransition(
                     index: 3,
                     child: CommonTextField(
@@ -184,9 +172,7 @@ class _PayoutPageState extends State<PayoutPage> {
                               withdrawErrorDialog(massage: addWDModel.blanace?.toStringAsFixed(12));
                             }
                           } else {
-                            EasyLoading.showToast(
-                              'wbwle'.trParams({"limitError": "${AppConfig.appDataSet?.withdrawalLimit}"}),
-                            );
+                            EasyLoading.showToast('wbwle'.trParams({"limitError": "${AppConfig.appDataSet?.withdrawalLimit}"}));
                           }
                         } else {
                           InterstitialAdManager().showInterstitialByCount();
@@ -195,20 +181,12 @@ class _PayoutPageState extends State<PayoutPage> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryButton,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                        decoration: BoxDecoration(color: AppColor.primaryButton, borderRadius: BorderRadius.circular(8)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
                           child: Text(
                             'wbpb'.tr,
-                            style: textRoboto(
-                              context,
-                              color: AppColor.text,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
+                            style: textRoboto(context, color: AppColor.text, fontWeight: FontWeight.bold, fontSize: 17),
                           ),
                         ),
                       ),
@@ -229,12 +207,7 @@ class _PayoutPageState extends State<PayoutPage> {
                     index: 8,
                     child: Obx(
                       () => homeCtrl.withdrawDetailsList.isEmpty
-                          ? Center(
-                              child: Text(
-                                "wbydhapy".tr,
-                                style: subTextMontserrat(context, fontSize: 12),
-                              ).pOnly(top: 35),
-                            )
+                          ? Center(child: Text("wbydhapy".tr, style: subTextMontserrat(context, fontSize: 12)).pOnly(top: 35))
                           : ListView.separated(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
@@ -242,13 +215,8 @@ class _PayoutPageState extends State<PayoutPage> {
                               itemCount: homeCtrl.withdrawDetailsList.length,
                               itemBuilder: (context, index) {
                                 final data = homeCtrl.withdrawDetailsList[index];
-                                double usdValue =
-                                    double.parse(data.dr ?? "") *
-                                    (AppConfig.appDataSet?.btcPriceInUSD ?? 0.0);
-                                final formatted = NumberFormat.currency(
-                                  symbol: '\$',
-                                  decimalDigits: 2,
-                                ).format(usdValue);
+                                double usdValue = double.parse(data.dr ?? "") * (AppConfig.appDataSet?.btcPriceInUSD ?? 0.0);
+                                final formatted = NumberFormat.currency(symbol: '\$', decimalDigits: 2).format(usdValue);
                                 return CustomCard(
                                   child: Row(
                                     children: [
@@ -257,11 +225,7 @@ class _PayoutPageState extends State<PayoutPage> {
                                         children: [
                                           Text(
                                             data.dr.toString(),
-                                            style: subTextMontserrat(
-                                              context,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                            style: subTextMontserrat(context, fontSize: 13, fontWeight: FontWeight.w600),
                                           ),
                                           Text(
                                             miningDateFormat(data.date ?? ""),
@@ -275,11 +239,7 @@ class _PayoutPageState extends State<PayoutPage> {
                                         children: [
                                           Text(
                                             formatted,
-                                            style: subTextMontserrat(
-                                              context,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 13,
-                                            ),
+                                            style: subTextMontserrat(context, fontWeight: FontWeight.w600, fontSize: 13),
                                           ),
                                           Text(
                                             data.status ?? '',
@@ -344,11 +304,7 @@ class _PayoutPageState extends State<PayoutPage> {
                   ),
                   7.heightBox,
                   Text('Expected: $massage', textAlign: TextAlign.center, style: subTextRoboto(context)),
-                  Text(
-                    'Received: ${balance.toStringAsFixed(12)}',
-                    textAlign: TextAlign.center,
-                    style: subTextRoboto(context),
-                  ),
+                  Text('Received: ${balance.toStringAsFixed(12)}', textAlign: TextAlign.center, style: subTextRoboto(context)),
                   15.heightBox,
                   AppButton(
                     padding: EdgeInsets.symmetric(vertical: 6),

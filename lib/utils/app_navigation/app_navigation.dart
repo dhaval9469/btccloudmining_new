@@ -15,6 +15,7 @@ import 'package:btccloudmining/dashboard/page/widgets/payout_history.dart';
 import 'package:btccloudmining/dashboard/page/widgets/privacy_policy.dart';
 import 'package:btccloudmining/dashboard/page/widgets/profile_page.dart';
 import 'package:btccloudmining/dashboard/page/widgets/refer_friends.dart';
+import 'package:btccloudmining/dashboard/page/widgets/restore_subs.dart';
 import 'package:btccloudmining/dashboard/page/widgets/store_info.dart';
 import 'package:btccloudmining/dashboard/page/widgets/unlock_page.dart';
 import 'package:btccloudmining/dashboard/page/widgets/view_active_asics.dart';
@@ -45,6 +46,7 @@ mixin Routes {
   static const String cLanPage = "/cLanPage";
   static const String lockPage = "/lockPage";
   static const String unlockPage = "/unlockPage";
+  static const String restoreSubsPage = "/restoreSubsPage";
 
   static List<GetPage<dynamic>> routes = [
     GetPage(name: splash, page: () => const SplashPage(), transition: defaultTransition),
@@ -84,5 +86,6 @@ mixin Routes {
     GetPage(name: cLanPage, page: () => const CLanPage(), transition: defaultTransition),
     GetPage(name: lockPage, page: () => const LockPage(), transition: defaultTransition),
     GetPage(name: unlockPage, page: () => const UnlockPage(), transition: defaultTransition),
+    GetPage(name: restoreSubsPage, page: () => RestoreSubsPage(), transition: defaultTransition),
   ];
 }

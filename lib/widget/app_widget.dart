@@ -39,6 +39,7 @@ Widget customHeader(BuildContext context, String text, {GestureTapCallback? onBa
   ).p(15);
 }
 
+/*
 class SlideFadeTransition extends StatelessWidget {
   final Widget child;
   final int index;
@@ -68,7 +69,77 @@ class SlideFadeTransition extends StatelessWidget {
     );
   }
 }
+*/
 
+
+class SlideFadeTransition extends StatefulWidget {
+  final Widget child;
+  final int index;
+
+  const SlideFadeTransition({
+    super.key,
+    required this.child,
+    required this.index,
+  });
+
+  @override
+  State<SlideFadeTransition> createState() => _SlideFadeTransitionState();
+}
+
+class _SlideFadeTransitionState extends State<SlideFadeTransition>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    final curvedAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutQuart,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(curvedAnimation);
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.15),
+      end: Offset.zero,
+    ).animate(curvedAnimation);
+
+    Future.delayed(Duration(milliseconds: widget.index * 100), () {
+      if (mounted) {
+        _controller.forward();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: widget.child,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
 PreferredSizeWidget commonAppBar() {
   return AppBar(
     backgroundColor: AppColor.newBg,

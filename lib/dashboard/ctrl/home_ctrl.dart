@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:btccloudmining/ad_modual/reward_interstitial/int_rwd_admanger.dart';
 import 'package:btccloudmining/dashboard/model/active_bot_model.dart';
 import 'package:btccloudmining/dashboard/model/appdataset_model.dart';
@@ -12,10 +13,11 @@ import 'package:btccloudmining/utils/hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
 
 class HomeCtrl extends GetxController {
-  late VideoPlayerController videoPlayerController;
+  // late VideoPlayerController videoPlayerController;
+  final ScrollController planScrollController = ScrollController();
+  List<GlobalKey> planKeys = [];
 
   RxBool isPurchase = false.obs;
 
@@ -27,7 +29,6 @@ class HomeCtrl extends GetxController {
   RxBool isMining = false.obs;
   RxInt activeMiners = 13000.obs;
   RxInt selectedPlanIndex = 0.obs;
-  RxInt planAdIndex = 10.obs;
   RxInt selectedLanguage = 0.obs;
   RxString languageCode = ''.obs;
   RxBool isChangingLanguage = false.obs;
@@ -45,9 +46,16 @@ class HomeCtrl extends GetxController {
 
   RxList<ListPlan> subscriptionPlanList = <ListPlan>[].obs;
   RxList<ListReward> rewardList = <ListReward>[].obs;
-  Rx<ListReward> randomRewardList = ListReward().obs;
+  Rx<ListPlan> randomRewardList = ListPlan().obs;
   Rx<ListPlan> storeItemData = ListPlan().obs;
   Rx<Plans?> selectPlanDetails = Plans().obs;
+
+  RxInt storePlanIndex = 0.obs;
+  RxString storePlanName = ''.obs;
+  RxList<Plans> storePlanDetailsList = <Plans>[].obs;
+  RxInt storePlanAdsTime = 0.obs;
+  RxBool storePlanAds = false.obs;
+  Rx<ListPlan> storePlanDetails = ListPlan().obs;
 
   void getActiveSubscription() async {
     try {
@@ -56,11 +64,7 @@ class HomeCtrl extends GetxController {
       userActiveBotList.clear();
 
       final email = HiveService().getData<String>(AppConfig.userEmail);
-      final UserProfileModel userProfileModel = await ApiRepo.userLogin(
-        email: email,
-        reference: '',
-        firstTime: '',
-      );
+      final UserProfileModel userProfileModel = await ApiRepo.userLogin(email: email, reference: '', firstTime: '');
 
       final now = DateTime.now();
 
@@ -110,48 +114,44 @@ class HomeCtrl extends GetxController {
 
   Future<void> getWithdrawDetails() async {
     withdrawDetailsList.clear();
-    withdrawDetailsModel.value = await ApiRepo.viewWithdrawDetails(
-      email: HiveService().getData<String>(AppConfig.userEmail),
-    );
+    withdrawDetailsModel.value = await ApiRepo.viewWithdrawDetails(email: HiveService().getData<String>(AppConfig.userEmail));
     withdrawDetailsList.addAll(withdrawDetailsModel.value.data ?? []);
   }
 
   void shoeRandomPlan() {
     final random = Random();
-    randomRewardList.value = rewardList[random.nextInt(rewardList.length)];
+    randomRewardList.value = subscriptionPlanList[random.nextInt(subscriptionPlanList.length)];
   }
 
   @override
   void onInit() {
     super.onInit();
-    initializePlayer();
     appDataSet();
   }
 
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   videoPlayerController.dispose();
+  // }
 
-  @override
-  void onClose() {
-    super.onClose();
-    videoPlayerController.dispose();
-  }
-
-  void initializePlayer() async {
-    videoPlayerController = VideoPlayerController.asset('assets/lottie/home_top.mp4');
-
-    await videoPlayerController.initialize();
-    await videoPlayerController.setLooping(true);
-    update();
-  }
-
-  void startMiningVideo() async {
-    await videoPlayerController.play();
-    update();
-  }
-
-  void stopMiningVideo() {
-    videoPlayerController.pause();
-    update();
-  }
+  // void initializePlayer() async {
+  //   videoPlayerController = VideoPlayerController.asset('assets/lottie/home_top.mp4');
+  //
+  //   await videoPlayerController.initialize();
+  //   await videoPlayerController.setLooping(true);
+  //   update();
+  // }
+  //
+  // void startMiningVideo() async {
+  //   await videoPlayerController.play();
+  //   update();
+  // }
+  //
+  // void stopMiningVideo() {
+  //   videoPlayerController.pause();
+  //   update();
+  // }
 
   appDataSet() async {
     AppDataSetModel appDataSetModel = await ApiRepo.appDataSet();
